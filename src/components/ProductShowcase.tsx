@@ -186,44 +186,84 @@ function ContractWorkforce() {
 }
 
 function ApprovalMatrix() {
-  const steps = ["Ops", "Finance", "Head", "CFO", "Control"];
-  const states = ["Prepared", "Pending", "Queued", "Queued", "Queued"];
+  /* One row per stage keeps the node, its name and its state in the same grid
+     column — the old build laid those out as three independent flex rows, so the
+     labels never actually sat under their nodes. */
+  const CURRENT = 1;
+  const stages = [
+    { name: "Ops", state: "Approved" },
+    { name: "Finance", state: "In review" },
+    { name: "Head", state: "Queued" },
+    { name: "CFO", state: "Queued" },
+    { name: "Control", state: "Queued" },
+  ];
+
   return (
     <Card className="w-[244px]">
-      <div className="mb-3 text-[15px] font-bold">Approval matrix</div>
-      <div className="flex items-center justify-between">
-        {steps.map((_, i) => (
-          <div key={i} className="flex items-center">
-            <span
-              className={`grid h-6 w-6 place-items-center rounded-full text-[11px] font-semibold ${
-                i === 0 ? "bg-[var(--green)] text-white" : "border border-[var(--green-line)] text-[var(--green)]"
-              }`}
-            >
-              {i + 1}
-            </span>
-            {i < 4 && <span className="mx-0.5 h-px w-4 bg-[var(--green-line)]" />}
-          </div>
-        ))}
+      <div className="mb-3 flex items-baseline justify-between">
+        <span className="text-[15px] font-bold">Approval matrix</span>
+        <span className="font-mono text-[9.5px] font-semibold text-[var(--muted)]">
+          {CURRENT + 1}/{stages.length}
+        </span>
       </div>
-      <div className="mt-1.5 flex justify-between text-[9px] text-[var(--muted)]">
-        {steps.map((s) => (
-          <span key={s} className="w-[46px] text-center">{s}</span>
-        ))}
+
+      <div className="grid grid-cols-5">
+        {stages.map((st, i) => {
+          const done = i < CURRENT;
+          const current = i === CURRENT;
+          return (
+            <div key={st.name} className="relative flex flex-col items-center">
+              {/* connector runs from the previous node's centre to this one */}
+              {i > 0 && (
+                <span
+                  className={`absolute right-1/2 top-3 h-[1.5px] w-full -translate-y-1/2 ${
+                    i <= CURRENT ? "bg-[var(--green)]/55" : "bg-[var(--green-line)]"
+                  }`}
+                />
+              )}
+              <span
+                className={`relative z-10 grid h-6 w-6 place-items-center rounded-full text-[10.5px] font-semibold ${
+                  done
+                    ? "bg-[var(--green)] text-white"
+                    : current
+                      ? "bg-white text-[var(--green)] ring-2 ring-[var(--green)] shadow-[0_0_0_3px_rgba(14,90,56,0.12)]"
+                      : "border border-[var(--green-line)] bg-[var(--panel)] text-[var(--muted)]"
+                }`}
+              >
+                {done ? (
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden>
+                    <path d="M3.6 8.4l2.9 2.9 5.9-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ) : (
+                  i + 1
+                )}
+              </span>
+              <span
+                className={`mt-1.5 text-[9px] leading-none ${
+                  current ? "font-semibold text-[var(--ink)]" : "text-[var(--muted)]"
+                }`}
+              >
+                {st.name}
+              </span>
+              <span
+                className={`mt-[3px] text-[8.5px] leading-none ${
+                  done ? "text-[var(--green)]" : current ? "text-[var(--coral-hover)]" : "text-[var(--muted)]/60"
+                }`}
+              >
+                {st.state}
+              </span>
+            </div>
+          );
+        })}
       </div>
-      <div className="mt-1 flex justify-between text-[8px]">
-        {states.map((s, i) => (
-          <span key={i} className={`w-[46px] text-center ${i === 0 ? "text-[var(--green)]" : "text-[var(--muted)]"}`}>
-            {s}
-          </span>
-        ))}
-      </div>
+
       <div className="mt-3 space-y-1.5 border-t border-[var(--border)] pt-2.5 text-[11px]">
-        <div className="flex justify-between">
-          <span className="text-[var(--muted)]">Delegation</span>
-          <span className="font-medium">Rohan Mehta → Priya Shah</span>
+        <div className="flex justify-between gap-2">
+          <span className="shrink-0 text-[var(--muted)]">Delegation</span>
+          <span className="truncate font-medium">Rohan Mehta → Priya Shah</span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-[var(--muted)]">Audit</span>
+        <div className="flex justify-between gap-2">
+          <span className="shrink-0 text-[var(--muted)]">Audit</span>
           <span className="font-mono">Ananya · 09:42</span>
         </div>
       </div>
@@ -406,27 +446,103 @@ function PhoneAttendance() {
         </div>
 
         {/* map with geofence */}
-        <div className="relative mx-3 h-[92px] overflow-hidden rounded-2xl bg-[var(--green-soft)]">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(14,90,56,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(14,90,56,0.1) 1px,transparent 1px)",
-              backgroundSize: "18px 18px",
-            }}
-          />
-          <svg viewBox="0 0 190 92" className="absolute inset-0 h-full w-full" preserveAspectRatio="none" aria-hidden>
-            <path d="M0 66 Q60 40 96 52 T190 30" fill="none" stroke="var(--green)" strokeWidth="2.5" strokeDasharray="4 5" opacity="0.65" />
+        <div className="relative mx-3 h-[92px] overflow-hidden rounded-2xl bg-[#e9f0e8]">
+          {/* Drawn like a real map tile: land, parcels, then roads as casing + fill.
+             The casing/fill pair is what makes strokes read as streets rather than lines. */}
+          <svg viewBox="0 0 190 92" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden>
+            <rect width="190" height="92" fill="#e9f0e8" />
+
+            {/* parkland */}
+            <path d="M137 44 L178 38 L185 68 L145 75 Z" fill="#0e5a38" opacity="0.15" />
+            {/* the plant site itself, so the geofence sits over a real parcel */}
+            <path d="M70 34 L116 30 L119 64 L73 68 Z" fill="#0e5a38" opacity="0.10" />
+            <path
+              d="M70 34 L116 30 L119 64 L73 68 Z"
+              fill="none"
+              stroke="#0e5a38"
+              strokeWidth="0.8"
+              strokeDasharray="2.5 2"
+              opacity="0.35"
+            />
+            <path d="M-4 -4 L38 -4 L34 14 L-4 17 Z" fill="#0e5a38" opacity="0.09" />
+
+            {/* building footprints, angled slightly so nothing lines up perfectly */}
+            <g fill="#0e5a38" opacity="0.14">
+              <rect x="8" y="26" width="17" height="10" rx="1.5" transform="rotate(-4 16 31)" />
+              <rect x="30" y="24" width="9" height="10" rx="1.5" transform="rotate(-4 34 29)" />
+              <rect x="58" y="26" width="14" height="9" rx="1.5" transform="rotate(-3 65 30)" />
+              <rect x="76" y="25" width="10" height="9" rx="1.5" transform="rotate(-3 81 29)" />
+              <rect x="96" y="22" width="18" height="10" rx="1.5" transform="rotate(-3 105 27)" />
+              <rect x="140" y="16" width="15" height="8" rx="1.5" transform="rotate(-2 147 20)" />
+              <rect x="160" y="14" width="12" height="8" rx="1.5" transform="rotate(-2 166 18)" />
+              <rect x="8" y="68" width="16" height="11" rx="1.5" transform="rotate(-3 16 73)" />
+              <rect x="28" y="67" width="10" height="11" rx="1.5" transform="rotate(-3 33 72)" />
+              <rect x="60" y="64" width="19" height="11" rx="1.5" transform="rotate(-3 69 69)" />
+              <rect x="88" y="62" width="12" height="11" rx="1.5" transform="rotate(-3 94 67)" />
+              <rect x="150" y="82" width="16" height="10" rx="1.5" transform="rotate(-3 158 87)" />
+            </g>
+
+            {/* roads — darker casing underneath, pale fill on top */}
+            {[
+              "M-6 60 L64 55 L118 39 L196 33",
+              "M-6 20 L58 16 L132 10 L196 6",
+              "M-6 84 L92 79 L196 70",
+              "M42 -6 L50 38 L44 98",
+              "M122 -6 L130 38 L137 98",
+              "M80 -6 L86 30",
+              "M162 36 L168 98",
+            ].map((d, i) => (
+              <path
+                key={`c${i}`}
+                d={d}
+                fill="none"
+                stroke="#cfdccd"
+                strokeWidth={(i < 1 ? 7 : i < 3 ? 4.6 : i < 5 ? 4 : 2.6) + 1.6}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            ))}
+            {[
+              "M-6 60 L64 55 L118 39 L196 33",
+              "M-6 20 L58 16 L132 10 L196 6",
+              "M-6 84 L92 79 L196 70",
+              "M42 -6 L50 38 L44 98",
+              "M122 -6 L130 38 L137 98",
+              "M80 -6 L86 30",
+              "M162 36 L168 98",
+            ].map((d, i) => (
+              <path
+                key={`f${i}`}
+                d={d}
+                fill="none"
+                stroke="#fbfdfa"
+                strokeWidth={i < 1 ? 7 : i < 3 ? 4.6 : i < 5 ? 4 : 2.6}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            ))}
+
+            {/* approach track, running along the arterial into the site */}
+            <path
+              d="M-6 60 L64 55 L95 46"
+              fill="none"
+              stroke="#0e5a38"
+              strokeWidth="2.2"
+              strokeDasharray="3.5 4.5"
+              strokeLinecap="round"
+              opacity="0.55"
+            />
           </svg>
+
           {/* geofence ring + pin */}
-          <span className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--green)]/40 bg-[var(--green)]/10" />
-          <span className="absolute left-1/2 top-1/2 grid h-6 w-6 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[var(--green)] text-white shadow-md">
+          <span className="absolute left-1/2 top-1/2 h-[52px] w-[52px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--green)]/45 bg-[var(--green)]/12" />
+          <span className="absolute left-1/2 top-1/2 grid h-6 w-6 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[var(--green)] text-white ring-2 ring-white/80 shadow-[0_3px_8px_-2px_rgba(11,74,46,0.7)]">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
               <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
               <circle cx="12" cy="10" r="2.6" />
             </svg>
           </span>
-          <span className="absolute right-2 top-2 rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-semibold text-[var(--green-deep)]">
+          <span className="absolute right-2 top-2 rounded-full bg-white/95 px-2 py-0.5 text-[9px] font-semibold text-[var(--green-deep)] shadow-[0_1px_4px_rgba(11,74,46,0.18)]">
             Inside geofence
           </span>
         </div>
@@ -877,7 +993,7 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
   const scale = hero - (hero - SETTLED_SCALE) * enter;
 
   return (
-    <div ref={ref} className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-10 md:px-12 min-[1280px]:pb-28">
+    <div ref={ref} className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-10 md:px-12 min-[1360px]:pb-28">
       <div className="relative">
         {/* dotted-grid backdrop */}
         <div
@@ -916,17 +1032,17 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
         </div>
 
         {/* cards settle fully in the side gutters — no overlap with the product */}
-        <Float from={[-44, 24]} tilt={-2} t={win(p, 0.4, 0.62)} className="absolute -left-6 top-2 z-20 hidden min-[1280px]:block">
+        <Float from={[-30, 24]} tilt={-2} t={win(p, 0.4, 0.62)} className="absolute right-[calc(50%+410px)] top-2 z-20 hidden min-[1360px]:block">
           <AskAI />
         </Float>
-        <Float from={[-46, 40]} tilt={-1.4} t={win(p, 0.55, 0.78)} className="absolute -left-9 bottom-2 z-20 hidden min-[1280px]:block">
+        <Float from={[-46, 40]} tilt={-1.4} t={win(p, 0.55, 0.78)} className="absolute -left-9 bottom-2 z-20 hidden min-[1360px]:block">
           <ApprovalMatrix />
         </Float>
 
-        <Float from={[44, 24]} tilt={2} t={win(p, 0.46, 0.68)} className="absolute right-0 top-2 z-20 hidden min-[1280px]:block">
+        <Float from={[30, 24]} tilt={2} t={win(p, 0.46, 0.68)} className="absolute left-[calc(50%+410px)] top-2 z-20 hidden min-[1360px]:block">
           <MultiState />
         </Float>
-        <Float from={[46, 56]} tilt={2.5} t={win(p, 0.66, 0.94)} className="absolute right-0 bottom-[-30px] z-30 hidden min-[1280px]:block">
+        <Float from={[46, 56]} tilt={2.5} t={win(p, 0.66, 0.94)} className="absolute right-0 bottom-[-30px] z-30 hidden min-[1360px]:block">
           <PhoneAttendance />
         </Float>
       </div>
