@@ -94,28 +94,47 @@ const Check = () => (
   </svg>
 );
 
+const Warn = () => (
+  <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden className="mt-[1px] shrink-0">
+    <path d="M8 2.7l5.5 9.9H2.5L8 2.7z" fill="currentColor" opacity="0.16" />
+    <path d="M8 2.7l5.5 9.9H2.5L8 2.7z" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+    <path d="M8 6.6v2.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    <circle cx="8" cy="11" r="0.75" fill="currentColor" />
+  </svg>
+);
+
 /* ---------- the snippets ---------- */
 
 function MultiState() {
   return (
-    <Card className="w-[224px]">
-      <div className="mb-3 text-[15px] font-bold">Multi-state statutory</div>
-      <div className="flex gap-2">
+    <Card className="w-[236px]">
+      <div className="text-[15px] font-bold">Multi-state statutory</div>
+      {/* says what the three numbers actually are, instead of an orphan label below them */}
+      <div className="mt-1 font-mono text-[9.5px] uppercase tracking-[0.14em] text-[var(--muted)]">
+        PT slabs · Sep 2026
+      </div>
+
+      <div className="mt-2.5 flex gap-1.5">
         {[
           ["MH", "3"],
           ["TN", "6"],
           ["KA", "2"],
-        ].map(([s, n]) => (
-          <div key={s} className="flex-1 rounded-lg bg-[var(--cream-2)] px-2 py-1.5 text-center">
-            <span className="font-mono text-[13px] font-semibold">
-              {s}·{n}
-            </span>
+        ].map(([st, n]) => (
+          <div
+            key={st}
+            className="flex-1 rounded-lg border border-[var(--border)] bg-[var(--cream-2)] px-1 py-1.5 text-center"
+          >
+            <div className="font-mono text-[9.5px] font-semibold tracking-[0.08em] text-[var(--muted)]">{st}</div>
+            <div className="mt-[3px] text-[16px] font-bold leading-none text-[var(--ink)]">{n}</div>
           </div>
         ))}
       </div>
-      <div className="mt-2 text-[11px] text-[var(--muted)]">PT slabs</div>
-      <div className="mt-3 flex items-center gap-2 rounded-lg bg-[var(--coral)]/10 px-2.5 py-2 text-[12px] text-[var(--coral-hover)]">
-        <span>⚠</span> October revision · 64 employees
+
+      <div className="mt-2.5 flex items-start gap-1.5 rounded-lg bg-[var(--coral)]/10 px-2.5 py-2 text-[11.5px] leading-[1.4] text-[var(--coral-hover)]">
+        <Warn />
+        <span>
+          October revision · <span className="whitespace-nowrap font-semibold">64 employees</span>
+        </span>
       </div>
     </Card>
   );
@@ -538,11 +557,6 @@ function Dashboard() {
             </svg>
           </div>
 
-          {/* a second, inactive tab */}
-          <div className="hidden min-w-0 max-w-[150px] flex-1 items-center gap-1.5 rounded-t-[9px] px-2.5 py-[7px] sm:flex">
-            <span className="h-[11px] w-[11px] shrink-0 rounded-[3px] bg-[var(--green-line)]" />
-            <span className="truncate text-[10.5px] text-[var(--muted)]">Payroll · Sep 2026</span>
-          </div>
 
           <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden className="mb-[9px] ml-1 shrink-0 text-[var(--muted)]">
             <path d="M6 1.5v9M1.5 6h9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
@@ -558,15 +572,20 @@ function Dashboard() {
             <svg width="13" height="13" viewBox="0 0 14 14" aria-hidden className="opacity-40">
               <path d="M5.4 3.2L9.2 7l-3.8 3.8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <svg width="13" height="13" viewBox="0 0 14 14" aria-hidden>
-              <path
-                d="M11.5 7a4.5 4.5 0 1 1-1.6-3.45"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-              <path d="M11.7 1.9v2.3H9.4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 14 14"
+              aria-hidden
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              {/* arc sweeps up and terminates exactly where the arrowhead corner sits */}
+              <path d="M11.95 8.75a5.25 5.25 0 1 1-1.24-5.46l2.71 2.54" />
+              <path d="M13.42 2.33v3.5H9.92" />
             </svg>
           </div>
 
