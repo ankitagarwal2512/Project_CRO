@@ -1,0 +1,10 @@
+{
+  "description": "Delivers a sleek, animated hero section showcasing product UI with sophisticated design to engage enterprise users and highlight product features.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
