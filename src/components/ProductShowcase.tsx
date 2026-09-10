@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
 import hrIcon from "@/imports/HRICON.svg";
 import logoHr from "@/imports/logohr.png";
+import avatarUser from "@/imports/AVATAR.png";
+import avatarAnanya from "@/imports/ANANYA.png";
 
 /* ---------- scroll reveal ---------- */
 
@@ -210,16 +212,36 @@ function ApprovalMatrix() {
   );
 }
 
-const ASK_PROMPTS = [
-  "Which sites are driving overtime?",
-  "Who is due for PF revision?",
-  "Summarise this month's attrition",
-  "Flag pending statutory approvals",
+/* Each prompt carries its own answer, so the card reads as a real exchange
+   instead of one fixed result sitting under a rotating question. */
+const ASK_ITEMS = [
+  {
+    q: "Which sites drive overtime?",
+    a: "Pune and Chennai drive 62% of overtime hours this month.",
+    tag: "+18% vs Aug",
+  },
+  {
+    q: "Who is due for PF revision?",
+    a: "14 employees cross the ₹15,000 wage ceiling in September.",
+    tag: "3 need Form 11",
+  },
+  {
+    q: "Summarise attrition in Sales",
+    a: "Sales attrition is 3.1%, against 1.4% company-wide.",
+    tag: "9 exits · 4 regretted",
+  },
+  {
+    q: "Any statutory approvals due?",
+    a: "6 approvals open — PT Maharashtra is due in 2 days.",
+    tag: "2 overdue",
+  },
 ];
+const ASK_PROMPTS = ASK_ITEMS.map((i) => i.q);
 
 function useTypewriter(phrases: string[]) {
   const [text, setText] = useState("");
   const [done, setDone] = useState(false);
+  const [index, setIndex] = useState(0);
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setText(phrases[0]);
@@ -250,6 +272,7 @@ function useTypewriter(phrases: string[]) {
         if (c === 0) {
           deleting = false;
           i = (i + 1) % phrases.length;
+          setIndex(i);
         }
       }
       timer = setTimeout(tick, deleting ? 28 : 55);
@@ -257,13 +280,14 @@ function useTypewriter(phrases: string[]) {
     timer = setTimeout(tick, 500);
     return () => clearTimeout(timer);
   }, [phrases]);
-  return { text, done };
+  return { text, done, index };
 }
 
 function AskAI() {
-  const { text, done } = useTypewriter(ASK_PROMPTS);
+  const { text, done, index } = useTypewriter(ASK_PROMPTS);
+  const item = ASK_ITEMS[index];
   return (
-    <Card className="w-[248px]">
+    <Card className="w-[264px]">
       <div className="mb-2.5 flex items-center gap-2">
         <span
           className="grid h-6 w-6 place-items-center rounded-lg"
@@ -271,14 +295,11 @@ function AskAI() {
         >
           <img src={hrIcon} alt="" aria-hidden className="h-3 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
         </span>
-        <span className="text-[15px] font-bold">Ask HROne AI</span>
-        <span className="ml-auto rounded-full bg-[var(--green-soft)] px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.1em] text-[var(--green)]">
-          Beta
-        </span>
+        <span className="text-[15px] font-bold">Ask One AI</span>
       </div>
 
       {/* animated prompt input */}
-      <div className="flex min-h-[34px] items-center gap-2 rounded-xl border border-[var(--green-line)] bg-white px-3 py-2 text-[12.5px] text-[var(--ink)] shadow-[0_1px_0_rgba(14,90,56,0.04)_inset]">
+      <div className="flex min-h-[34px] items-center gap-2 rounded-xl border border-[var(--green-line)] bg-white px-3 py-2 text-[12px] text-[var(--ink)] shadow-[0_1px_0_rgba(14,90,56,0.04)_inset]">
         <span className="text-[var(--green)]">✦</span>
         <span className="truncate">{text}</span>
         <span
@@ -287,23 +308,26 @@ function AskAI() {
         />
       </div>
 
-      {/* answer */}
-      <div className="mt-3 space-y-2">
-        {[
-          ["Pune", 108, "var(--green-deep)"],
-          ["Chennai", 78, "var(--green)"],
-        ].map(([c, h, col]) => (
-          <div key={c as string} className="flex items-center gap-2 text-[11px]">
-            <span className="w-12 text-[var(--muted)]">{c}</span>
-            <div className="h-2 flex-1 rounded-full bg-[var(--cream-2)]">
-              <div className="h-2 rounded-full" style={{ width: `${(h as number) / 1.2}%`, background: col as string }} />
-            </div>
-            <span className="font-mono font-semibold">{h} h</span>
+      {/* answer — reserves its height so the card never jumps between prompts */}
+      <div className="mt-2.5 min-h-[66px]">
+        {done ? (
+          <div className="animate-[askin_260ms_ease-out_both]">
+            <p className="text-[11.5px] leading-[1.5] text-[var(--ink)]">{item.a}</p>
+            <span className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-[var(--green-soft)] px-2 py-[3px] font-mono text-[9.5px] font-semibold text-[var(--green)]">
+              {item.tag}
+            </span>
           </div>
-        ))}
-      </div>
-      <div className="mt-2.5 flex items-center gap-1.5 text-[10px] text-[var(--muted)]">
-        <Check /> Answered from Attendance + roster
+        ) : (
+          <div className="flex items-center gap-1.5 pt-1.5" aria-hidden>
+            {[0, 1, 2].map((d) => (
+              <span
+                key={d}
+                className="h-[5px] w-[5px] rounded-full bg-[var(--green)]/45"
+                style={{ animation: `askdot 1.1s ${d * 0.16}s ease-in-out infinite` }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </Card>
   );
@@ -353,8 +377,8 @@ function PhoneAttendance() {
 
         {/* person */}
         <div className="flex items-center gap-2.5 px-4 pb-2">
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--green)] text-[13px] font-bold text-white">
-            AR
+          <span className="block h-9 w-9 shrink-0 overflow-hidden rounded-full">
+            <img src={avatarAnanya} alt="" aria-hidden className="h-full w-full object-cover" />
           </span>
           <div className="leading-tight">
             <div className="text-[13px] font-bold">Ananya Rao</div>
@@ -495,15 +519,75 @@ function Dashboard() {
   const railTop: (keyof typeof icons)[] = ["home", "mail", "clipboard", "calendar", "users", "chart", "settings"];
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-[0_50px_90px_-40px_rgba(11,74,46,0.55)]">
-      {/* window bar */}
-      <div className="flex shrink-0 items-center gap-3 border-b border-[var(--border)] bg-[var(--cream-2)] px-4 py-2">
-        <div className="flex gap-1.5">
-          <span className="h-3 w-3 rounded-full bg-[#ec6a5f]" />
-          <span className="h-3 w-3 rounded-full bg-[#f5bf4f]" />
-          <span className="h-3 w-3 rounded-full bg-[#61c554]" />
+      {/* browser chrome — tab strip over a toolbar, the way a real window reads */}
+      <div className="shrink-0 bg-[var(--cream-2)]">
+        {/* tab strip */}
+        <div className="flex items-end gap-1 px-3 pt-2.5">
+          <div className="flex shrink-0 gap-1.5 pb-[8px] pr-2">
+            <span className="h-[11px] w-[11px] rounded-full bg-[#ec6a5f]" />
+            <span className="h-[11px] w-[11px] rounded-full bg-[#f5bf4f]" />
+            <span className="h-[11px] w-[11px] rounded-full bg-[#61c554]" />
+          </div>
+
+          {/* active tab — merges into the white toolbar below it */}
+          <div className="flex min-w-0 max-w-[186px] flex-1 items-center gap-1.5 rounded-t-[9px] bg-white px-2.5 py-[7px]">
+            <img src={hrIcon} alt="" aria-hidden className="h-[11px] w-[11px] shrink-0 object-contain" />
+            <span className="truncate text-[10.5px] font-medium text-[var(--ink)]">HROne — Dashboard</span>
+            <svg width="9" height="9" viewBox="0 0 10 10" aria-hidden className="ml-auto shrink-0 text-[var(--muted)]">
+              <path d="M1.2 1.2l7.6 7.6M8.8 1.2L1.2 8.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+            </svg>
+          </div>
+
+          {/* a second, inactive tab */}
+          <div className="hidden min-w-0 max-w-[150px] flex-1 items-center gap-1.5 rounded-t-[9px] px-2.5 py-[7px] sm:flex">
+            <span className="h-[11px] w-[11px] shrink-0 rounded-[3px] bg-[var(--green-line)]" />
+            <span className="truncate text-[10.5px] text-[var(--muted)]">Payroll · Sep 2026</span>
+          </div>
+
+          <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden className="mb-[9px] ml-1 shrink-0 text-[var(--muted)]">
+            <path d="M6 1.5v9M1.5 6h9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+          </svg>
         </div>
-        <div className="ml-2 flex items-center gap-2 rounded-md bg-white px-3 py-1 text-[11px] text-[var(--muted)]">
-          HROne — Dashboard <span className="opacity-40">×</span>
+
+        {/* toolbar */}
+        <div className="flex items-center gap-2 border-b border-[var(--border)] bg-white px-3 py-[6px]">
+          <div className="flex shrink-0 items-center gap-2 text-[var(--muted)]">
+            <svg width="13" height="13" viewBox="0 0 14 14" aria-hidden>
+              <path d="M8.6 3.2L4.8 7l3.8 3.8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <svg width="13" height="13" viewBox="0 0 14 14" aria-hidden className="opacity-40">
+              <path d="M5.4 3.2L9.2 7l-3.8 3.8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <svg width="13" height="13" viewBox="0 0 14 14" aria-hidden>
+              <path
+                d="M11.5 7a4.5 4.5 0 1 1-1.6-3.45"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              <path d="M11.7 1.9v2.3H9.4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+
+          {/* address bar */}
+          <div className="flex min-w-0 flex-1 items-center gap-1.5 rounded-full bg-[var(--cream)] px-2.5 py-[3px] ring-1 ring-[var(--border)]">
+            <svg width="9" height="9" viewBox="0 0 10 10" aria-hidden className="shrink-0 text-[var(--green)]">
+              <rect x="1.6" y="4.3" width="6.8" height="4.5" rx="1" fill="currentColor" />
+              <path d="M3.3 4.3V3.1a1.7 1.7 0 0 1 3.4 0v1.2" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
+            </svg>
+            <span className="truncate font-mono text-[9.5px] text-[var(--muted)]">
+              app.hrone.cloud<span className="text-[var(--ink)]">/dashboard</span>
+            </span>
+          </div>
+
+          <span
+            aria-hidden
+            className="grid h-[17px] w-[17px] shrink-0 place-items-center rounded-full font-mono text-[8px] font-semibold text-white"
+            style={{ background: `linear-gradient(135deg, var(--green), ${DEEP})` }}
+          >
+            AK
+          </span>
         </div>
       </div>
 
@@ -537,8 +621,10 @@ function Dashboard() {
             <span className="grid h-9 w-9 place-items-center rounded-xl hover:bg-white/10">
               <Ic d={icons.plus} />
             </span>
-            <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-white/20 text-[11px] font-bold text-white ring-2 ring-white/25">
-              PG
+            <span className="block h-8 w-8 overflow-hidden rounded-full">
+              {/* AVATAR.png has a white rim baked in — uneven, thickest at ~1.26x radius.
+                  1.3 crops it away entirely so the avatar reads as a clean circle. */}
+              <img src={avatarUser} alt="" aria-hidden className="h-full w-full scale-[1.3] object-cover" />
             </span>
           </div>
         </div>
@@ -741,7 +827,7 @@ export function ProductShowcase() {
   const enter = win(p, 0, 0.5);
 
   return (
-    <div ref={ref} className="relative mx-auto mt-16 max-w-[1320px] px-6 pb-28">
+    <div ref={ref} className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-28">
       <div className="relative">
         {/* dotted-grid backdrop */}
         <div
@@ -757,13 +843,13 @@ export function ProductShowcase() {
         {/* soft green glow */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-6 h-[440px] w-[760px] -translate-x-1/2 rounded-full bg-[var(--green)]/10 blur-[100px]"
+          className="pointer-events-none absolute left-1/2 top-6 h-[440px] w-[min(760px,100%)] -translate-x-1/2 rounded-full bg-[var(--green)]/10 blur-[100px]"
           style={{ opacity: 0.65 + 0.25 * enter }}
         />
         {/* grounding shadow under the dashboard */}
         <div
           aria-hidden
-          className="pointer-events-none absolute bottom-6 left-1/2 h-16 w-[600px] -translate-x-1/2 rounded-[50%] bg-[var(--green-deep)]/25 blur-2xl"
+          className="pointer-events-none absolute bottom-6 left-1/2 h-16 w-[min(600px,100%)] -translate-x-1/2 rounded-[50%] bg-[var(--green-deep)]/25 blur-2xl"
           style={{ opacity: 0.6 + 0.4 * enter }}
         />
 

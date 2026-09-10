@@ -12,37 +12,44 @@ export default function App() {
 
       <main>
         {/* hero copy */}
-        <section className="mx-auto flex max-w-[960px] flex-col items-center px-6 pb-2 pt-10 text-center sm:pt-14">
-          {/* eyebrow with a full animated gradient-ring border */}
-          <span className="relative inline-flex overflow-hidden rounded-full p-[1.5px]">
-            <span
-              aria-hidden
-              className="absolute inset-[-150%] animate-[borderspin_6s_linear_infinite]"
-              style={{
-                background:
-                  "conic-gradient(from 0deg, var(--coral), var(--green) 33%, var(--coral) 66%, var(--green) 100%)",
-              }}
-            />
-            <span className="relative z-10 rounded-full bg-[var(--cream)] px-4 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--coral)]">
-              Enterprise HR Software
-            </span>
+        <section className="mx-auto flex max-w-[960px] flex-col items-center px-6 pb-3 pt-9 text-center sm:pt-12">
+          {/* eyebrow — quiet label, tied tightly to the headline */}
+          <span className="inline-flex items-center rounded-full border border-[var(--green-line)] bg-[var(--green-soft)]/70 px-3 py-[5px] font-mono text-[10px] font-medium uppercase leading-none tracking-[0.2em] text-[var(--green)]">
+            Enterprise HR Software
           </span>
 
-          <h1 className="mt-5 whitespace-nowrap font-display text-[clamp(26px,7.4vw,88px)] font-bold leading-[1.02] tracking-[-0.03em] text-[var(--ink)]">
-            Built for <span className="text-[var(--green)]">complex</span> HR
+          {/* deliberate two-line break — keeps the rag even at every width */}
+          <h1 className="mt-[18px] font-display text-[clamp(30px,5.6vw,64px)] font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--ink)]">
+            <span className="block">
+              Built for <span className="text-[var(--green)]">complex</span>
+            </span>
+            <span className="block">HR operations</span>
           </h1>
 
-          <p className="mt-6 max-w-[600px] text-[17px] leading-relaxed text-[var(--muted)]">
-            One platform, built around the way your organisation works — with the control and intelligent
-            automation complex operations demand.
+          <p className="mt-[18px] max-w-[540px] text-balance text-[18px] leading-[1.6] tracking-[-0.005em] text-[var(--muted)]">
+            Bring payroll, workforce, talent and employee operations together with the control and depth
+            complex organisations need.
           </p>
 
-          <div className="mt-9 flex items-center justify-center">
-            <button className="group flex items-center gap-3 rounded-xl bg-[var(--coral)] px-7 py-3.5 text-[16px] font-semibold text-white shadow-[0_16px_34px_-14px_rgba(233,97,74,0.8)] transition-all hover:bg-[var(--coral-hover)] hover:shadow-[0_20px_40px_-14px_rgba(233,97,74,0.9)]">
+          <div className="mt-[26px] flex items-center justify-center">
+            <button className="group inline-flex items-center gap-2.5 rounded-[10px] bg-[var(--coral)] px-6 py-3 text-[15px] font-semibold tracking-[-0.01em] text-white shadow-[0_10px_24px_-10px_rgba(233,97,74,0.55)] transition-all duration-200 hover:bg-[var(--coral-hover)] hover:shadow-[0_14px_28px_-10px_rgba(233,97,74,0.6)] active:translate-y-px">
               Get a free trial
-              <span className="grid h-7 w-7 place-items-center rounded-lg bg-white/20 transition-transform group-hover:translate-x-0.5">
-                →
-              </span>
+              <svg
+                aria-hidden
+                width="15"
+                height="15"
+                viewBox="0 0 16 16"
+                fill="none"
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              >
+                <path
+                  d="M3 8h9.5M8.75 4.25 12.5 8l-3.75 3.75"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
           </div>
         </section>
