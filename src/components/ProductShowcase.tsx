@@ -839,14 +839,45 @@ function Dashboard() {
 
 /* ---------- assembled showcase ---------- */
 
-export function ProductShowcase() {
+/* Size the product settles to after the first scroll — constant at every width, so
+   the second-scroll proportion never changes. */
+const SETTLED_SCALE = 0.88;
+/* iPad portrait. At and above this the big-then-shrink behaviour runs and the
+   floating cards show; below it the product sits at its natural size alone. */
+const TABLET_MIN = 768;
+const MOCK_BASE_MAX = 880; // matches the mock's max-w
+const GUTTER = 96; // container md:px-12 on both sides
+
+export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
   const { ref, p } = useReveal();
+
+  /* The mock is `w-full max-w-[880px]`, and `scale()` does not reflow — so a scale
+     that outgrows the viewport adds a horizontal scrollbar. Cap the hero scale to
+     what actually fits, which lets the same behaviour run all the way down to iPad
+     instead of switching off at a hard breakpoint. */
+  const [hero, setHero] = useState(1);
+  useEffect(() => {
+    const compute = () => {
+      const vw = window.innerWidth;
+      if (vw < TABLET_MIN) {
+        setHero(1);
+        return;
+      }
+      const base = Math.min(MOCK_BASE_MAX, vw - GUTTER);
+      const fits = (vw - 24) / base; // keep 12px clear each side
+      setHero(Math.min(heroScale, fits));
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, [heroScale]);
 
   // enter: 0 = big hero product on first view, 1 = settled smaller so cards have room
   const enter = win(p, 0, 0.5);
+  const scale = hero - (hero - SETTLED_SCALE) * enter;
 
   return (
-    <div ref={ref} className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-28">
+    <div ref={ref} className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-10 md:px-12 min-[1280px]:pb-28">
       <div className="relative">
         {/* dotted-grid backdrop */}
         <div
@@ -876,7 +907,7 @@ export function ProductShowcase() {
         <div
           className="relative z-10 mx-auto aspect-[16/11] w-full max-w-[880px]"
           style={{
-            transform: `scale(${1.08 - 0.2 * enter})`,
+            transform: `scale(${scale})`,
             transformOrigin: "top center",
             willChange: "transform",
           }}
@@ -885,29 +916,21 @@ export function ProductShowcase() {
         </div>
 
         {/* cards settle fully in the side gutters — no overlap with the product */}
-        <Float from={[-44, 24]} tilt={-2} t={win(p, 0.4, 0.62)} className="absolute -left-6 top-2 z-20 hidden min-[1400px]:block">
+        <Float from={[-44, 24]} tilt={-2} t={win(p, 0.4, 0.62)} className="absolute -left-6 top-2 z-20 hidden min-[1280px]:block">
           <AskAI />
         </Float>
-        <Float from={[-46, 40]} tilt={-1.4} t={win(p, 0.55, 0.78)} className="absolute -left-9 bottom-2 z-20 hidden min-[1400px]:block">
+        <Float from={[-46, 40]} tilt={-1.4} t={win(p, 0.55, 0.78)} className="absolute -left-9 bottom-2 z-20 hidden min-[1280px]:block">
           <ApprovalMatrix />
         </Float>
 
-        <Float from={[44, 24]} tilt={2} t={win(p, 0.46, 0.68)} className="absolute right-0 top-2 z-20 hidden min-[1400px]:block">
+        <Float from={[44, 24]} tilt={2} t={win(p, 0.46, 0.68)} className="absolute right-0 top-2 z-20 hidden min-[1280px]:block">
           <MultiState />
         </Float>
-        <Float from={[46, 56]} tilt={2.5} t={win(p, 0.66, 0.94)} className="absolute right-0 bottom-[-30px] z-30 hidden min-[1400px]:block">
+        <Float from={[46, 56]} tilt={2.5} t={win(p, 0.66, 0.94)} className="absolute right-0 bottom-[-30px] z-30 hidden min-[1280px]:block">
           <PhoneAttendance />
         </Float>
       </div>
 
-      {/* compact stacked cards for smaller screens */}
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 min-[1400px]:hidden">
-        <MultiState />
-        <ApprovalMatrix />
-        <ShiftRoster />
-        <AskAI />
-        <ContractWorkforce />
-      </div>
     </div>
   );
 }
