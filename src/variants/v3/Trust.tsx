@@ -53,7 +53,7 @@ const Lock = () => (
 
 export function Trust() {
   return (
-    <section className="mx-auto max-w-[1280px] px-6 pb-14 pt-7">
+    <section className="mx-auto max-w-[1280px] px-6 py-[clamp(44px,5.5vw,80px)]">
       {/* logos — seamless marquee */}
       <div
         className="group relative overflow-hidden py-8"

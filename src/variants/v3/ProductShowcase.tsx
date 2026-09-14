@@ -503,7 +503,7 @@ export function ProductShowcase() {
   const panelH = top + productH - overhang;
 
   return (
-    <section className="w-full px-4 pb-[clamp(40px,4.5vw,68px)] sm:px-6 lg:px-10">
+    <section className="w-full px-4 sm:px-6 lg:px-10">
       <div
         ref={panel}
         className="relative mx-auto max-w-[1400px] overflow-hidden rounded-[clamp(18px,2vw,30px)] bg-[#07351f]"
