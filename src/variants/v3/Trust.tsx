@@ -66,9 +66,9 @@ export function Trust() {
      which keeps the row centred between its rule and the page edge instead of depending on
      two separate paddings agreeing with each other. */
   return (
-    <section className="mx-auto max-w-[1280px] px-6 pt-[clamp(36px,4vw,56px)]">
+    <section className="mx-auto max-w-[1280px] px-6 pt-[clamp(44px,5vw,68px)]">
       {/* headline + stats */}
-      <div className="grid items-center gap-x-10 gap-y-8 border-t border-[var(--border)] py-[clamp(26px,2.6vw,34px)] lg:grid-cols-[1fr_auto]">
+      <div className="grid items-center gap-x-10 gap-y-8 pb-[clamp(26px,2.6vw,34px)] lg:grid-cols-[1fr_auto]">
         {/* deliberate two-line break, same idiom as the hero h1 — the natural rag put
             "workforces" up on the first line and left "run on HROne." hanging */}
         <h2 className="text-[26px] font-bold leading-tight tracking-[-0.01em] text-[var(--ink)]">
