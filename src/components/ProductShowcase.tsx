@@ -26,8 +26,17 @@ function useReveal() {
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      // p=0 when top of showcase sits at 62% of viewport, p=1 at 8%.
-      const raw = (0.62 * vh - rect.top) / (0.54 * vh);
+      /* Progress is measured in scrolled pixels, not in where the showcase happens to
+         sit in the viewport. The hero copy above it is a fixed ~525px tall, while the
+         old trigger line (62% of the viewport) moves with the window: at 768px tall it
+         lands above the showcase so the reveal began at 0, but at 1080px tall it lands
+         below it, so the page loaded already ~25% revealed and the product never got
+         its full-size first view. Flooring the start at 0 keeps the "begins when the
+         top reaches 62%" behaviour for a short window, and guarantees p=0 on load at
+         every viewport height. */
+      const docTop = rect.top + window.scrollY;
+      const start = Math.max(0, docTop - 0.62 * vh);
+      const raw = (window.scrollY - start) / (0.54 * vh);
       setP(clamp(raw));
     };
     const onScroll = () => {
@@ -394,16 +403,19 @@ function AskAI() {
 
 function PhoneAttendance() {
   return (
+    /* Bezel is a pale warm alloy rather than near-black: on a cream page the only
+       pure-dark object steals the eye from the product behind it. The hairline
+       border + inset highlight are what keep it reading as a device. */
     <div
-      className="relative w-[206px] rounded-[38px] p-[7px] shadow-[0_50px_90px_-30px_rgba(11,74,46,0.6),0_10px_30px_-15px_rgba(11,74,46,0.4)]"
-      style={{ background: "linear-gradient(150deg, #2b332d, #10160f 55%, #1c231d)" }}
+      className="relative w-[206px] rounded-[38px] border border-[var(--border)] p-[7px] shadow-[0_1px_0_rgba(255,255,255,0.8)_inset,0_28px_60px_-30px_rgba(11,74,46,0.38),0_8px_20px_-12px_rgba(11,74,46,0.2)]"
+      style={{ background: "linear-gradient(150deg, #f3efe5, #ded9cb 55%, #ebe6da)" }}
     >
-      {/* side buttons */}
-      <span className="absolute -left-[1.5px] top-[92px] h-9 w-[2.5px] rounded-l bg-black/40" />
-      <span className="absolute -left-[1.5px] top-[132px] h-9 w-[2.5px] rounded-l bg-black/40" />
-      <span className="absolute -right-[1.5px] top-[110px] h-14 w-[2.5px] rounded-r bg-black/40" />
+      {/* side buttons — soft grooves, not hard black bars */}
+      <span className="absolute -left-[1.5px] top-[92px] h-9 w-[2.5px] rounded-l bg-[var(--ink)]/18" />
+      <span className="absolute -left-[1.5px] top-[132px] h-9 w-[2.5px] rounded-l bg-[var(--ink)]/18" />
+      <span className="absolute -right-[1.5px] top-[110px] h-14 w-[2.5px] rounded-r bg-[var(--ink)]/18" />
 
-      <div className="relative overflow-hidden rounded-[32px] bg-[var(--panel)]">
+      <div className="relative overflow-hidden rounded-[32px] bg-[var(--panel)] shadow-[0_0_0_1px_rgba(20,40,25,0.12)]">
         {/* screen gloss */}
         <span
           aria-hidden
@@ -411,17 +423,42 @@ function PhoneAttendance() {
           style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.35), transparent 32%)" }}
         />
         {/* dynamic island */}
-        <div className="absolute left-1/2 top-2 z-20 h-[22px] w-[74px] -translate-x-1/2 rounded-full bg-[var(--ink)]" />
+        <div className="absolute left-1/2 top-[7px] z-20 h-[19px] w-[54px] -translate-x-1/2 rounded-full bg-[var(--ink)]/70" />
 
-        {/* status bar */}
-        <div className="flex items-center justify-between px-5 pt-3 text-[10px] font-semibold text-[var(--ink)]">
-          <span>9:41</span>
-          <span className="flex items-center gap-1.5 text-[var(--muted)]">
-            <span className="tracking-tighter">▂▄▆</span>
-            <svg width="14" height="10" viewBox="0 0 14 10" fill="currentColor" aria-hidden><path d="M7 2.2C8.6 2.2 10 2.8 11 3.8l.9-.9C10.7 1.7 8.9 1 7 1S3.3 1.7 2.1 2.9l.9.9C4 2.8 5.4 2.2 7 2.2Zm0 2.4c.9 0 1.7.4 2.3 1l.9-.9A4.6 4.6 0 0 0 7 3.3a4.6 4.6 0 0 0-3.2 1.4l.9.9c.6-.6 1.4-1 2.3-1ZM7 7 8.5 5.5A2.1 2.1 0 0 0 7 4.9c-.6 0-1.1.2-1.5.6L7 7Z"/></svg>
-            <span className="flex items-center gap-0.5">
-              <span className="rounded-[2px] border border-[var(--muted)] px-0.5 text-[7px]">86</span>
-            </span>
+        {/* status bar — sized to clear the island. At a 192px screen width the whole
+            right cluster gets ~48px, so it carries icons only: the battery cell already
+            shows its level, and a "86" numeral beside it was the thing pushing the row
+            under the island. */}
+        <div className="flex items-center justify-between px-4 pt-[11px] text-[9.5px] font-semibold text-[var(--ink)]/70">
+          <span className="tabular-nums tracking-[0.01em]">9:41</span>
+          <span className="flex items-center gap-[3px]">
+            {/* signal: 4 stepped bars on a shared baseline, last one dimmed */}
+            <svg width="12" height="8" viewBox="0 0 12 8" aria-hidden className="shrink-0">
+              {[
+                [0, 5, 2],
+                [3.1, 3.6, 3.4],
+                [6.2, 2.2, 4.8],
+                [9.3, 0.8, 6.2],
+              ].map(([x, y, h], i) => (
+                <rect key={x} x={x} y={y} width="2.1" height={h} rx="0.9" fill="currentColor" opacity={i === 3 ? 0.3 : 1} />
+              ))}
+            </svg>
+
+            {/* wifi: stroked arcs at a weight that matches the bars */}
+            <svg width="11" height="8" viewBox="0 0 11 8" aria-hidden className="shrink-0">
+              <g fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
+                <path d="M0.9 2.9a6.8 6.8 0 0 1 9.2 0" />
+                <path d="M2.8 4.8a3.9 3.9 0 0 1 5.4 0" />
+              </g>
+              <circle cx="5.5" cy="6.8" r="0.95" fill="currentColor" />
+            </svg>
+
+            {/* battery: body + nub, fill is the actual 86% of the inner track */}
+            <svg width="19" height="9" viewBox="0 0 19 9" aria-hidden className="shrink-0">
+              <rect x="0.5" y="0.5" width="16" height="8" rx="2.2" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.45" />
+              <path d="M17.5 3.2v2.6a1.5 1.5 0 0 0 0-2.6Z" fill="currentColor" opacity="0.45" />
+              <rect x="1.9" y="1.9" width="11.35" height="5.2" rx="1.2" fill="var(--green)" />
+            </svg>
           </span>
         </div>
 
@@ -716,13 +753,6 @@ function Dashboard() {
             </span>
           </div>
 
-          <span
-            aria-hidden
-            className="grid h-[17px] w-[17px] shrink-0 place-items-center rounded-full font-mono text-[8px] font-semibold text-white"
-            style={{ background: `linear-gradient(135deg, var(--green), ${DEEP})` }}
-          >
-            AK
-          </span>
         </div>
       </div>
 
@@ -972,16 +1002,22 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
      what actually fits, which lets the same behaviour run all the way down to iPad
      instead of switching off at a hard breakpoint. */
   const [hero, setHero] = useState(1);
+  /* Layout height of the mock's slot, which is `aspect-[16/11]`. scale() paints outside
+     that slot, so the blown-up hero hangs below it with the page none the wiser — and a
+     viewport tall enough to show Trust at rest lands the product on top of it. */
+  const [mockH, setMockH] = useState(0);
   useEffect(() => {
     const compute = () => {
       const vw = window.innerWidth;
       if (vw < TABLET_MIN) {
         setHero(1);
+        setMockH(0);
         return;
       }
       const base = Math.min(MOCK_BASE_MAX, vw - GUTTER);
       const fits = (vw - 24) / base; // keep 12px clear each side
       setHero(Math.min(heroScale, fits));
+      setMockH((base * 11) / 16);
     };
     compute();
     window.addEventListener("resize", compute);
@@ -992,8 +1028,20 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
   const enter = win(p, 0, 0.5);
   const scale = hero - (hero - SETTLED_SCALE) * enter;
 
+  /* Exactly the overflow the current scale is painting, so it is 212px while the hero is
+     blown up and nothing once the product settles — the container's own pb then sets the
+     gap to Trust in both states. It tracks `scale` rather than the fixed hero scale
+     because a constant reserve reads as dead space for the whole rest of the page. The
+     measured element's top sits above this spacer, so resizing it cannot feed back into
+     the scroll progress that drives it. */
+  const reserve = Math.max(0, mockH * (scale - 1));
+
   return (
-    <div ref={ref} className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-10 md:px-12 min-[1360px]:pb-28">
+    <div
+      ref={ref}
+      className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-10 md:px-12 min-[1360px]:pb-28"
+      style={{ overflowAnchor: "none" }}
+    >
       <div className="relative">
         {/* dotted-grid backdrop */}
         <div
@@ -1025,7 +1073,12 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
           style={{
             transform: `scale(${scale})`,
             transformOrigin: "top center",
-            willChange: "transform",
+            /* Promote only while the scale is actually moving. A permanent
+               `will-change: transform` pins the layer's raster scale, so the 1.35x hero
+               state was magnified from a 1x texture — soft at 1920, where the mock paints
+               1188px wide. Dropping the hint at rest lets Chrome re-rasterise at the real
+               scale, which is where the product is actually looked at. */
+            willChange: p > 0 && p < 1 ? "transform" : undefined,
           }}
         >
           <Dashboard />
@@ -1039,14 +1092,18 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
           <ApprovalMatrix />
         </Float>
 
-        <Float from={[30, 24]} tilt={2} t={win(p, 0.46, 0.68)} className="absolute left-[calc(50%+410px)] top-2 z-20 hidden min-[1360px]:block">
-          <MultiState />
-        </Float>
-        <Float from={[46, 56]} tilt={2.5} t={win(p, 0.66, 0.94)} className="absolute right-0 bottom-[-30px] z-30 hidden min-[1360px]:block">
+        {/* the phone anchors the top of the right gutter, sharing its right edge with
+            the card below it and with ApprovalMatrix's hang on the left */}
+        <Float from={[34, 26]} tilt={2} t={win(p, 0.46, 0.68)} className="absolute -right-9 top-[-14px] z-30 hidden min-[1360px]:block">
           <PhoneAttendance />
+        </Float>
+        <Float from={[46, 52]} tilt={2.5} t={win(p, 0.66, 0.94)} className="absolute -right-9 bottom-2 z-20 hidden min-[1360px]:block">
+          <MultiState />
         </Float>
       </div>
 
+      {/* room for the hero blow-up to hang into — see `reserve` above */}
+      <div aria-hidden style={{ height: reserve }} />
     </div>
   );
 }
