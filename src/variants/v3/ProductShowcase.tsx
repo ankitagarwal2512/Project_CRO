@@ -416,15 +416,28 @@ function useParallax(panel: RefObject<HTMLDivElement | null>, travel: number) {
       frame = 0;
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      /* Progress is measured against the panel's own journey across the screen — 0 as its
-         top edge reaches the bottom of the viewport, 1 as its bottom edge leaves the top —
-         not against viewport heights. Keyed to viewport heights the full travel was only
-         reached when the panel sat a whole screen past centre, which on a page this short
-         never happens: the drift came to 39px across the entire scroll, which is not
-         visible. Against its own journey the whole range is spent on the scroll that
-         actually exists. */
-      const progress = (vh - r.top) / (vh + r.height);
-      setY((0.5 - clamp(progress, 0, 1)) * 2 * travel);
+      const docTop = r.top + window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - vh;
+
+      /* The panel's journey across the viewport at a given scroll position: 0 as its top
+         edge reaches the bottom of the screen, 1 as its bottom leaves the top. */
+      const journey = (scroll: number) => (vh - (docTop - scroll)) / (vh + r.height);
+
+      /* Only part of that journey is reachable — this page is barely two screens tall, so
+         the panel enters already mostly visible and never travels far past centre. Measured
+         against the whole journey the drift came to 39px across the entire scroll, which is
+         not visible; normalised against the journey the page can actually perform, the full
+         travel is spent on the scroll that exists. */
+      const from = journey(0);
+      const span = journey(maxScroll) - from;
+      const t = span > 0 ? clamp((journey(window.scrollY) - from) / span, 0, 1) : 0;
+
+      /* One way only, from zero. A drift centred on the panel's midpoint is at its maximum
+         downward displacement at scroll 0 — it pushed the product ~40px further down the
+         page exactly where the fold is tightest, for no visible benefit. Starting at rest
+         means the product sits where it is laid out when the page loads and rises from
+         there, and the whole travel is still spent. */
+      setY(-t * travel);
     };
     /* scroll fires far faster than the compositor paints, so coalesce to one rAF */
     const onScroll = () => {
