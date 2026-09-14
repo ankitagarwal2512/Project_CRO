@@ -12,17 +12,26 @@ import './index.css'
 
    To add a variation:
      cp -R src/variants/v2 src/variants/v3
-     import V3 from './variants/v3/App'   and add '#v3': V3 below
+     import V3 from './variants/v3/App'   and add v3: V3 below
 
-   "/"           – current design
-   "/#v2"        – variation 2
-   "/#original"  – the earlier proportions, kept for comparison */
+   Every variation answers on two URLs — a real path and the older hash form:
+
+   "/"                      – current design
+   "/v2"        or "/#v2"        – variation 2
+   "/original"  or "/#original"  – the earlier proportions, kept for comparison
+
+   The paths only resolve on a host that falls back to index.html for unknown
+   routes; vercel.json does that for the deployed site, and Vite's dev server
+   does it via the historyApiFallback built into `vite dev`. */
 const variants: Record<string, React.ComponentType> = {
-  '#original': AppOriginal,
-  '#v2': V2,
+  original: AppOriginal,
+  v2: V2,
 }
 
-const Page = variants[window.location.hash] ?? App
+const route = (window.location.pathname.replace(/^\/|\/$/g, '') ||
+  window.location.hash.replace(/^#/, '')).toLowerCase()
+
+const Page = variants[route] ?? App
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
