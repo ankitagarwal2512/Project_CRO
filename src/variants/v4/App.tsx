@@ -31,22 +31,17 @@ export default function App() {
             Enterprise HR Software
           </span>
 
-          {/* deliberate two-line break — keeps the rag even, except where it is dropped */}
+          {/* Short enough to hold one line at every width, so the conditional break the
+              longer headline needed is gone with it. */}
           <h1 className="mt-[clamp(10px,1.8vh,16px)] font-display text-[clamp(30px,min(4.4vw,7.4vh),64px)] [@media(max-height:700px)]:text-[clamp(28px,min(4.4vw,5.9vh),42px)] font-semibold leading-[0.98] tracking-[-0.032em] text-[var(--ink)]">
-            Built for <span className="text-[var(--green)]">complex</span>{" "}
-            {/* The break is an element rather than two stacked spans so it can be dropped.
-                On a short screen the second line costs ~40px of exactly the space the
-                product needs, and the headline fits on one line comfortably — but only
-                once there is width for it, so the min-width guard keeps narrow-and-short
-                windows on the deliberate two-line rag instead of wrapping wherever the
-                words happen to run out. */}
-            <br className="[@media(max-height:700px)_and_(min-width:900px)]:hidden" />
-            HR operations
+            Built for <span className="text-[var(--green)]">complex</span> HR.
           </h1>
 
-          <p className="mt-[clamp(12px,2.2vh,18px)] w-full max-w-[600px] text-balance text-[clamp(16px,min(1.3vw,2.2vh),18.5px)] leading-[1.58] tracking-[-0.005em] text-[var(--muted)]">
-            Bring payroll, workforce, talent and employee operations together with the control and depth
-            complex organisations need.
+          <p className="mt-[clamp(12px,2.2vh,18px)] w-full max-w-[680px] text-balance text-[clamp(16px,min(1.3vw,2.2vh),18.5px)] leading-[1.58] tracking-[-0.005em] text-[var(--muted)]">
+            {/* non-breaking space: "HR operations" is one term and the balanced rag was
+                splitting it across the two lines */}
+            Deep configurability, powerful automation, and connected HR&nbsp;operations — built to work the
+            way your organisation actually works.
           </p>
 
           <div className="mt-[clamp(16px,3.2vh,26px)] [@media(max-height:700px)]:mt-[clamp(12px,2.4vh,18px)] flex items-center justify-center">
