@@ -1,6 +1,15 @@
 import gartnerIcon from "@/imports/gartner-icon.svg";
 import g2Icon from "@/imports/g2icon.svg";
 import { NavBar, TopStripe } from "./Chrome";
+
+/* Both marks are drawn in the same 62x62 box, but Gartner's is a circle inscribed in it
+   and G2's is a rounded square that fills it — so at equal nominal size the square carries
+   about a quarter more ink and reads noticeably heavier. The square is set smaller so the
+   two balance optically rather than measuring the same. */
+const ratings: [string, string, string, number][] = [
+  [gartnerIcon, "Gartner", "Peer Insights", 22],
+  [g2Icon, "G2", "2100+ reviews", 20],
+];
 import { ProductShowcase } from "./ProductShowcase";
 import { Trust } from "./Trust";
 
@@ -60,12 +69,9 @@ export default function App() {
               in that space than decoration would, and it is the same two marks and numbers
               already shown in Trust further down, not a new claim. */}
           <div className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-            {[
-              [gartnerIcon, "Gartner", "Peer Insights"],
-              [g2Icon, "G2", "2100+ reviews"],
-            ].map(([icon, name, sub]) => (
+            {ratings.map(([icon, name, sub, size]) => (
               <div key={name} className="flex items-center gap-2">
-                <img src={icon} alt="" className="h-[22px] w-[22px] shrink-0" />
+                <img src={icon} alt="" width={size} height={size} className="shrink-0" />
                 <span className="text-[14px] font-bold tracking-[-0.01em] text-[var(--ink)]">4.8</span>
                 <span className="text-[9px] tracking-[0.06em] text-[var(--coral)]">★★★★★</span>
                 <span className="text-[12.5px] text-[var(--muted)]">

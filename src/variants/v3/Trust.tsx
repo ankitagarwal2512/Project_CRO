@@ -66,9 +66,9 @@ export function Trust() {
      which keeps the row centred between its rule and the page edge instead of depending on
      two separate paddings agreeing with each other. */
   return (
-    <section className="mx-auto max-w-[1280px] px-6 pt-[clamp(44px,5.5vw,80px)]">
+    <section className="mx-auto max-w-[1280px] px-6 pt-[clamp(36px,4vw,56px)]">
       {/* headline + stats */}
-      <div className="grid items-center gap-x-10 gap-y-8 border-t border-[var(--border)] py-10 lg:grid-cols-[1fr_auto]">
+      <div className="grid items-center gap-x-10 gap-y-8 border-t border-[var(--border)] py-[clamp(26px,2.6vw,34px)] lg:grid-cols-[1fr_auto]">
         {/* deliberate two-line break, same idiom as the hero h1 — the natural rag put
             "workforces" up on the first line and left "run on HROne." hanging */}
         <h2 className="text-[26px] font-bold leading-tight tracking-[-0.01em] text-[var(--ink)]">
@@ -83,7 +83,7 @@ export function Trust() {
             theirs, so the rules read as attached to the stat on their right instead of
             sitting between the two. gap-x-8 against pl-8 also makes the space either
             side of each rule equal — it was 12px before and 20px after. */}
-        <div className="grid grid-cols-2 gap-x-6 gap-y-7 md:flex md:flex-wrap md:gap-x-8">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-6 md:flex md:flex-wrap md:gap-x-8">
           {stats.map(([n, l], i) => (
             <div
               key={l}
@@ -96,7 +96,7 @@ export function Trust() {
                 i === 0 ? "md:border-l-0 md:pl-0" : "md:border-l md:border-[var(--border)] md:pl-8",
               ].join(" ")}
             >
-              <div className="text-[30px] font-bold leading-none tracking-[-0.01em] text-[var(--green)]">{n}</div>
+              <div className="text-[26px] font-bold leading-none tracking-[-0.01em] text-[var(--green)] sm:text-[30px]">{n}</div>
               <div className="mt-2 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">{l}</div>
             </div>
           ))}
@@ -105,7 +105,7 @@ export function Trust() {
 
       {/* logos — seamless marquee */}
       <div
-        className="group relative overflow-hidden border-t border-[var(--border)] py-[clamp(40px,5vw,72px)]"
+        className="group relative overflow-hidden border-t border-[var(--border)] py-[clamp(32px,3.2vw,44px)]"
         style={{
           maskImage: "linear-gradient(90deg, transparent, black 8%, black 92%, transparent)",
           WebkitMaskImage: "linear-gradient(90deg, transparent, black 8%, black 92%, transparent)",
@@ -113,11 +113,11 @@ export function Trust() {
       >
         <div className="flex w-max animate-[marquee_50s_linear_infinite] group-hover:[animation-play-state:paused]">
           {[...logoImages, ...logoImages].map(([src, name], i) => (
-            <div key={`${name}-${i}`} aria-hidden={i >= logoImages.length} className="flex w-[150px] shrink-0 items-center justify-center px-2">
+            <div key={`${name}-${i}`} aria-hidden={i >= logoImages.length} className="flex w-[136px] shrink-0 items-center justify-center px-2">
               <img
                 src={src}
                 alt={name}
-                className="max-h-8 w-auto max-w-[120px] object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
+                className="max-h-7 w-auto max-w-[112px] object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
               />
             </div>
           ))}
