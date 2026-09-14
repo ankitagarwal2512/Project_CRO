@@ -442,6 +442,31 @@ function useParallax() {
   return { slot, y };
 }
 
+/* The flowing ribbon band from go.hrone.cloud — their 614x191 artwork, stretched past
+   both edges so the curves run off-screen rather than terminating in view. It used to sit
+   behind the headline on the cream; on the dark stage it does more, because the product is
+   opaque and the curves read as the surface the screenshot rests on rather than as texture
+   competing with the type. Light on dark instead of green on cream, and kept well under the
+   product's own contrast so it never fights it.
+
+   Height is a share of the stage rather than the artwork's own ratio: left at 614x191 the
+   curves flatten into wide, shallow bands that read as compression artefacts on a dark
+   ground. Stretching them gives the sweeps enough amplitude to be legible, and the mask
+   lets them rise out of the bottom edge instead of stopping dead in open green halfway up. */
+function Ribbon() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-x-[-4%] bottom-0 h-[58%] opacity-[0.11]"
+      style={{ maskImage: "linear-gradient(to bottom, transparent, #000 38%)", WebkitMaskImage: "linear-gradient(to bottom, transparent, #000 38%)" }}
+    >
+      <svg viewBox="0 0 614 191" width="100%" height="100%" preserveAspectRatio="none" fill="none">
+        <path d="M5.97161 190.157L6.75813e-06 48.5474L130.67 4.94636C153.322 -2.59602 178.276 -1.48774 199.99 8.09947L275.313 41.3533C297.086 50.94 322.001 52.1046 344.693 44.5059L423.896 17.9871C446.608 10.3882 471.502 11.553 493.275 21.1397L613.753 74.3537L576.915 87.8855L495.706 52.02C471.582 41.3551 443.697 41.1882 419.43 51.506L336.847 86.5423C317.103 94.9152 294.753 96.3935 273.997 90.7697L191.174 68.2729C171.521 62.9558 150.507 63.9739 131.572 71.1829L2.92563 119.334L86.7683 92.7532C109.421 85.2108 134.375 86.3191 156.088 95.9063L231.412 129.16C253.185 138.747 278.1 139.911 300.792 132.313L379.994 105.794C402.706 98.1951 427.601 99.3598 449.394 108.946L569.872 162.16L533.034 175.692L451.825 139.827C427.701 129.162 399.815 128.995 375.549 139.313L292.966 174.349C273.221 182.722 250.872 184.256 230.116 178.576L147.292 156.079C127.639 150.762 106.626 151.781 87.6908 158.99L5.87146 190.139L5.97161 190.157Z" fill="#3ddc97" />
+      </svg>
+    </div>
+  );
+}
+
 /* The dashboard is laid out for this box. Reflowing it wider does not make it read as a
    bigger screenshot — the type stays 13px and the cards just grow empty middles — so the
    mock keeps its design size and is scaled up instead, the way a real screenshot would
@@ -476,6 +501,7 @@ export function ProductShowcase() {
         className="pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(115% 85% at 50% -12%, #10613c 0%, #07351f 60%)" }}
       />
+      <Ribbon />
       {/* a hairline at the cream boundary, so the block edge reads as drawn, not as a seam */}
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-white/10" />
 
