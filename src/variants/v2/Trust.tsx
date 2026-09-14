@@ -32,13 +32,6 @@ const logoImages: [string, string][] = [
   [telegraph, "The Telegraph"],
 ];
 
-const stats = [
-  ["2,500+", "Organisations"],
-  ["11 lakh+", "Employees managed"],
-  ["28 states", "Statutory coverage"],
-  ["$8M", "Funding raised"],
-];
-
 const Shield = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0 text-[var(--green)]">
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
@@ -70,27 +63,6 @@ const certs: [string, () => React.JSX.Element][] = [
 export function Trust() {
   return (
     <section className="mx-auto max-w-[1280px] px-6 pb-16 pt-6">
-      {/* headline + stats */}
-      <div className="grid items-center gap-x-10 gap-y-8 border-t border-[var(--border)] py-10 lg:grid-cols-[1fr_auto]">
-        <h2 className="text-[26px] font-bold leading-tight tracking-[-0.01em] text-[var(--ink)]">
-          India&apos;s most <span className="text-[var(--green)]">operationally complex</span> workforces run on HROne.
-        </h2>
-        {/* Columns size to their own content rather than to four equal 1fr slots. With
-            equal slots the short labels (ORGANISATIONS, FUNDING RAISED) left an ~80px
-            hole before their rule while the long ones (EMPLOYEES MANAGED) nearly touched
-            theirs, so the rules read as attached to the stat on their right instead of
-            sitting between the two. gap-x-8 against pl-8 also makes the space either
-            side of each rule equal — it was 12px before and 20px after. */}
-        <div className="flex flex-wrap gap-x-8 gap-y-6">
-          {stats.map(([n, l], i) => (
-            <div key={l} className={i > 0 ? "border-l border-[var(--border)] pl-8" : ""}>
-              <div className="text-[30px] font-bold leading-none tracking-[-0.01em] text-[var(--green)]">{n}</div>
-              <div className="mt-2 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">{l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* logos — seamless marquee */}
       <div
         className="group relative overflow-hidden border-t border-[var(--border)] py-8"
