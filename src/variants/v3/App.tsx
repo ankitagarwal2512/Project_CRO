@@ -62,7 +62,7 @@ export default function App() {
           <div className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
             {[
               [gartnerIcon, "Gartner", "Peer Insights"],
-              [g2Icon, "G2", "500+ reviews"],
+              [g2Icon, "G2", "2100+ reviews"],
             ].map(([icon, name, sub]) => (
               <div key={name} className="flex items-center gap-2">
                 <img src={icon} alt="" className="h-[22px] w-[22px] shrink-0" />

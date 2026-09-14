@@ -100,7 +100,7 @@ export function Trust() {
         <div className="flex items-center gap-6">
           {[
             [gartnerIcon, "Gartner", "4.8", "Peer Insights"],
-            [g2Icon, "G2", "4.8", "500+ reviews"],
+            [g2Icon, "G2", "4.8", "2100+ reviews"],
           ].map(([icon, name, rating, sub]) => (
             <div key={name} className="flex items-center gap-2.5">
               <img src={icon} alt={name} className="h-7 w-7 shrink-0" />
