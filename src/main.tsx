@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import AppOriginal from './AppOriginal'
 import V2 from './variants/v2/App'
+import V3 from './variants/v3/App'
 import './index.css'
 
 /* Each entry under src/variants/ is a FULL, independent copy of the page — its own
@@ -11,13 +12,15 @@ import './index.css'
    exists only to compare the old proportions, not to be edited.)
 
    To add a variation:
-     cp -R src/variants/v2 src/variants/v3
-     import V3 from './variants/v3/App'   and add v3: V3 below
+     cp -R src/variants/v2 src/variants/v4
+     import V4 from './variants/v4/App'   and add v4: V4 below,
+     then add a matching rewrite to vercel.json
 
    Every variation answers on two URLs — a real path and the older hash form:
 
    "/"                      – current design
    "/v2"        or "/#v2"        – variation 2
+   "/v3"        or "/#v3"        – variation 3 (started as a copy of v2)
    "/original"  or "/#original"  – the earlier proportions, kept for comparison
 
    The paths only resolve on a host that falls back to index.html for unknown
@@ -26,6 +29,7 @@ import './index.css'
 const variants: Record<string, React.ComponentType> = {
   original: AppOriginal,
   v2: V2,
+  v3: V3,
 }
 
 const route = (window.location.pathname.replace(/^\/|\/$/g, '') ||
