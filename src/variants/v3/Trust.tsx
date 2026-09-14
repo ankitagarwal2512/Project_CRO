@@ -1,5 +1,3 @@
-import gartnerIcon from "@/imports/gartner-icon.svg";
-import g2Icon from "@/imports/g2icon.svg";
 import canon from "@/imports/Canon_logo_PNG1_1.png";
 import haier from "@/imports/Haier_logo_PNG2_1.png";
 import mrdiy from "@/imports/id30aOZ_gb_1.png";
@@ -53,19 +51,12 @@ const Lock = () => (
   </svg>
 );
 
-const certs: [string, () => React.JSX.Element][] = [
-  ["ISO/IEC 27001:2022", Shield],
-  ["SOC 1 + SOC 2", Lock],
-  ["GDPR Ready", Globe],
-  ["DPDPA", Shield],
-];
-
 export function Trust() {
   return (
-    <section className="mx-auto max-w-[1280px] px-6 pb-16 pt-6">
+    <section className="mx-auto max-w-[1280px] px-6 pb-14 pt-7">
       {/* logos — seamless marquee */}
       <div
-        className="group relative overflow-hidden border-t border-[var(--border)] py-8"
+        className="group relative overflow-hidden py-8"
         style={{
           maskImage: "linear-gradient(90deg, transparent, black 8%, black 92%, transparent)",
           WebkitMaskImage: "linear-gradient(90deg, transparent, black 8%, black 92%, transparent)",
@@ -84,39 +75,6 @@ export function Trust() {
         </div>
       </div>
 
-      {/* certified */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[var(--border)] pt-6">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">Certified ·</span>
-          {certs.map(([label, Icon]) => (
-            <span
-              key={label}
-              className="flex items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1 font-mono text-[11px] text-[var(--ink)]/80"
-            >
-              <Icon /> {label}
-            </span>
-          ))}
-        </div>
-        <div className="flex items-center gap-6">
-          {[
-            [gartnerIcon, "Gartner", "4.8", "Peer Insights"],
-            [g2Icon, "G2", "4.8", "500+ reviews"],
-          ].map(([icon, name, rating, sub]) => (
-            <div key={name} className="flex items-center gap-2.5">
-              <img src={icon} alt={name} className="h-7 w-7 shrink-0" />
-              <div className="leading-tight">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-[15px] font-bold tracking-[-0.01em] text-[var(--ink)]">{rating}</span>
-                  <span className="text-[10px] tracking-[0.05em] text-[var(--coral)]">★★★★★</span>
-                </div>
-                <div className="text-[11px] text-[var(--muted)]">
-                  {name} · {sub}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }

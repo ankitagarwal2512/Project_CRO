@@ -14,7 +14,7 @@ export default function App() {
 
       <main>
         {/* hero copy — nothing behind it now; the artwork moved onto the product's stage */}
-        <section className="mx-auto flex max-w-[1040px] flex-col items-center px-6 pb-16 pt-10 text-center sm:pt-14">
+        <section className="mx-auto flex max-w-[1040px] flex-col items-center px-6 pb-20 pt-10 text-center sm:pt-14">
           {/* eyebrow — quiet label, tied tightly to the headline */}
           <span className="inline-flex items-center rounded-full border border-[var(--green-line)] bg-[var(--green-soft)]/70 px-3.5 py-[6px] font-mono text-[11px] font-medium uppercase leading-none tracking-[0.2em] text-[var(--green)]">
             Enterprise HR Software
