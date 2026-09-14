@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import hrIcon from "@/imports/HRICON.svg";
 import logoHr from "@/imports/logohr.png";
 import avatarUser from "@/imports/AVATAR.png";
@@ -396,21 +396,19 @@ const clamp = (v: number, a = -1, b = 1) => (Number.isFinite(v) ? Math.min(b, Ma
 
 /* How far the screenshot lags the page, in px each way from centre. Deliberately small:
    the product has to stay readable while it moves, and past roughly 60px the drift stops
-   reading as depth and starts reading as a slide. It also has to stay under the stage's
-   smallest top padding (48px), or the parallax would push the product into the clipped
-   edge of the band at narrow widths. */
+   reading as depth and starts reading as a slide. */
 const TRAVEL = 44;
 
 /* The measured element must not be the element that moves: a transform changes the next
    frame's getBoundingClientRect, so measuring the moved node feeds each frame back into
-   the following one and the drift compounds until the product walks off the stage. The
-   ref therefore sits on the static slot and the transform goes on its child. */
+   the following one and the drift compounds until the product walks off the panel. The
+   ref therefore sits on the panel and the transform goes on the product inside it. */
 function useParallax() {
-  const slot = useRef<HTMLDivElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
   const [y, setY] = useState(0);
 
   useEffect(() => {
-    const el = slot.current;
+    const el = panel.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -418,7 +416,7 @@ function useParallax() {
     const update = () => {
       frame = 0;
       const r = el.getBoundingClientRect();
-      /* +1 when the slot sits a full viewport below the middle of the screen, -1 when it
+      /* +1 when the panel sits a full viewport below the middle of the screen, -1 when it
          sits a full viewport above. Offsetting the product in the same direction is what
          makes it travel slower than the page rather than with it. */
       const fromCentre = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
@@ -439,26 +437,26 @@ function useParallax() {
     };
   }, []);
 
-  return { slot, y };
+  return { panel, y };
 }
 
-/* The flowing ribbon band from go.hrone.cloud — their 614x191 artwork, stretched past
-   both edges so the curves run off-screen rather than terminating in view. It used to sit
-   behind the headline on the cream; on the dark stage it does more, because the product is
-   opaque and the curves read as the surface the screenshot rests on rather than as texture
-   competing with the type. Light on dark instead of green on cream, and kept well under the
-   product's own contrast so it never fights it.
+/* The flowing ribbon band from go.hrone.cloud — their 614x191 artwork, stretched past both
+   edges so the curves run off-screen rather than terminating in view. It used to sit behind
+   the headline on the cream; on the dark panel it does more, because the product is opaque
+   and the curves read as the surface the screenshot rests on.
 
-   Height is a share of the stage rather than the artwork's own ratio: left at 614x191 the
-   curves flatten into wide, shallow bands that read as compression artefacts on a dark
-   ground. Stretching them gives the sweeps enough amplitude to be legible, and the mask
-   lets them rise out of the bottom edge instead of stopping dead in open green halfway up. */
+   Stretched to the panel's height rather than left at its own 614x191 ratio: flat, the
+   curves have so little amplitude they read as compression banding on a dark ground. It is
+   weighted to the left because that is the side the product leaves open — the same place
+   the reference puts its artwork — and fades out under the screenshot where nothing of it
+   would be seen anyway. */
 function Ribbon() {
+  const fade = "linear-gradient(to right, #000 0%, #000 52%, transparent 94%)";
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-x-[-4%] bottom-0 h-[58%] opacity-[0.11]"
-      style={{ maskImage: "linear-gradient(to bottom, transparent, #000 38%)", WebkitMaskImage: "linear-gradient(to bottom, transparent, #000 38%)" }}
+      className="pointer-events-none absolute inset-y-0 inset-x-[-4%] opacity-[0.17]"
+      style={{ maskImage: fade, WebkitMaskImage: fade }}
     >
       <svg viewBox="0 0 614 191" width="100%" height="100%" preserveAspectRatio="none" fill="none">
         <path d="M5.97161 190.157L6.75813e-06 48.5474L130.67 4.94636C153.322 -2.59602 178.276 -1.48774 199.99 8.09947L275.313 41.3533C297.086 50.94 322.001 52.1046 344.693 44.5059L423.896 17.9871C446.608 10.3882 471.502 11.553 493.275 21.1397L613.753 74.3537L576.915 87.8855L495.706 52.02C471.582 41.3551 443.697 41.1882 419.43 51.506L336.847 86.5423C317.103 94.9152 294.753 96.3935 273.997 90.7697L191.174 68.2729C171.521 62.9558 150.507 63.9739 131.572 71.1829L2.92563 119.334L86.7683 92.7532C109.421 85.2108 134.375 86.3191 156.088 95.9063L231.412 129.16C253.185 138.747 278.1 139.911 300.792 132.313L379.994 105.794C402.706 98.1951 427.601 99.3598 449.394 108.946L569.872 162.16L533.034 175.692L451.825 139.827C427.701 129.162 399.815 128.995 375.549 139.313L292.966 174.349C273.221 182.722 250.872 184.256 230.116 178.576L147.292 156.079C127.639 150.762 106.626 151.781 87.6908 158.99L5.87146 190.139L5.97161 190.157Z" fill="#3ddc97" />
@@ -469,66 +467,79 @@ function Ribbon() {
 
 /* The dashboard is laid out for this box. Reflowing it wider does not make it read as a
    bigger screenshot — the type stays 13px and the cards just grow empty middles — so the
-   mock keeps its design size and is scaled up instead, the way a real screenshot would
-   be. MAX_ZOOM is what it is presented at when there is room. */
+   mock keeps its design size and is scaled up instead, the way a real screenshot would be. */
 const MOCK_W = 880;
 const MOCK_H = (MOCK_W * 11) / 16;
-const MAX_ZOOM = 1.2;
+const MAX_ZOOM = 1.32;
 
 export function ProductShowcase() {
-  const { slot, y } = useParallax();
+  const { panel, y } = useParallax();
 
-  /* Below MOCK_W * MAX_ZOOM of usable width the zoom backs off to whatever fits, so the
-     product runs edge to edge on a phone instead of overflowing the stage. */
-  const [zoom, setZoom] = useState(MAX_ZOOM);
-  useEffect(() => {
-    const el = slot.current;
+  /* Every offset below is derived from the panel's own width, so the composition holds its
+     proportions instead of breaking at a handful of breakpoints. */
+  const [panelW, setPanelW] = useState(0);
+  /* Layout effect, not effect: the panel's height depends on this measurement, so measuring
+     after paint would flash a collapsed panel and shove the Trust logos up the page. */
+  useLayoutEffect(() => {
+    const el = panel.current;
     if (!el) return;
-    const fit = () => setZoom(Math.min(MAX_ZOOM, el.clientWidth / MOCK_W));
-    fit();
-    const ro = new ResizeObserver(fit);
+    const measure = () => setPanelW(el.clientWidth);
+    measure();
+    const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
-  return (
-    <section className="relative w-full overflow-hidden bg-[#07351f]">
-      {/* One gradient rather than the stack of glows, dots and grids v1/v2 layer up: the
-          stage lifts towards its top edge, so the product reads as lit from the side the
-          headline is on. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{ background: "radial-gradient(115% 85% at 50% -12%, #10613c 0%, #07351f 60%)" }}
-      />
-      <Ribbon />
-      {/* a hairline at the cream boundary, so the block edge reads as drawn, not as a seam */}
-      <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-white/10" />
+  /* On a wide panel the product reaches its ceiling and the slack falls to the left, which
+     is what makes the composition asymmetric. On a phone the product is the constraint and
+     the two margins even out on their own. */
+  const productW = Math.min(MOCK_W * MAX_ZOOM, panelW * 0.94);
+  const zoom = productW / MOCK_W;
+  const productH = MOCK_H * zoom;
+  const right = panelW * 0.015;
+  const top = Math.max(60, panelW * 0.045);
+  /* How much of the product is cut off by the bottom edge. Never less than the parallax can
+     travel plus a margin, or drifting up would pull the product's bottom into view and open
+     a strip of bare green under it. */
+  const overhang = Math.max(TRAVEL + 16, productH * 0.16);
+  const panelH = top + productH - overhang;
 
-      {/* Top padding is the tighter of the two on purpose. On a laptop the fold lands just
-          inside the stage, and every pixel spent above the product is a pixel of empty green
-          where the screenshot should be — while the deeper bottom gives the parallax
-          somewhere to travel and keeps the product off the Trust logos. */}
-      <div className="relative mx-auto max-w-[1320px] px-5 pb-[clamp(64px,7vw,108px)] pt-[clamp(48px,5vw,76px)] sm:px-8 md:px-12">
-        {/* The slot holds the space the scaled mock takes up — `scale()` paints outside the
-            layout box without reserving any of it, so the height has to be stated here or
-            the stage would collapse to 605px tall and the Trust logos would ride up over
-            the product. */}
+  return (
+    <section className="w-full px-4 pb-[clamp(48px,6vw,88px)] sm:px-6 lg:px-10">
+      <div
+        ref={panel}
+        className="relative mx-auto max-w-[1400px] overflow-hidden rounded-[clamp(18px,2vw,30px)] bg-[#07351f]"
+        style={{ height: panelH || undefined }}
+      >
+        {/* one gradient rather than the stack of glows, dots and grids v1/v2 layer up */}
         <div
-          ref={slot}
-          className="mx-auto w-full"
-          style={{ maxWidth: MOCK_W * MAX_ZOOM, height: MOCK_H * zoom }}
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "radial-gradient(110% 90% at 30% -20%, #10613c 0%, #07351f 62%)" }}
+        />
+        <Ribbon />
+
+        {/* The product is positioned, not laid out in flow: it has to hang past the panel's
+            bottom edge and be cut by it, which is the whole point of the reference — the
+            screenshot reads as continuing below rather than as a card sitting on a slab. */}
+        <div
+          className="absolute"
+          style={{
+            left: panelW - productW - right,
+            top,
+            width: productW,
+            height: productH,
+            transform: `translate3d(0, ${y}px, 0)`,
+          }}
         >
-          <div className="h-full w-full" style={{ transform: `translate3d(0, ${y}px, 0)` }}>
-            {/* The shadow lives out here, not on the mock: on the dark stage the mock's own
-                green shadow is invisible, and a wide black one is what actually lifts a
-                white window off a dark ground. */}
-            <div
-              className="origin-top-left rounded-2xl shadow-[0_70px_130px_-50px_rgba(0,0,0,0.85)]"
-              style={{ width: MOCK_W, height: MOCK_H, transform: `scale(${zoom})` }}
-            >
-              <Dashboard />
-            </div>
+          {/* The shadow lives out here, not on the mock: on the dark panel the mock's own
+              green shadow is invisible, and a wide black one is what actually lifts a white
+              window off a dark ground. */}
+          <div
+            className="origin-top-left rounded-2xl shadow-[0_60px_120px_-45px_rgba(0,0,0,0.85)]"
+            style={{ width: MOCK_W, height: MOCK_H, transform: `scale(${zoom})` }}
+          >
+            <Dashboard />
           </div>
         </div>
       </div>
