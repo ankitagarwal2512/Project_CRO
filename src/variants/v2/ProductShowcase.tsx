@@ -1005,19 +1005,32 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
   /* Layout height of the mock's slot, which is `aspect-[16/11]`. scale() paints outside
      that slot, so the blown-up hero hangs below it with the page none the wiser — and a
      viewport tall enough to show Trust at rest lands the product on top of it. */
-  const [mockH, setMockH] = useState(0);
+  const [reserve, setReserve] = useState(0);
   useEffect(() => {
     const compute = () => {
       const vw = window.innerWidth;
       if (vw < TABLET_MIN) {
         setHero(1);
-        setMockH(0);
+        setReserve(0);
         return;
       }
       const base = Math.min(MOCK_BASE_MAX, vw - GUTTER);
       const fits = (vw - 24) / base; // keep 12px clear each side
-      setHero(Math.min(heroScale, fits));
-      setMockH((base * 11) / 16);
+      const h = Math.min(heroScale, fits);
+      setHero(h);
+
+      /* The blow-up hangs mockH*(h-1) below its slot, and only lands on the section
+         underneath when the viewport is tall enough to show that section at rest — on a
+         laptop the reveal has finished long before it scrolls into view. So the reserve is
+         decided by viewport height and stays put while you scroll. Keyed to the live scale
+         it collapsed the document by ~212px mid-gesture, which dragged everything below
+         upward and let the browser re-anchor the scroll position out from under the user. */
+      const el = ref.current;
+      if (!el) return;
+      const mockH = (base * 11) / 16; // mock slot is aspect-[16/11]
+      const pb = parseFloat(getComputedStyle(el).paddingBottom) || 0;
+      const nextSectionTop = el.getBoundingClientRect().top + window.scrollY + mockH + pb;
+      setReserve(nextSectionTop < window.innerHeight ? mockH * (h - 1) : 0);
     };
     compute();
     window.addEventListener("resize", compute);
@@ -1028,20 +1041,9 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
   const enter = win(p, 0, 0.5);
   const scale = hero - (hero - SETTLED_SCALE) * enter;
 
-  /* Exactly the overflow the current scale is painting, so it is 212px while the hero is
-     blown up and nothing once the product settles — the container's own pb then sets the
-     gap to Trust in both states. It tracks `scale` rather than the fixed hero scale
-     because a constant reserve reads as dead space for the whole rest of the page. The
-     measured element's top sits above this spacer, so resizing it cannot feed back into
-     the scroll progress that drives it. */
-  const reserve = Math.max(0, mockH * (scale - 1));
 
   return (
-    <div
-      ref={ref}
-      className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-10 md:px-12 min-[1360px]:pb-28"
-      style={{ overflowAnchor: "none" }}
-    >
+    <div ref={ref} className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-10 md:px-12 min-[1360px]:pb-28">
       <div className="relative">
         {/* dotted-grid backdrop */}
         <div
