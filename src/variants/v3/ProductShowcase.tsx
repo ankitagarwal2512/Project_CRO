@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import hrIcon from "@/imports/HRICON.svg";
 import logoHr from "@/imports/logohr.png";
 import avatarUser from "@/imports/AVATAR.png";
@@ -394,17 +394,16 @@ function Dashboard() {
 
 const clamp = (v: number, a = -1, b = 1) => (Number.isFinite(v) ? Math.min(b, Math.max(a, v)) : 0);
 
-/* How far the screenshot lags the page, in px each way from centre. Deliberately small:
-   the product has to stay readable while it moves, and past roughly 60px the drift stops
-   reading as depth and starts reading as a slide. */
-const TRAVEL = 44;
+/* Ceiling on how far the screenshot lags the page. The realised travel is whatever the
+   panel's own geometry allows (see `travel` below) — this is only the upper bound, past
+   which the drift stops reading as depth and starts reading as a slide. */
+const MAX_TRAVEL = 70;
 
 /* The measured element must not be the element that moves: a transform changes the next
    frame's getBoundingClientRect, so measuring the moved node feeds each frame back into
    the following one and the drift compounds until the product walks off the panel. The
    ref therefore sits on the panel and the transform goes on the product inside it. */
-function useParallax() {
-  const panel = useRef<HTMLDivElement>(null);
+function useParallax(panel: RefObject<HTMLDivElement | null>, travel: number) {
   const [y, setY] = useState(0);
 
   useEffect(() => {
@@ -416,11 +415,16 @@ function useParallax() {
     const update = () => {
       frame = 0;
       const r = el.getBoundingClientRect();
-      /* +1 when the panel sits a full viewport below the middle of the screen, -1 when it
-         sits a full viewport above. Offsetting the product in the same direction is what
-         makes it travel slower than the page rather than with it. */
-      const fromCentre = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
-      setY(clamp(fromCentre) * TRAVEL);
+      const vh = window.innerHeight;
+      /* Progress is measured against the panel's own journey across the screen — 0 as its
+         top edge reaches the bottom of the viewport, 1 as its bottom edge leaves the top —
+         not against viewport heights. Keyed to viewport heights the full travel was only
+         reached when the panel sat a whole screen past centre, which on a page this short
+         never happens: the drift came to 39px across the entire scroll, which is not
+         visible. Against its own journey the whole range is spent on the scroll that
+         actually exists. */
+      const progress = (vh - r.top) / (vh + r.height);
+      setY((0.5 - clamp(progress, 0, 1)) * 2 * travel);
     };
     /* scroll fires far faster than the compositor paints, so coalesce to one rAF */
     const onScroll = () => {
@@ -435,9 +439,9 @@ function useParallax() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [panel, travel]);
 
-  return { panel, y };
+  return y;
 }
 
 /* The flowing ribbon band from go.hrone.cloud — their 614x191 artwork. It used to sit
@@ -449,13 +453,13 @@ function useParallax() {
    artwork — so instead it is simply drawn far wider than the panel and allowed to run off
    both sides, which gives the sweeps real amplitude at their true shape. It is anchored low
    and faded at the top so it rises out of the bottom edge rather than stopping dead. */
-function Ribbon() {
+function Ribbon({ y }: { y: number }) {
   const fade = "linear-gradient(to bottom, transparent, #000 22%)";
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute bottom-[-6%] left-1/2 w-[168%] -translate-x-1/2 opacity-[0.22]"
-      style={{ maskImage: fade, WebkitMaskImage: fade }}
+      className="pointer-events-none absolute bottom-[-10%] left-1/2 w-[168%] opacity-[0.22]"
+      style={{ maskImage: fade, WebkitMaskImage: fade, transform: `translate3d(-50%, ${y}px, 0)` }}
     >
       <svg viewBox="0 0 614 191" width="100%" className="h-auto" fill="none">
         <path d="M5.97161 190.157L6.75813e-06 48.5474L130.67 4.94636C153.322 -2.59602 178.276 -1.48774 199.99 8.09947L275.313 41.3533C297.086 50.94 322.001 52.1046 344.693 44.5059L423.896 17.9871C446.608 10.3882 471.502 11.553 493.275 21.1397L613.753 74.3537L576.915 87.8855L495.706 52.02C471.582 41.3551 443.697 41.1882 419.43 51.506L336.847 86.5423C317.103 94.9152 294.753 96.3935 273.997 90.7697L191.174 68.2729C171.521 62.9558 150.507 63.9739 131.572 71.1829L2.92563 119.334L86.7683 92.7532C109.421 85.2108 134.375 86.3191 156.088 95.9063L231.412 129.16C253.185 138.747 278.1 139.911 300.792 132.313L379.994 105.794C402.706 98.1951 427.601 99.3598 449.394 108.946L569.872 162.16L533.034 175.692L451.825 139.827C427.701 129.162 399.815 128.995 375.549 139.313L292.966 174.349C273.221 182.722 250.872 184.256 230.116 178.576L147.292 156.079C127.639 150.762 106.626 151.781 87.6908 158.99L5.87146 190.139L5.97161 190.157Z" fill="#3ddc97" />
@@ -472,7 +476,7 @@ const MOCK_H = (MOCK_W * 11) / 16;
 const MAX_ZOOM = 1.2;
 
 export function ProductShowcase() {
-  const { panel, y } = useParallax();
+  const panel = useRef<HTMLDivElement>(null);
 
   /* Every offset below is derived from the panel's own width, so the composition holds its
      proportions instead of breaking at a handful of breakpoints. */
@@ -496,10 +500,14 @@ export function ProductShowcase() {
   const zoom = productW / MOCK_W;
   const productH = MOCK_H * zoom;
   const top = Math.max(64, panelW * 0.075);
+  /* Bounded by the gap above the product: the drift must never carry it into the panel's
+     top edge, which is what caps it on a phone where that gap is smallest. */
+  const travel = Math.min(MAX_TRAVEL, top - 28);
+  const y = useParallax(panel, travel);
   /* How much of the product is cut off by the bottom edge. Never less than the parallax can
      travel plus a margin, or drifting up would pull the product's bottom into view and open
      a strip of bare green under it. */
-  const overhang = Math.max(TRAVEL + 16, productH * 0.12);
+  const overhang = Math.max(travel + 16, productH * 0.12);
   const panelH = top + productH - overhang;
 
   return (
@@ -515,7 +523,7 @@ export function ProductShowcase() {
           className="pointer-events-none absolute inset-0"
           style={{ background: "radial-gradient(110% 90% at 50% -18%, #10613c 0%, #07351f 62%)" }}
         />
-        <Ribbon />
+        <Ribbon y={-y * 0.35} />
 
         {/* The product is positioned, not laid out in flow: it has to hang past the panel's
             bottom edge and be cut by it, so the screenshot reads as continuing below rather
