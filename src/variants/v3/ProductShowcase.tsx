@@ -494,16 +494,24 @@ export function ProductShowcase() {
   /* Every offset below is derived from the panel's own width, so the composition holds its
      proportions instead of breaking at a handful of breakpoints. */
   const [panelW, setPanelW] = useState(0);
+  const [vh, setVh] = useState(0);
   /* Layout effect, not effect: the panel's height depends on this measurement, so measuring
      after paint would flash a collapsed panel and shove the Trust logos up the page. */
   useLayoutEffect(() => {
     const el = panel.current;
     if (!el) return;
-    const measure = () => setPanelW(el.clientWidth);
+    const measure = () => {
+      setPanelW(el.clientWidth);
+      setVh(window.innerHeight);
+    };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
-    return () => ro.disconnect();
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
   /* Capped against the panel as well as against its own ceiling, so there is always a real
@@ -512,10 +520,13 @@ export function ProductShowcase() {
   const productW = Math.min(MOCK_W * MAX_ZOOM, panelW * 0.88);
   const zoom = productW / MOCK_W;
   const productH = MOCK_H * zoom;
-  const top = Math.max(64, panelW * 0.075);
+  /* Bounded by viewport height as well as panel width: on a short screen the gap above the
+     product is space the fold cannot afford, and a panel that is wide but viewed on a 631px
+     screen would otherwise reserve as much of it as a tall one. */
+  const top = Math.max(56, Math.min(panelW * 0.075, vh * 0.095));
   /* Bounded by the gap above the product: the drift must never carry it into the panel's
      top edge, which is what caps it on a phone where that gap is smallest. */
-  const travel = Math.min(MAX_TRAVEL, top - 28);
+  const travel = Math.min(MAX_TRAVEL, top - 22);
   const y = useParallax(panel, travel);
   /* How much of the product is cut off by the bottom edge. Never less than the parallax can
      travel plus a margin, or drifting up would pull the product's bottom into view and open
