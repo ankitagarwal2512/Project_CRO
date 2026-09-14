@@ -32,10 +32,13 @@ const logoImages: [string, string][] = [
   [telegraph, "The Telegraph"],
 ];
 
+/* Reads as a widening claim: who buys it, how broadly, how much work it carries, then
+   the company credential. Industries belongs beside Customers — both describe the
+   customer base — rather than stranded between a usage metric and a funding one. */
 const stats = [
-  ["2,500+", "Organisations"],
+  ["2,500+", "Customers"],
+  ["25+", "Industries"],
   ["11 lakh+", "Employees managed"],
-  ["28 states", "Statutory coverage"],
   ["$8M", "Funding raised"],
 ];
 
@@ -72,8 +75,13 @@ export function Trust() {
     <section className="mx-auto max-w-[1280px] px-6 pb-16 pt-6">
       {/* headline + stats */}
       <div className="grid items-center gap-x-10 gap-y-8 border-t border-[var(--border)] py-10 lg:grid-cols-[1fr_auto]">
+        {/* deliberate two-line break, same idiom as the hero h1 — the natural rag put
+            "workforces" up on the first line and left "run on HROne." hanging */}
         <h2 className="text-[26px] font-bold leading-tight tracking-[-0.01em] text-[var(--ink)]">
-          India&apos;s most <span className="text-[var(--green)]">operationally complex</span> workforces run on HROne.
+          <span className="block">
+            India&apos;s most <span className="text-[var(--green)]">operationally complex</span>
+          </span>
+          <span className="block">workforces run on HROne.</span>
         </h2>
         {/* Columns size to their own content rather than to four equal 1fr slots. With
             equal slots the short labels (ORGANISATIONS, FUNDING RAISED) left an ~80px
