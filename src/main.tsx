@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import AppOriginal from './AppOriginal'
+import V1 from './variants/v1/App'
 import V2 from './variants/v2/App'
 import V3 from './variants/v3/App'
 import V4 from './variants/v4/App'
@@ -20,6 +21,8 @@ import './index.css'
    Every variation answers on two URLs — a real path and the older hash form:
 
    "/"                      – current design
+   "/v1"        or "/#v1"        – variation 1 (a replica of the current design,
+                                   kept separate so it can be changed on its own)
    "/v2"        or "/#v2"        – variation 2
    "/v3"        or "/#v3"        – variation 3 (started as a copy of v2)
    "/v4"        or "/#v4"        – variation 4 (started as a copy of v3)
@@ -30,6 +33,7 @@ import './index.css'
    does it via the historyApiFallback built into `vite dev`. */
 const variants: Record<string, React.ComponentType> = {
   original: AppOriginal,
+  v1: V1,
   v2: V2,
   v3: V3,
   v4: V4,
