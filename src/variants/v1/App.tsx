@@ -66,7 +66,7 @@ export default function App() {
         {/* hero copy */}
         <section className="mx-auto flex max-w-[1040px] flex-col items-center px-6 pb-3 pt-10 text-center sm:pt-14">
           {/* eyebrow — quiet label, tied tightly to the headline */}
-          <span className="inline-flex items-center rounded-full border border-[var(--green-line)] bg-[var(--green-soft)]/70 px-3.5 py-[6px] font-mono text-[11px] font-medium uppercase leading-none tracking-[0.2em] text-[var(--green)]">
+          <span className="inline-flex items-center rounded-full border border-[var(--green-line)] bg-[var(--green-soft)]/70 px-3.5 py-[6px] text-[11px] font-semibold uppercase leading-none tracking-[0.18em] text-[var(--green)]">
             Enterprise HR Software
           </span>
 

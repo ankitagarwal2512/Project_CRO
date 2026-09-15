@@ -870,7 +870,7 @@ function Dashboard({ p }: { p: number }) {
             mock would be left with 480px, so it runs at 140px with 26px rows. */}
         <div className="flex w-[140px] shrink-0 flex-col overflow-hidden border-r border-[#e5e5e5] bg-white">
           <div className="flex h-8 shrink-0 items-center justify-between gap-1 border-b border-[#e5e5e5] px-2">
-            <p className="truncate text-[10px] font-medium text-[#171717]">Business Intelligence</p>
+            <p className="truncate text-[10px] font-bold text-[#171717]">CXO</p>
             <img src={navCollapse} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0" />
           </div>
 
@@ -1118,14 +1118,6 @@ function Dashboard({ p }: { p: number }) {
                       style={{ opacity: chart > 0.96 ? 1 : 0, transition: "opacity 240ms ease-out" }}
                     />
                   </svg>
-
-                  <span className="absolute bottom-2.5 right-2 grid h-9 w-9 place-items-center rounded-full bg-[var(--green-deep)] shadow-[0_8px_18px_-8px_rgba(2,86,61,0.8)]">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-                      {[4, 8, 12].map((y) => (
-                        <path key={y} d={`M3 ${y}h10`} stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
-                      ))}
-                    </svg>
-                  </span>
                 </div>
               </div>
 
