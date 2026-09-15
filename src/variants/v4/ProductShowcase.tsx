@@ -2,18 +2,18 @@ import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "re
 import hrIcon from "@/imports/HRICON.svg";
 import dashboard from "@/imports/v4/dashboard.webp";
 
-/* v4 — same stage as v3, but the product is the real Figma screen rather than a mock.
+/* v4 — same stage as v3, but the product is a raster rather than a mock built here.
 
-   v3's dashboard was hand-built in JSX. v4 uses the payroll-home design straight out of
-   Figma (file Project_CRO_Designdev, node 1511:21845), exported at 3x and cropped to the
-   card's own bounds — Figma pads an export to make room for the drop shadow, and that
-   padding is not symmetric because the shadow is offset downwards, which is what clips the
-   tab strip off the top if you assume it is.
+   It used to be the employee home screen ("Hello, Pranav!") exported from Figma (file
+   Project_CRO_Designdev, node 1511:21845). It is now the payroll dashboard, to match the
+   root/v1 variation — rendered from v1's own JSX at its native 880px design width and 3x
+   DPR, with v1's browser chrome clipped off the top because the stage below draws its own.
 
-   It is a raster rather than reproduced markup because the design is 56 assets and ~940
-   lines of generated JSX, and the generated code comes back truncated at the tool's 100KB
-   ceiling. At 2971px wide the export is still ~2.5x the size it is ever displayed at, so it
-   stays crisp on a retina screen. */
+   Re-exporting it: run the page at /v1 with prefers-reduced-motion (which settles the
+   reveal at p=1), clear the mock's settled 0.88 transform so it paints at 880px, hide the
+   floating gutter cards, then clip the frame's first child (the chrome) off the capture.
+   Keep IMAGE_W as it is and recompute IMAGE_H from the new aspect — the stage's width is
+   tuned against the hero above it. */
 
 /* ---------- the stage ---------- */
 
@@ -122,7 +122,7 @@ function Ribbon({ y }: { y: number }) {
    against the edge. Confirmed against the export: the header's gradient runs 33 design px
    from the corrected top, exactly its stated height. */
 const IMAGE_W = 990.3333333333334;
-const IMAGE_H = 523;
+const IMAGE_H = 598.7015151515152; // 2640x1596 export, held to IMAGE_W's aspect
 
 function Dashboard() {
   return (
@@ -193,7 +193,7 @@ function Dashboard() {
       </div>
       <img
         src={dashboard}
-        alt="The HROne dashboard: a colleague's home screen with today's celebrations, the team feed, team availability and a calendar."
+        alt="The HROne payroll dashboard: effective CTC, net paid, contributions, deductions and reimbursement across 2,040 employees, over a yearly salary distribution chart."
         className="block w-full"
         width={IMAGE_W}
         height={IMAGE_H}
