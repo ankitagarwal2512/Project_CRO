@@ -5,6 +5,8 @@
     { "source": "/v3", "destination": "/index.html" },
     { "source": "/v4", "destination": "/index.html" },
     { "source": "/original", "destination": "/index.html" },
-    { "source": "/current", "destination": "/index.html" }
+    { "source": "/current", "destination": "/index.html" },
+    { "source": "/option-a", "destination": "/index.html" },
+    { "source": "/option-b", "destination": "/index.html" }
   ]
 }

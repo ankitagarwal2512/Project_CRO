@@ -20,7 +20,15 @@ import './index.css'
 
    Every variation answers on two URLs — a real path and the older hash form:
 
+   The two options under review are shared as "/option-a" and "/option-b". They are
+   deliberately not called v1 and v4 outside this file: a reviewer handed "/v1" and
+   "/v4" reads a series and goes looking for the ones in between, which are working
+   variations not meant for that audience. The vN paths still resolve, so links
+   already sent keep working — the named pair is simply what gets shared.
+
    "/"                      – v1, the live design
+   "/option-a" or "/#option-a"   – the same page as "/" (v1), as shared for review
+   "/option-b" or "/#option-b"   – v4, as shared for review
    "/v1"        or "/#v1"        – the same page as "/", on its own path
    "/current"   or "/#current"   – the design "/" served before v1 was promoted,
                                    kept reachable for comparison
@@ -35,6 +43,10 @@ import './index.css'
 const variants: Record<string, React.ComponentType> = {
   original: AppOriginal,
   current: App,
+  /* the review pair — aliases, not copies: each points at the same component its
+     vN path does, so there is one page to edit rather than two that can drift */
+  'option-a': V1,
+  'option-b': V4,
   v1: V1,
   v2: V2,
   v3: V3,
