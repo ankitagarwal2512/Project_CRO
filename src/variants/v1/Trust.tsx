@@ -39,7 +39,7 @@ const stats = [
   ["2,500+", "Customers"],
   ["25+", "Industries"],
   ["11 lakh+", "Employees managed"],
-  ["$8M", "Funding raised"],
+  ["3 crore+", "Tasks cleared monthly"],
 ];
 
 const Shield = () => (

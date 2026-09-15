@@ -13,6 +13,12 @@
   --green-deep: #0b4a2e;
   --green-soft: #e5f0e8;
   --green-line: #cfe2d4;
+
+  /* The product's own greens, from the Figma node the dashboard shell was built
+     from. Distinct from --green/--green-deep above, which are the marketing
+     site's lighter pair — the app chrome and the phone use these. */
+  --app-shell: #01241a;
+  --app-brand: #02563d;
   --coral: #e9614a;
   --coral-hover: #d9553e;
   --border: rgba(20, 40, 25, 0.1);

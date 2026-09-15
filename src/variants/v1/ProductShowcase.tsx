@@ -1,8 +1,33 @@
-import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
+import { Fragment, useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
 import hrIcon from "@/imports/HRICON.svg";
-import logoHr from "@/imports/logohr.png";
 import avatarUser from "@/imports/AVATAR.png";
 import avatarAnanya from "@/imports/ANANYA.png";
+import avatarTopbar from "@/imports/aa-avatar.png";
+/* Icons exported from the Figma node (1597:12442). They ship pre-coloured to the
+   design's own tokens — #f0f5f2 on the rail, white in the topbar, and the One AI
+   mark keeps its brand gradient — so they are rendered as assets, not redrawn. */
+import navInbox from "@/imports/v1/nav/inbox.svg";
+import navRequest from "@/imports/v1/nav/request.svg";
+import navTeams from "@/imports/v1/nav/teams.svg";
+import navProjects from "@/imports/v1/nav/projects.svg";
+import navExternal from "@/imports/v1/nav/external.svg";
+import navOneAi from "@/imports/v1/nav/oneai.svg";
+import navMySpace from "@/imports/v1/nav/myspace.svg";
+import navHrDesk from "@/imports/v1/nav/hrdesk.svg";
+import navRecruitment from "@/imports/v1/nav/recruitment.svg";
+import navWorkforce from "@/imports/v1/nav/workforce.svg";
+import navTimeoffice from "@/imports/v1/nav/timeoffice.svg";
+import navPayroll from "@/imports/v1/nav/payroll.svg";
+import navPerformance from "@/imports/v1/nav/performance.svg";
+import navAnalytics from "@/imports/v1/nav/analytics.svg";
+import navSettings from "@/imports/v1/nav/settings.svg";
+import navHome from "@/imports/v1/nav/home.svg";
+import navSearch from "@/imports/v1/nav/search.svg";
+import navOrgChart from "@/imports/v1/nav/orgchart.svg";
+import navTopA from "@/imports/v1/nav/topbar-a.svg";
+import navTopB from "@/imports/v1/nav/topbar-b.svg";
+import navChevron from "@/imports/v1/nav/chevron-right.svg";
+import navCollapse from "@/imports/v1/nav/arrows-from-line.svg";
 
 /* ---------- scroll reveal ---------- */
 
@@ -90,7 +115,7 @@ function Float({
 
 const Card = ({ children, className = "" }: { children: ReactNode; className?: string }) => (
   <div
-    className={`rounded-[18px] border border-[var(--border)] bg-[var(--panel)]/95 p-4 shadow-[0_1px_0_rgba(255,255,255,0.7)_inset,0_24px_50px_-28px_rgba(11,74,46,0.45),0_6px_16px_-10px_rgba(11,74,46,0.25)] backdrop-blur-sm ${className}`}
+    className={`rounded-[7px] border border-[var(--border)] bg-[var(--panel)]/95 p-4 shadow-[0_1px_0_rgba(255,255,255,0.7)_inset,0_24px_50px_-28px_rgba(11,74,46,0.45),0_6px_16px_-10px_rgba(11,74,46,0.25)] backdrop-blur-sm ${className}`}
   >
     {children}
   </div>
@@ -115,35 +140,45 @@ const Warn = () => (
 /* ---------- the snippets ---------- */
 
 function MultiState() {
+  /* The employer-contribution breakdown from the product's payroll dashboard.
+     The three rows sum to ₹23,27,155 — which is exactly the "Net contributions"
+     figure on the strip in the product behind this card. The card is the detail
+     behind a number already on screen rather than a second invented total, which
+     is the thing that makes a mock survive someone actually reading it. */
+  const rows: [string, string][] = [
+    ["ESI Employer", "₹5,190"],
+    ["LWF Employer", "₹784"],
+    ["PF Employer", "₹23,21,181"],
+  ];
   return (
     <Card className="w-[236px]">
-      <div className="text-[15px] font-bold">Multi-state statutory</div>
-      {/* says what the three numbers actually are, instead of an orphan label below them */}
-      <div className="mt-1 font-mono text-[9.5px] uppercase tracking-[0.14em] text-[var(--muted)]">
-        PT slabs · Sep 2026
+      {/* header — title, period and the product's help affordance */}
+      <div className="-mx-4 -mt-4 flex items-center gap-1.5 border-b border-[var(--border)] px-4 pb-2.5 pt-3">
+        <span className="text-[12px] font-bold tracking-[-0.01em] text-[var(--ink)]">Contributions</span>
+        <span className="text-[8.5px] text-[var(--muted)]">Monthly</span>
+        <span className="grid h-[13px] w-[13px] shrink-0 place-items-center rounded-full bg-[var(--muted)]/30 text-[7.5px] font-bold leading-none text-white">
+          ?
+        </span>
       </div>
 
-      <div className="mt-2.5 flex gap-1.5">
-        {[
-          ["MH", "3"],
-          ["TN", "6"],
-          ["KA", "2"],
-        ].map(([st, n]) => (
+      {/* rows bleed to the card edge and alternate, the way the product lists them */}
+      <div className="-mx-4">
+        {rows.map(([label, value], i) => (
           <div
-            key={st}
-            className="flex-1 rounded-lg border border-[var(--border)] bg-[var(--cream-2)] px-1 py-1.5 text-center"
+            key={label}
+            className={`flex items-center justify-between gap-2 px-4 py-[9px] ${
+              i % 2 ? "bg-[var(--cream-2)]/35" : ""
+            }`}
           >
-            <div className="font-mono text-[9.5px] font-semibold tracking-[0.08em] text-[var(--muted)]">{st}</div>
-            <div className="mt-[3px] text-[16px] font-bold leading-none text-[var(--ink)]">{n}</div>
+            <span className="truncate text-[9.5px] text-[var(--muted)]">{label}</span>
+            <span className="shrink-0 text-[10px] font-semibold tabular-nums text-[var(--ink)]">{value}</span>
           </div>
         ))}
       </div>
 
-      <div className="mt-2.5 flex items-start gap-1.5 rounded-lg bg-[var(--coral)]/10 px-2.5 py-2 text-[11.5px] leading-[1.4] text-[var(--coral-hover)]">
-        <Warn />
-        <span>
-          October revision · <span className="whitespace-nowrap font-semibold">64 employees</span>
-        </span>
+      <div className="-mx-4 -mb-4 flex items-center justify-between gap-2 border-t border-[var(--border)] bg-[var(--green-soft)] px-4 py-[11px]">
+        <span className="text-[9.5px] font-semibold text-[var(--green-deep)]">Total contributions</span>
+        <span className="text-[11.5px] font-bold tabular-nums text-[var(--green-deep)]">₹23,27,155</span>
       </div>
     </Card>
   );
@@ -151,7 +186,7 @@ function MultiState() {
 
 function ShiftRoster() {
   return (
-    <Card className="w-[224px]">
+    <Card className="w-[244px]">
       <div className="mb-3 text-[15px] font-bold">Shift roster</div>
       {["Pune", "Chennai"].map((c) => (
         <div key={c} className="mb-1.5 flex items-center justify-between">
@@ -168,9 +203,6 @@ function ShiftRoster() {
       <div className="mt-3 rounded-lg bg-[var(--green-soft)] px-3 py-2">
         <div className="text-[17px] font-bold text-[var(--green-deep)]">186 h</div>
         <div className="text-[11px] text-[var(--green)]">Overtime computed</div>
-      </div>
-      <div className="mt-2 flex items-center gap-2 text-[12px] text-[var(--ink)]">
-        <Check /> 12 flags resolved
       </div>
     </Card>
   );
@@ -195,86 +227,70 @@ function ContractWorkforce() {
 }
 
 function ApprovalMatrix() {
-  /* One row per stage keeps the node, its name and its state in the same grid
-     column — the old build laid those out as three independent flex rows, so the
-     labels never actually sat under their nodes. */
-  const CURRENT = 1;
-  const stages = [
-    { name: "Ops", state: "Approved" },
-    { name: "Finance", state: "In review" },
-    { name: "Head", state: "Queued" },
-    { name: "CFO", state: "Queued" },
-    { name: "Control", state: "Queued" },
+  /* Mirrors the product's request-workflow screen: a vertical thread down the
+     avatars, one node per approver, with the level badge on the right and the
+     action link under the status. The old build was a five-dot stepper, which
+     shows the shape of an approval chain but not who is holding it up. */
+  const steps = [
+    { who: "Ananya Rao", id: "#AVK0730", avatar: avatarAnanya, note: "On duty · 11/09", state: "raised" as const },
+    { who: "Rohan Mehta", id: "#AVK0172", avatar: avatarUser, note: "Request is approved.", state: "approved" as const, level: "Level 1" },
+    { who: "Priya Shah", id: "#AVK0190", initials: "PS", note: "Pending…", state: "pending" as const, level: "Level 2" },
   ];
-
   return (
     <Card className="w-[244px]">
-      <div className="mb-3 flex items-baseline justify-between">
-        <span className="text-[15px] font-bold">Approval matrix</span>
-        <span className="font-mono text-[9.5px] font-semibold text-[var(--muted)]">
-          {CURRENT + 1}/{stages.length}
+      {/* header — carries the request's own status */}
+      <div className="-mx-4 -mt-4 mb-3 flex items-center border-b border-[var(--border)] px-4 pt-3">
+        <span className="relative flex shrink-0 items-center gap-1.5 whitespace-nowrap pb-2 text-[12px] font-bold text-[var(--ink)]">
+          Approval workflow
+          <span className="rounded-[4px] bg-[#fdf1dc] px-1.5 py-[1px] text-[9px] font-semibold text-[#9a6412]">Pending</span>
+          <span className="absolute inset-x-0 -bottom-px h-[2px] rounded-full bg-[var(--green-deep)]" />
         </span>
       </div>
 
-      <div className="grid grid-cols-5">
-        {stages.map((st, i) => {
-          const done = i < CURRENT;
-          const current = i === CURRENT;
-          return (
-            <div key={st.name} className="relative flex flex-col items-center">
-              {/* connector runs from the previous node's centre to this one */}
-              {i > 0 && (
-                <span
-                  className={`absolute right-1/2 top-3 h-[1.5px] w-full -translate-y-1/2 ${
-                    i <= CURRENT ? "bg-[var(--green)]/55" : "bg-[var(--green-line)]"
-                  }`}
-                />
-              )}
-              <span
-                className={`relative z-10 grid h-6 w-6 place-items-center rounded-full text-[10.5px] font-semibold ${
-                  done
-                    ? "bg-[var(--green)] text-white"
-                    : current
-                      ? "bg-white text-[var(--green)] ring-2 ring-[var(--green)] shadow-[0_0_0_3px_rgba(14,90,56,0.12)]"
-                      : "border border-[var(--green-line)] bg-[var(--panel)] text-[var(--muted)]"
-                }`}
-              >
-                {done ? (
-                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden>
-                    <path d="M3.6 8.4l2.9 2.9 5.9-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                ) : (
-                  i + 1
-                )}
-              </span>
-              <span
-                className={`mt-1.5 text-[9px] leading-none ${
-                  current ? "font-semibold text-[var(--ink)]" : "text-[var(--muted)]"
-                }`}
-              >
-                {st.name}
-              </span>
-              <span
-                className={`mt-[3px] text-[8.5px] leading-none ${
-                  done ? "text-[var(--green)]" : current ? "text-[var(--coral-hover)]" : "text-[var(--muted)]/60"
-                }`}
-              >
-                {st.state}
-              </span>
-            </div>
-          );
-        })}
-      </div>
+      <div className="mb-2 text-[10.5px] font-semibold text-[var(--ink)]">Your request workflow</div>
 
-      <div className="mt-3 space-y-1.5 border-t border-[var(--border)] pt-2.5 text-[11px]">
-        <div className="flex justify-between gap-2">
-          <span className="shrink-0 text-[var(--muted)]">Delegation</span>
-          <span className="truncate font-medium">Rohan Mehta → Priya Shah</span>
-        </div>
-        <div className="flex justify-between gap-2">
-          <span className="shrink-0 text-[var(--muted)]">Audit</span>
-          <span className="font-mono">Ananya · 09:42</span>
-        </div>
+      <div className="flex flex-col">
+        {steps.map((st, i) => (
+          <div key={st.id} className="flex gap-2.5">
+            {/* Avatar + the thread that joins it to the next node. Both photos take
+                the same 1.3 crop: AVATAR.png carries an uneven white rim baked into
+                the file (thickest at ~1.26x radius) that a smaller scale leaves
+                showing, and applying the same factor to ANANYA.png keeps the two
+                heads filling their discs to the same degree rather than one sitting
+                tight in frame and the other floating in it. */}
+            <div className="flex w-7 shrink-0 flex-col items-center">
+              {st.avatar ? (
+                <span className="block h-7 w-7 shrink-0 overflow-hidden rounded-full ring-1 ring-[var(--border)]">
+                  <img src={st.avatar} alt="" aria-hidden className="h-full w-full scale-[1.3] object-cover" />
+                </span>
+              ) : (
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--green-soft)] text-[10px] font-bold text-[var(--green-deep)] ring-1 ring-[var(--green-line)]">
+                  {st.initials}
+                </span>
+              )}
+              {i < steps.length - 1 && <span className="w-px flex-1 bg-[var(--border)]" />}
+            </div>
+
+            <div className={`min-w-0 flex-1 rounded-lg border border-[var(--border)] px-2.5 py-2 ${i < steps.length - 1 ? "mb-2" : ""}`}>
+              <div className="flex items-start justify-between gap-2">
+                <div className="truncate text-[11.5px] font-bold text-[var(--ink)]">{st.who}</div>
+                {st.level && (
+                  <span className="shrink-0 rounded-full bg-[#f1ecfb] px-2 py-[1px] text-[9px] font-semibold text-[#6b46c1]">
+                    {st.level}
+                  </span>
+                )}
+              </div>
+              <div className="truncate font-mono text-[9px] text-[var(--muted)]">{st.id}</div>
+              <div
+                className={`mt-[3px] truncate text-[10.5px] ${
+                  st.state === "approved" ? "text-[var(--green)]" : "text-[var(--muted)]"
+                }`}
+              >
+                {st.note}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </Card>
   );
@@ -355,7 +371,7 @@ function AskAI() {
   const { text, done, index } = useTypewriter(ASK_PROMPTS);
   const item = ASK_ITEMS[index];
   return (
-    <Card className="w-[264px]">
+    <Card className="w-[244px]">
       <div className="mb-2.5 flex items-center gap-2">
         <span
           className="grid h-6 w-6 place-items-center rounded-lg"
@@ -386,14 +402,21 @@ function AskAI() {
             </span>
           </div>
         ) : (
-          <div className="flex items-center gap-1.5 pt-1.5" aria-hidden>
-            {[0, 1, 2].map((d) => (
+          /* Three 5px dots left the reserve visibly empty; skeleton lines fill it,
+             so the card holds the same weight mid-question as it does with an
+             answer on screen. */
+          <div className="pt-[3px]" aria-hidden>
+            {[92, 78, 58].map((w, d) => (
               <span
-                key={d}
-                className="h-[5px] w-[5px] rounded-full bg-[var(--green)]/45"
-                style={{ animation: `askdot 1.1s ${d * 0.16}s ease-in-out infinite` }}
+                key={w}
+                className="mb-[5px] block h-[7px] rounded-full bg-[var(--green)]/14"
+                style={{ width: `${w}%`, animation: `askdot 1.4s ${d * 0.18}s ease-in-out infinite` }}
               />
             ))}
+            <span
+              className="mt-[7px] block h-[13px] w-[42%] rounded-md bg-[var(--green-soft)]"
+              style={{ animation: "askdot 1.4s 0.54s ease-in-out infinite" }}
+            />
           </div>
         )}
       </div>
@@ -407,30 +430,30 @@ function PhoneAttendance() {
        pure-dark object steals the eye from the product behind it. The hairline
        border + inset highlight are what keep it reading as a device. */
     <div
-      className="relative w-[206px] rounded-[38px] border border-[var(--border)] p-[7px] shadow-[0_1px_0_rgba(255,255,255,0.8)_inset,0_28px_60px_-30px_rgba(11,74,46,0.38),0_8px_20px_-12px_rgba(11,74,46,0.2)]"
+      className="relative w-[206px] rounded-[33px] border border-[var(--border)] p-[7px] shadow-[0_1px_0_rgba(255,255,255,0.8)_inset,0_28px_60px_-30px_rgba(11,74,46,0.38),0_8px_20px_-12px_rgba(11,74,46,0.2)]"
       style={{ background: "linear-gradient(150deg, #f3efe5, #ded9cb 55%, #ebe6da)" }}
     >
       {/* side buttons — soft grooves, not hard black bars */}
-      <span className="absolute -left-[1.5px] top-[92px] h-9 w-[2.5px] rounded-l bg-[var(--ink)]/18" />
-      <span className="absolute -left-[1.5px] top-[132px] h-9 w-[2.5px] rounded-l bg-[var(--ink)]/18" />
-      <span className="absolute -right-[1.5px] top-[110px] h-14 w-[2.5px] rounded-r bg-[var(--ink)]/18" />
+      <span className="absolute -left-[1.5px] top-[90px] h-9 w-[2.5px] rounded-l bg-[var(--ink)]/18" />
+      <span className="absolute -left-[1.5px] top-[126px] h-9 w-[2.5px] rounded-l bg-[var(--ink)]/18" />
+      <span className="absolute -right-[1.5px] top-[95px] h-14 w-[2.5px] rounded-r bg-[var(--ink)]/18" />
 
-      <div className="relative overflow-hidden rounded-[32px] bg-[var(--panel)] shadow-[0_0_0_1px_rgba(20,40,25,0.12)]">
+      <div className="relative flex aspect-[9/19.5] flex-col overflow-hidden rounded-[26px] bg-[var(--panel)] shadow-[0_0_0_1px_rgba(20,40,25,0.12)]">
         {/* screen gloss */}
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-20 rounded-[32px]"
+          className="pointer-events-none absolute inset-0 z-20 rounded-[26px]"
           style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.35), transparent 32%)" }}
         />
         {/* dynamic island */}
-        <div className="absolute left-1/2 top-[7px] z-20 h-[19px] w-[54px] -translate-x-1/2 rounded-full bg-[var(--ink)]/70" />
+        <div className="absolute left-1/2 top-[6px] z-20 h-[18px] w-[58px] -translate-x-1/2 rounded-full bg-[var(--ink)]/70" />
 
         {/* status bar — sized to clear the island. At a 192px screen width the whole
             right cluster gets ~48px, so it carries icons only: the battery cell already
             shows its level, and a "86" numeral beside it was the thing pushing the row
             under the island. */}
         <div className="flex items-center justify-between px-4 pt-[11px] text-[9.5px] font-semibold text-[var(--ink)]/70">
-          <span className="tabular-nums tracking-[0.01em]">9:41</span>
+          <span className="tabular-nums tracking-[0.01em]">8:58</span>
           <span className="flex items-center gap-[3px]">
             {/* signal: 4 stepped bars on a shared baseline, last one dimmed */}
             <svg width="12" height="8" viewBox="0 0 12 8" aria-hidden className="shrink-0">
@@ -462,149 +485,120 @@ function PhoneAttendance() {
           </span>
         </div>
 
-        {/* header */}
-        <div className="flex items-center justify-between px-4 pb-2 pt-2">
-          <span className="text-[15px] text-[var(--muted)]">‹</span>
-          <span className="text-[13px] font-bold">Attendance</span>
-          <span className="relative text-[13px] text-[var(--muted)]">
-            ⌾<span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[var(--coral)]" />
-          </span>
-        </div>
-
-        {/* person */}
-        <div className="flex items-center gap-2.5 px-4 pb-2">
-          <span className="block h-9 w-9 shrink-0 overflow-hidden rounded-full">
-            <img src={avatarAnanya} alt="" aria-hidden className="h-full w-full object-cover" />
-          </span>
-          <div className="leading-tight">
-            <div className="text-[13px] font-bold">Ananya Rao</div>
-            <div className="text-[10px] text-[var(--muted)]">Shift A · Pune Plant</div>
-          </div>
-        </div>
-
-        {/* map with geofence */}
-        <div className="relative mx-3 h-[92px] overflow-hidden rounded-2xl bg-[#e9f0e8]">
-          {/* Drawn like a real map tile: land, parcels, then roads as casing + fill.
-             The casing/fill pair is what makes strokes read as streets rather than lines. */}
-          <svg viewBox="0 0 190 92" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden>
-            <rect width="190" height="92" fill="#e9f0e8" />
-
-            {/* parkland */}
-            <path d="M137 44 L178 38 L185 68 L145 75 Z" fill="#0e5a38" opacity="0.15" />
-            {/* the plant site itself, so the geofence sits over a real parcel */}
-            <path d="M70 34 L116 30 L119 64 L73 68 Z" fill="#0e5a38" opacity="0.10" />
-            <path
-              d="M70 34 L116 30 L119 64 L73 68 Z"
-              fill="none"
-              stroke="#0e5a38"
-              strokeWidth="0.8"
-              strokeDasharray="2.5 2"
-              opacity="0.35"
-            />
-            <path d="M-4 -4 L38 -4 L34 14 L-4 17 Z" fill="#0e5a38" opacity="0.09" />
-
-            {/* building footprints, angled slightly so nothing lines up perfectly */}
-            <g fill="#0e5a38" opacity="0.14">
-              <rect x="8" y="26" width="17" height="10" rx="1.5" transform="rotate(-4 16 31)" />
-              <rect x="30" y="24" width="9" height="10" rx="1.5" transform="rotate(-4 34 29)" />
-              <rect x="58" y="26" width="14" height="9" rx="1.5" transform="rotate(-3 65 30)" />
-              <rect x="76" y="25" width="10" height="9" rx="1.5" transform="rotate(-3 81 29)" />
-              <rect x="96" y="22" width="18" height="10" rx="1.5" transform="rotate(-3 105 27)" />
-              <rect x="140" y="16" width="15" height="8" rx="1.5" transform="rotate(-2 147 20)" />
-              <rect x="160" y="14" width="12" height="8" rx="1.5" transform="rotate(-2 166 18)" />
-              <rect x="8" y="68" width="16" height="11" rx="1.5" transform="rotate(-3 16 73)" />
-              <rect x="28" y="67" width="10" height="11" rx="1.5" transform="rotate(-3 33 72)" />
-              <rect x="60" y="64" width="19" height="11" rx="1.5" transform="rotate(-3 69 69)" />
-              <rect x="88" y="62" width="12" height="11" rx="1.5" transform="rotate(-3 94 67)" />
-              <rect x="150" y="82" width="16" height="10" rx="1.5" transform="rotate(-3 158 87)" />
-            </g>
-
-            {/* roads — darker casing underneath, pale fill on top */}
-            {[
-              "M-6 60 L64 55 L118 39 L196 33",
-              "M-6 20 L58 16 L132 10 L196 6",
-              "M-6 84 L92 79 L196 70",
-              "M42 -6 L50 38 L44 98",
-              "M122 -6 L130 38 L137 98",
-              "M80 -6 L86 30",
-              "M162 36 L168 98",
-            ].map((d, i) => (
-              <path
-                key={`c${i}`}
-                d={d}
-                fill="none"
-                stroke="#cfdccd"
-                strokeWidth={(i < 1 ? 7 : i < 3 ? 4.6 : i < 5 ? 4 : 2.6) + 1.6}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            ))}
-            {[
-              "M-6 60 L64 55 L118 39 L196 33",
-              "M-6 20 L58 16 L132 10 L196 6",
-              "M-6 84 L92 79 L196 70",
-              "M42 -6 L50 38 L44 98",
-              "M122 -6 L130 38 L137 98",
-              "M80 -6 L86 30",
-              "M162 36 L168 98",
-            ].map((d, i) => (
-              <path
-                key={`f${i}`}
-                d={d}
-                fill="none"
-                stroke="#fbfdfa"
-                strokeWidth={i < 1 ? 7 : i < 3 ? 4.6 : i < 5 ? 4 : 2.6}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            ))}
-
-            {/* approach track, running along the arterial into the site */}
-            <path
-              d="M-6 60 L64 55 L95 46"
-              fill="none"
-              stroke="#0e5a38"
-              strokeWidth="2.2"
-              strokeDasharray="3.5 4.5"
-              strokeLinecap="round"
-              opacity="0.55"
-            />
+        {/* App header — same #01241a as the dashboard's topbar and rail. */}
+        <div
+          className="flex shrink-0 items-center gap-2 px-2.5 py-2 text-white"
+          style={{ background: APP_SHELL }}
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+            className="shrink-0"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
-
-          {/* geofence ring + pin */}
-          <span className="absolute left-1/2 top-1/2 h-[52px] w-[52px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--green)]/45 bg-[var(--green)]/12" />
-          <span className="absolute left-1/2 top-1/2 grid h-6 w-6 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[var(--green)] text-white ring-2 ring-white/80 shadow-[0_3px_8px_-2px_rgba(11,74,46,0.7)]">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-              <circle cx="12" cy="10" r="2.6" />
-            </svg>
-          </span>
-          <span className="absolute right-2 top-2 rounded-full bg-white/95 px-2 py-0.5 text-[9px] font-semibold text-[var(--green-deep)] shadow-[0_1px_4px_rgba(11,74,46,0.18)]">
-            Inside geofence
+          <span className="flex-1 truncate text-[11px] font-semibold tracking-[-0.01em]">Mark Attendance</span>
+          <span className="flex shrink-0 flex-col items-center gap-[2.5px]" aria-hidden>
+            {[0, 1, 2].map((d) => (
+              <span key={d} className="block h-[2.5px] w-[2.5px] rounded-full bg-white/85" />
+            ))}
           </span>
         </div>
 
-        {/* confirmed status */}
-        <div className="mx-3 mt-2.5 flex items-center gap-2 rounded-xl bg-[var(--green-soft)] px-2.5 py-2">
-          <Check />
-          <div className="leading-tight">
-            <div className="text-[11px] font-bold text-[var(--green-deep)]">Location confirmed</div>
-            <div className="text-[10px] text-[var(--muted)]">Pune Plant · Punched in 08:58</div>
+        <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-hidden bg-[#f3f4f2] px-2 py-[7px]">
+          <div className="shrink-0 rounded-lg bg-[var(--panel)] px-2 py-2 shadow-[0_1px_3px_rgba(11,74,46,0.09)]">
+            <div className="mb-[5px] flex shrink-0 items-center justify-between">
+              <span className="text-[8px] font-bold uppercase tracking-[0.09em] text-[var(--ink)]">
+                Current location
+              </span>
+              <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden>
+                <path d="M12 7a5 5 0 1 1-1.6-3.7" stroke={APP_BRAND} strokeWidth="1.6" strokeLinecap="round" />
+                <path d="M12.2 1.6v3h-3" stroke={APP_BRAND} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+
+            <div className="mb-[7px] shrink-0">
+              <div className="text-[7.5px] leading-[11px] text-[var(--muted)]">Address</div>
+              <div className="whitespace-pre-line text-[10px] leading-[1.35] text-[var(--ink)]">
+                {"Gat 214, Phase II, MIDC Chakan,\nPune, Maharashtra 410501"}
+              </div>
+            </div>
+
+            <div className="mb-[7px] shrink-0">
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-[7.5px] leading-[11px] text-[var(--muted)]">Coordinates</span>
+                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden className="shrink-0">
+                  <circle cx="8" cy="8" r="3.4" stroke={APP_BRAND} strokeWidth="1.4" />
+                  <circle cx="8" cy="8" r="1.1" fill={APP_BRAND} />
+                  <path d="M8 1v2.1M8 12.9V15M1 8h2.1M12.9 8H15" stroke={APP_BRAND} strokeWidth="1.4" strokeLinecap="round" />
+                </svg>
+              </div>
+              <div className="text-[10px] leading-[1.35] tabular-nums text-[var(--ink)]">18.7601483, 73.8634127</div>
+            </div>
+
+            {/* accuracy and punch time share a row — two short values do not each
+                need a full line, and the space buys the type its size back */}
+            <div className="mb-[7px] shrink-0">
+              <div className="text-[7.5px] leading-[11px] text-[var(--muted)]">Accuracy (in meter)</div>
+              <div className="text-[10px] leading-[1.35] tabular-nums text-[var(--ink)]">8.32</div>
+            </div>
+
+            <div className="shrink-0">
+              <div className="text-[7.5px] leading-[11px] text-[var(--muted)]">Punch Time</div>
+              <div className="whitespace-nowrap text-[10px] leading-[1.35] tabular-nums text-[var(--ink)]">
+                15-09-2026 08:58
+              </div>
+            </div>
+          </div>
+
+          <div className="shrink-0 rounded-lg bg-[var(--panel)] px-2 py-2 shadow-[0_1px_3px_rgba(11,74,46,0.09)]">
+            <div className="text-[8px] font-bold uppercase tracking-[0.09em] text-[var(--ink)]">
+              Please fill the below fields
+            </div>
+
+            {/* photo capture — what an attendance punch actually asks for */}
+            <div className="mt-2 flex items-center gap-2">
+              <span
+                className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-md border border-dashed"
+                style={{ borderColor: "var(--green-line)", background: "var(--green-soft)" }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={APP_BRAND} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h2L8 5h8l1.5 2h2A1.5 1.5 0 0 1 21 8.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5z" />
+                  <circle cx="12" cy="12.5" r="3.2" />
+                </svg>
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="text-[10px] font-semibold leading-[1.35] text-[var(--ink)]">Add photo</div>
+                <div className="text-[7.5px] leading-[11px] text-[var(--muted)]">Selfie required to punch in</div>
+              </div>
+            </div>
+
+            <div className="mt-2 border-b border-[var(--border)] pb-1 text-[10px] text-[var(--muted)]">
+              Comments
+            </div>
+            <div className="mt-[3px] text-right text-[7.5px] text-[var(--muted)]">0/500</div>
           </div>
         </div>
 
-        {/* punch button */}
-        <div className="px-3 pt-3 pb-1.5">
-          <div className="flex items-center gap-1 rounded-full bg-[var(--green)] p-1 text-[11px] font-semibold text-white shadow-[0_8px_18px_-8px_rgba(14,90,56,0.7)]">
-            <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white text-[12px] text-[var(--green)] shadow-sm">→</span>
-            <span className="flex-1 whitespace-nowrap text-center">Swipe to punch out</span>
-            <span className="h-6 w-6 shrink-0" aria-hidden />
+        <div className="shrink-0 bg-[var(--panel)] px-2 pb-[5px] pt-[5px]">
+          <div
+            className="rounded-md py-[7px] text-center text-[10px] font-semibold text-white shadow-[0_5px_12px_-6px_rgba(2,86,61,0.9)]"
+            style={{ background: APP_BRAND }}
+          >
+            Submit Request
           </div>
         </div>
 
         {/* home indicator */}
         <div className="flex justify-center pb-2 pt-1">
-          <span className="h-1 w-24 rounded-full bg-[var(--ink)]/25" />
+          <span className="h-[3px] w-[68px] rounded-full bg-[var(--ink)]/25" />
         </div>
       </div>
     </div>
@@ -613,82 +607,54 @@ function PhoneAttendance() {
 
 /* ---------- main dashboard (chrome matched to HROne product) ---------- */
 
-// Deep brand green used by the product's header + rail
-const DEEP = "#02563d";
-const BRIGHT = "#00bf78";
 
-const Ic = ({ d, size = 18 }: { d: ReactNode; size?: number }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden
-  >
-    {d}
-  </svg>
-);
+/* Monthly effective CTC for the trailing year, ending on the month the header
+   selects. The last point IS the KPI headline above it (₹4,25,51,690) rather than
+   a second invented number, so the card and the strip agree — which is the thing
+   that separates a real dashboard from a placeholder.
 
-const icons = {
-  home: (
-    <>
-      <path d="M3 10.5 12 3l9 7.5" />
-      <path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5" />
-    </>
-  ),
-  mail: (
-    <>
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <path d="m3 7 9 6 9-6" />
-    </>
-  ),
-  clipboard: (
-    <>
-      <rect x="6" y="4" width="12" height="17" rx="2" />
-      <path d="M9 4h6v3H9zM9 12h6M9 16h4" />
-    </>
-  ),
-  calendar: (
-    <>
-      <rect x="3" y="5" width="18" height="16" rx="2" />
-      <path d="M3 9h18M8 3v4M16 3v4" />
-    </>
-  ),
-  users: (
-    <>
-      <circle cx="9" cy="8" r="3" />
-      <path d="M3 20a6 6 0 0 1 12 0M16 6a3 3 0 0 1 0 6M22 20a6 6 0 0 0-4-5.6" />
-    </>
-  ),
-  chart: <path d="M4 20V11M10 20V5M16 20v-6M2 20h20" />,
-  settings: (
-    <>
-      <circle cx="12" cy="12" r="3" />
-      <path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" />
-    </>
-  ),
-  bolt: <path d="M13 2 4 14h6l-1 8 9-12h-6z" />,
-  plus: <path d="M12 5v14M5 12h14" />,
-  bell: (
-    <>
-      <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6" />
-      <path d="M10 20a2 2 0 0 0 4 0" />
-    </>
-  ),
-  bulb: (
-    <>
-      <path d="M9 18h6M10 21h4" />
-      <path d="M12 3a6 6 0 0 0-4 10c1 1 1 2 1 3h6c0-1 0-2 1-3a6 6 0 0 0-4-10z" />
-    </>
-  ),
-};
+   The shape is what an Indian payroll actually does over a year: steady growth on
+   headcount, a step in Sep when the increment cycle lands, a festival-bonus month
+   in Oct, the post-bonus settle in Nov, and the FY-end arrears/variable spike in
+   Mar before the new year resets. A monotonic line would read as invented. */
+const CTC_SERIES: [string, number][] = [
+  ["Jun", 36918400],
+  ["Jul", 37240100],
+  ["Aug", 37506800],
+  ["Sep", 38944200],
+  ["Oct", 41882600],
+  ["Nov", 39688900],
+  ["Dec", 40102400],
+  ["Jan", 40512700],
+  ["Feb", 40884600],
+  ["Mar", 43908300],
+  ["Apr", 41730500],
+  ["May", 42551690],
+];
+const AXIS_MAX = 50_000_000;
+const PLOT_W = 520;
+const PLOT_TOP = 10;
+const PLOT_BOT = 180;
 
-function Dashboard() {
-  const railTop: (keyof typeof icons)[] = ["home", "mail", "clipboard", "calendar", "users", "chart", "settings"];
+/* Points sit at the centre of twelve equal slots, which is exactly where the
+   flex-1 month labels below the plot centre themselves — so the axis lines up
+   with the data instead of drifting half a slot off it. */
+const ctcPt = (i: number, v: number): [number, number] => [
+  ((i + 0.5) * PLOT_W) / CTC_SERIES.length,
+  PLOT_BOT - (v / AXIS_MAX) * (PLOT_BOT - PLOT_TOP),
+];
+const CTC_PTS = CTC_SERIES.map(([, v], i) => ctcPt(i, v));
+const CTC_LINE =
+  `M0 ${CTC_PTS[0][1].toFixed(1)} ` +
+  CTC_PTS.map(([x, y]) => `L${x.toFixed(1)} ${y.toFixed(1)}`).join(" ") +
+  ` L${PLOT_W} ${CTC_PTS[CTC_PTS.length - 1][1].toFixed(1)}`;
+const CTC_AREA = `${CTC_LINE} L${PLOT_W} ${PLOT_BOT} L0 ${PLOT_BOT} Z`;
+
+function Dashboard({ p }: { p: number }) {
+  /* The plot draws itself once the product has settled and just ahead of the
+     cards' cascade (AskAI 0.40, phone 0.46, Approval 0.58, MultiState 0.64), so
+     the order reads product -> chart -> cards rather than all at once. */
+  const chart = win(p, 0.28, 0.58);
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-[0_50px_90px_-40px_rgba(11,74,46,0.55)]">
       {/* browser chrome — tab strip over a toolbar, the way a real window reads */}
@@ -756,225 +722,420 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="flex min-h-0 flex-1">
-        {/* left rail */}
-        <div
-          className="flex w-[56px] shrink-0 flex-col items-center justify-between py-3.5 text-white/65"
-          style={{ background: `linear-gradient(${DEEP}, ${"#024530"})` }}
-        >
-          <div className="flex flex-col items-center gap-2.5">
-            {railTop.map((k, i) => (
-              <span
-                key={k}
-                className={`relative grid h-9 w-9 place-items-center rounded-xl transition-colors ${
-                  i === 0 ? "bg-white text-[var(--green-deep)] shadow-sm" : "hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                <Ic d={icons[k]} />
-                {k === "mail" && (
-                  <span className="absolute -right-0.5 -top-0.5 grid h-4 w-4 place-items-center rounded-full bg-[#e56046] text-[9px] font-bold text-white">
-                    3
-                  </span>
-                )}
-              </span>
-            ))}
-          </div>
-          <div className="flex flex-col items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-xl hover:bg-white/10">
-              <Ic d={icons.bolt} />
-            </span>
-            <span className="grid h-9 w-9 place-items-center rounded-xl hover:bg-white/10">
-              <Ic d={icons.plus} />
-            </span>
-            <span className="block h-8 w-8 overflow-hidden rounded-full">
-              {/* AVATAR.png has a white rim baked in — uneven, thickest at ~1.26x radius.
-                  1.3 crops it away entirely so the avatar reads as a clean circle. */}
-              <img src={avatarUser} alt="" aria-hidden className="h-full w-full scale-[1.3] object-cover" />
-            </span>
-          </div>
+      {/* ── app shell, matched to the Figma node ─────────────────────────────
+          Topbar spans the full width at 48px with the L0 rail below it at 200px,
+          which is how the design stacks them. Item metrics are the design's own:
+          32px rows, 12px/px-12 padding, 6px radius, 16px icons, 12px labels on
+          #f0f5f2, the active row on #013226, and Settings pinned under a
+          rgba(230,247,240,0.2) rule. */}
+      <div className="flex h-10 shrink-0 items-center justify-between px-3" style={{ background: APP_SHELL }}>
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="flex h-7 w-5 items-center justify-center rounded-md">
+            <img src={navHome} alt="" aria-hidden className="h-[13px] w-[13px]" />
+          </span>
+          {/* the design's placeholder company reads as the tenant; the rest of the
+              mock is Aarvik Group, so it carries that name through. "Group" rather
+              than a Pvt. Ltd. suffix: a group spans entities, which is the
+              multi-entity story the rest of the page is making. */}
+          <p className="truncate text-[12px] font-medium leading-4 text-white">Aarvik Group</p>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col">
-          {/* top header bar */}
-          <div
-            className="flex shrink-0 items-center gap-3 px-4 py-2.5 text-white"
-            style={{ background: `linear-gradient(90deg, ${DEEP}, #045a41 55%, ${DEEP})` }}
-          >
-            {/* real HROne logo (full mark + wordmark) inverted to white on the dark header */}
-            <img src={logoHr} alt="HROne" className="h-[20px] w-auto" style={{ filter: "brightness(0) invert(1)" }} />
-            <span className="mx-1 h-4 w-px bg-white/25" />
-            <button className="flex items-center gap-1 text-[12px] text-white/85">
-              Workspace <Ic d={<path d="m6 9 6 6 6-6" />} size={12} />
-            </button>
-            <div className="mx-auto flex w-[42%] items-center gap-2 rounded-lg bg-white/12 px-3 py-1.5 text-[12px] text-white/70 ring-1 ring-white/10">
-              <Ic d={<><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></>} size={14} />
-              Search requests, reports, people…
-              <span className="ml-auto rounded bg-white/15 px-1.5 py-0.5 text-[9px] text-white/70">⌘K</span>
-            </div>
-            <div className="flex items-center gap-1 text-white/80">
-              <span className="grid h-8 w-8 place-items-center rounded-lg hover:bg-white/10">
-                <Ic d={icons.calendar} size={16} />
-              </span>
-              <span className="grid h-8 w-8 place-items-center rounded-lg hover:bg-white/10">
-                <Ic d={icons.bulb} size={16} />
-              </span>
-              <span className="relative grid h-8 w-8 place-items-center rounded-lg hover:bg-white/10">
-                <Ic d={icons.bell} size={16} />
-                <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-[#e56046]" />
-              </span>
-            </div>
+        {/* A solid white field on the dark bar reads as a hole punched in the header.
+            The other variations sit the search *in* the bar as a translucent well,
+            which is what this follows. The Figma icons are exported dark for a white
+            input, so they are inverted to sit on the tint rather than swapped out. */}
+        <div className="mx-auto flex min-w-0 max-w-[288px] flex-1 items-center gap-1.5 px-3">
+          <div className="flex h-7 min-w-0 flex-1 items-center gap-1.5 rounded-lg bg-white/12 px-2.5 text-[9.5px] text-white/70 ring-1 ring-white/10">
+            <img
+              src={navSearch}
+              alt=""
+              aria-hidden
+              className="h-3 w-3 shrink-0 opacity-75"
+              style={{ filter: "brightness(0) invert(1)" }}
+            />
+            <span className="min-w-0 flex-1 truncate">Type a command or search</span>
+            <span className="shrink-0 rounded bg-white/15 px-1 py-[1px] text-[8px] leading-[12px] text-white/70">⌘K</span>
           </div>
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-white/12 ring-1 ring-white/10">
+            <img
+              src={navOrgChart}
+              alt=""
+              aria-hidden
+              className="h-[13px] w-[13px] opacity-75"
+              style={{ filter: "brightness(0) invert(1)" }}
+            />
+          </span>
+        </div>
 
-          {/* content body — light, finished */}
-          <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden bg-[#f9fafb] px-5 py-3.5">
-            {/* page header */}
-            <div className="flex shrink-0 items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <h3 className="text-[19px] font-bold tracking-[-0.01em] text-[#101828]">Payroll run</h3>
-                <span className="rounded-full bg-[#fffbeb] px-2.5 py-0.5 text-[11px] font-semibold text-[#e17100] ring-1 ring-[#e17100]/20">
-                  Pre-approval
-                </span>
-                <span className="text-[12px] text-[#6a7282]">Sep 2026 · Aarvik Group</span>
-              </div>
-              <button
-                className="flex items-center gap-2 rounded-lg px-3.5 py-2 text-[13px] font-semibold text-white shadow-sm"
-                style={{ background: BRIGHT }}
-              >
-                Run payroll <span className="text-white/80">→</span>
-              </button>
-            </div>
+        <div className="flex shrink-0 items-center gap-0.5">
+          <span className="flex h-7 items-center justify-center rounded-md px-2">
+            <img src={navTopA} alt="" aria-hidden className="h-[13px] w-[13px]" />
+          </span>
+          <span className="flex h-7 items-center justify-center rounded-md px-2">
+            <img src={navTopB} alt="" aria-hidden className="h-[13px] w-[13px]" />
+          </span>
+          <span className="ml-1 block h-[26px] w-[26px] shrink-0 overflow-hidden rounded-full ring-1 ring-white/25">
+            <img
+              src={avatarTopbar}
+              alt=""
+              aria-hidden
+              className="h-full w-full object-cover"
+              /* Framed to match the two approval-card avatars: chin above the edge
+                 with a sliver of collar under it, not a head-only crop.
 
-            {/* KPI cards */}
-            <div className="grid shrink-0 grid-cols-3 gap-3">
+                 Measured off the source — hair top 4%, jaw 85%, sweater from 86% —
+                 so the crop window has to run ~2% to ~92% to clear the hair and
+                 still show collar. With transform order scale(S) translateY(t) the
+                 window is 1/S tall and centred at 0.5 - t, which gives S 1.11 and
+                 t 3%. Zooming past this cuts the collar off at the jaw, because
+                 this portrait has almost no neck between beard and sweater. */
+              style={{ transform: "scale(1.11) translateY(3%)" }}
+            />
+          </span>
+        </div>
+      </div>
+
+      <div className="flex min-h-0 flex-1">
+        {/* L0 rail */}
+        <div className="flex w-[140px] shrink-0 flex-col justify-between overflow-hidden" style={{ background: APP_SHELL }}>
+          <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden px-1.5 pt-2.5">
+            <div className="flex flex-col border-b border-[rgba(230,247,240,0.2)] pb-2.5">
               {[
-                ["Total payout", "₹2.32 crore", "2,040 employees · 3 entities", false],
-                ["Statutory dues", "₹32.00 lakh", "PF · ESI · PT · TDS · LWF", false],
-                ["Run status", "Ready to run", "0 exceptions · 12 flags cleared", true],
-              ].map(([label, value, sub, ok]) => (
-                <div
-                  key={label as string}
-                  className={`rounded-xl border p-3 ${ok ? "border-[#00bf78]/30 bg-[#e6f6ec]" : "border-[#e5e7eb] bg-white"}`}
-                >
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#6a7282]">{label}</div>
-                  <div className={`mt-1 text-[19px] font-bold ${ok ? "text-[var(--green-deep)]" : "text-[#101828]"}`}>
-                    {value}
-                  </div>
-                  <div className="mt-0.5 text-[11px] text-[#6a7282]">{sub}</div>
+                [navInbox, "Inbox"],
+                [navRequest, "Request"],
+                [navTeams, "Teams"],
+                [navProjects, "Projects"],
+                [navOneAi, "One AI"],
+                [navMySpace, "My space"],
+              ].map(([icon, label]) => (
+                <div key={label as string} className="flex h-7 items-center gap-1.5 overflow-hidden rounded-[5px] px-2.5">
+                  <img src={icon as string} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0" />
+                  {/* One AI is the one label the design paints with a brand gradient */}
+                  <p
+                    className={`min-w-0 flex-1 truncate text-[11px] leading-4 ${
+                      label === "One AI"
+                        ? "bg-gradient-to-r from-[#b3574d] via-[#c7ca2c] via-[11%] to-[#21902e] to-[28%] bg-clip-text text-transparent"
+                        : "text-[#f0f5f2]"
+                    }`}
+                  >
+                    {label}
+                  </p>
+                  {label === "Projects" && (
+                    <img src={navExternal} alt="" aria-hidden className="h-3 w-3 shrink-0" />
+                  )}
                 </div>
               ))}
             </div>
 
-            {/* tables */}
-            <div className="grid min-h-0 flex-1 grid-cols-2 gap-3 overflow-hidden">
-              <div className="flex min-h-0 flex-col rounded-xl border border-[#e5e7eb] bg-white p-3">
-                <div className="mb-1.5 flex items-center justify-between">
-                  <span className="text-[12px] font-bold text-[#101828]">Run scope</span>
-                  <span className="text-[10px] font-semibold text-[#6a7282]">3 entities</span>
-                </div>
-                <table className="w-full text-left text-[11.5px]">
-                  <thead className="text-[#99a1af]">
-                    <tr className="border-b border-[#e5e7eb]">
-                      <th className="pb-1 font-medium">Entity</th>
-                      <th className="pb-1 font-medium">Location</th>
-                      <th className="pb-1 text-right font-medium">Emp.</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-[#364153]">
-                    {[
-                      ["Aarvik Manufacturing", "Pune Plant", "960"],
-                      ["Aarvik Components", "Chennai Plant", "720"],
-                      ["Aarvik Services", "Bengaluru", "360"],
-                    ].map((r) => (
-                      <tr key={r[0]} className="border-b border-[#f3f4f6]">
-                        <td className="py-1.5 font-medium">{r[0]}</td>
-                        <td className="py-1.5 text-[#6a7282]">{r[1]}</td>
-                        <td className="py-1.5 text-right tabular-nums">{r[2]}</td>
-                      </tr>
-                    ))}
-                    <tr>
-                      <td className="pt-2 font-bold text-[#101828]">All entities</td>
-                      <td className="pt-2 text-[#6a7282]" />
-                      <td className="pt-2 text-right font-bold tabular-nums text-[#101828]">2,040</td>
-                    </tr>
-                  </tbody>
-                </table>
-                {/* headcount split footer */}
-                <div className="mt-auto pt-3">
-                  <div className="flex h-2 w-full overflow-hidden rounded-full">
-                    <span className="h-full" style={{ width: "47%", background: "var(--green-deep)" }} />
-                    <span className="h-full" style={{ width: "35%", background: "var(--green)" }} />
-                    <span className="h-full" style={{ width: "18%", background: "#7cc59f" }} />
-                  </div>
-                  <div className="mt-1.5 flex items-center justify-between text-[10px] text-[#6a7282]">
-                    <span>Pune 47%</span>
-                    <span>Chennai 35%</span>
-                    <span>Bengaluru 18%</span>
-                  </div>
-                </div>
+            <div className="flex flex-col gap-1 pb-2">
+              <div className="flex items-center px-2.5">
+                <p className="flex-1 text-[9.5px] leading-4 tracking-[0.11px] text-[rgba(73,191,155,0.7)]">APPS</p>
               </div>
-
-              <div className="flex min-h-0 flex-col rounded-xl border border-[#e5e7eb] bg-white p-3">
-                <div className="mb-1.5 flex items-center justify-between">
-                  <span className="text-[12px] font-bold text-[#101828]">Statutory deductions</span>
-                  <span className="text-[10px] font-semibold text-[#6a7282]">Sep 2026</span>
-                </div>
-                <table className="w-full text-left text-[11.5px]">
-                  <tbody className="text-[#364153]">
-                    {[
-                      ["PF", "Provident Fund", "₹16,00,000"],
-                      ["ESI", "Employee State Ins.", "₹72,000"],
-                      ["PT", "Professional Tax", "₹48,000"],
-                      ["TDS", "Tax Deducted", "₹14,76,000"],
-                    ].map((r) => (
-                      <tr key={r[0]} className="border-b border-[#f3f4f6]">
-                        <td className="py-[5px] font-semibold">{r[0]}</td>
-                        <td className="py-[5px] text-[#6a7282]">{r[1]}</td>
-                        <td className="py-[5px] text-right tabular-nums">{r[2]}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {/* total footer */}
-                <div className="mt-auto flex items-center justify-between rounded-lg bg-[#e6f6ec] px-3 py-2">
-                  <span className="text-[11px] font-semibold text-[var(--green-deep)]">Total statutory</span>
-                  <span className="text-[14px] font-bold tabular-nums text-[var(--green-deep)]">₹32,00,000</span>
-                </div>
+              <div className="flex flex-col">
+                {[
+                  [navHrDesk, "HR Desk"],
+                  [navRecruitment, "Recruitment"],
+                  [navWorkforce, "Workforce"],
+                  [navTimeoffice, "Timeoffice"],
+                  [navPayroll, "Payroll"],
+                  [navPerformance, "Performance"],
+                  [navAnalytics, "Analytics"],
+                ].map(([icon, label]) => (
+                  <div
+                    key={label as string}
+                    className={`flex h-7 items-center gap-1.5 overflow-hidden rounded-[5px] px-2.5 ${
+                      label === "Analytics" ? "bg-[#013226]" : ""
+                    }`}
+                  >
+                    <img src={icon as string} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0" />
+                    <p className="min-w-0 flex-1 truncate text-[11px] leading-4 text-[#f0f5f2]">{label}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* footer summary bar */}
-          <div className="flex shrink-0 items-center gap-5 border-t border-[#e5e7eb] bg-white px-5 py-3">
+          <div className="flex shrink-0 flex-col border-t border-[rgba(230,247,240,0.2)] px-1.5 pb-2.5 pt-2.5">
+            <div className="flex h-7 items-center gap-1.5 overflow-hidden rounded-[5px] px-2.5">
+              <img src={navSettings} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0" />
+              <p className="min-w-0 flex-1 truncate text-[11px] leading-4 text-[#f0f5f2]">Settings</p>
+            </div>
+          </div>
+        </div>
+
+        {/* L1 sub-nav, styled to the product's own panel pattern: titled header
+            with the collapse control over a rule, a search field, then collapsible
+            groups whose active row is a full-bleed green tint. The design sizes
+            this 200px, but at 1440 that leaves 1040px of content whereas our 880px
+            mock would be left with 480px, so it runs at 140px with 26px rows. */}
+        <div className="flex w-[140px] shrink-0 flex-col overflow-hidden border-r border-[#e5e5e5] bg-white">
+          <div className="flex h-8 shrink-0 items-center justify-between gap-1 border-b border-[#e5e5e5] px-2">
+            <p className="truncate text-[10px] font-medium text-[#171717]">Business Intelligence</p>
+            <img src={navCollapse} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0" />
+          </div>
+
+          <div className="shrink-0 px-2.5 pb-1.5 pt-2">
+            <div className="flex h-[26px] items-center gap-1.5 rounded-[6px] border border-[#d4d4d4] px-2">
+              <img src={navSearch} alt="" aria-hidden className="h-3 w-3 shrink-0" />
+              <span className="truncate text-[10px] text-[#737373]">Search...</span>
+            </div>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-1 px-3 py-1">
+            <span className="flex-1 truncate text-[11px] font-semibold text-[var(--green-deep)]">Dashboards</span>
+            {/* the design's own chevron, turned to point up for the open group */}
+            <img src={navChevron} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0 -rotate-90" />
+          </div>
+
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
             {[
-              ["Gross", "₹2.64 crore", "#101828", false],
-              ["Deductions", "− ₹32.00 lakh", "#b42318", false],
-              ["Net payable", "₹2.32 crore", "var(--green-deep)", true],
-            ].map(([label, val, color, strong], i) => (
-              <div key={label as string} className="flex items-center gap-5">
-                {i > 0 && <span className="h-8 w-px bg-[#eceef1]" />}
-                <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#99a1af]">{label}</div>
-                  <div
-                    className={`tabular-nums ${strong ? "text-[17px] font-bold" : "text-[15px] font-semibold"}`}
-                    style={{ color: color as string }}
-                  >
-                    {val}
-                  </div>
-                </div>
+              "Employee movement",
+              "Engage",
+              "Expense",
+              "Happiness index",
+              "Helpdesk",
+              "HR ops",
+              "Payroll",
+              "Performance",
+              "Performance 9 box",
+              "Pulse",
+              "Recruitment",
+              "ROI",
+              "Survey",
+              "Time office",
+            ].map((item) => (
+              <div
+                key={item}
+                className={`flex h-[26px] shrink-0 items-center truncate pl-4 pr-2 text-[11px] ${
+                  item === "Payroll"
+                    ? "bg-[#eef6f1] font-semibold text-[var(--green-deep)]"
+                    : "text-[#171717]"
+                }`}
+              >
+                {item}
               </div>
             ))}
+          </div>
+        </div>
 
-            <div className="ml-auto flex items-center gap-2.5">
-              <span className="hidden items-center gap-1.5 text-[11px] text-[#6a7282] 2xl:flex">
-                <Check /> Reconciled
-              </span>
-              <button className="rounded-lg border border-[#e5e7eb] px-3.5 py-2 text-[13px] font-semibold text-[#364152] transition-colors hover:bg-[#f3f4f6]">
-                Save draft
-              </button>
-              <button className="flex items-center gap-2 rounded-lg bg-[var(--green)] px-4 py-2 text-[13px] font-semibold text-white shadow-[0_8px_18px_-8px_rgba(14,90,56,0.7)] transition-colors hover:bg-[var(--green-deep)]">
-                Send for approval
-                <span className="grid h-5 w-5 place-items-center rounded-md bg-white/20 text-[11px]">→</span>
-              </button>
+        {/* ── content: the region the design leaves as a raster, rebuilt from the
+            same elements — the MONTHLY chip, the KPI equation strip with its
+            coloured metric tags, and the Salary Distribution card ───────────── */}
+        <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden bg-[#fafaf6] px-4 py-3">
+          {/* page head — title + blurb on the left, the view/period controls and the
+              refresh stamp on the right, as the payroll dashboard carries them.
+
+              Type runs on four steps so each role is legible as a role, rather than
+              the seven sizes bunched between 8 and 12px this block started with:
+                16  page title
+                14  the KPI figures — the only numbers that should carry weight
+                13  card titles, kept under the page title so it stays the head
+                9.5 body, control values and control labels
+                8   tags, meta, axis and the period chip
+              plus 11 for the +/= operators, which are connective marks rather
+              than part of the text ramp.
+              Everything that is a label rather than a value also loses weight or
+              gains tracking, so size is not doing the work on its own. */}
+          <div className="flex shrink-0 items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h2 className="text-[16px] font-bold leading-[20px] tracking-[-0.02em] text-[#171717]">Payroll</h2>
+              <p className="mt-[5px] max-w-[300px] text-[9.5px] leading-[1.45] text-[#737373]">
+                Payroll dashboard gives you overview of effective cost of employees, outstanding liabilities
+                and <span className="text-[#c2622f]">ongoing loans in HROne.</span>
+              </p>
+            </div>
+
+            <div className="flex shrink-0 flex-col items-end gap-[5px]">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[9.5px] text-[#a0a0a0]">Select View</span>
+                {["Enterprise", null, "May, 2026"].map((label, i) =>
+                  label ? (
+                    <span
+                      key={label}
+                      className="flex h-[22px] items-center gap-1.5 rounded-[4px] border border-[#d4d4d4] bg-white pl-2 pr-1.5 text-[9.5px] font-medium text-[#171717]"
+                    >
+                      {label}
+                      {/* the design's chevron, turned down for a select */}
+                      <img src={navChevron} alt="" aria-hidden className="h-2.5 w-2.5 shrink-0 rotate-90" />
+                    </span>
+                  ) : (
+                    <span
+                      key={i}
+                      className="grid h-[22px] w-[22px] shrink-0 place-items-center rounded-[4px] border border-[#d4d4d4] bg-white"
+                    >
+                      <svg width="10" height="10" viewBox="0 0 12 12" aria-hidden>
+                        {[0, 1, 2].map((r) => (
+                          <path
+                            key={r}
+                            d={`M${1.5 + r} ${3 + r * 2.5}h${9 - r * 2}`}
+                            stroke="#525252"
+                            strokeWidth="1.1"
+                            strokeLinecap="round"
+                          />
+                        ))}
+                      </svg>
+                    </span>
+                  ),
+                )}
+                <span className="grid h-3.5 w-3.5 shrink-0 place-items-center rounded-full bg-[var(--green-deep)] text-[7px] font-bold leading-none text-white">
+                  ?
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <span className="text-[8px] italic text-[#8a8a8a]">Last updated time-15-09-2026</span>
+                <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden className="shrink-0">
+                  <path
+                    d="M12 7a5 5 0 1 1-1.6-3.7"
+                    stroke="var(--green)"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                  <path d="M12.2 1.6v3h-3" stroke="var(--green)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="rounded-[4px] bg-[#8d9192] px-2 py-[3px] text-[8px] font-semibold uppercase tracking-[0.12em] text-white">
+              MONTHLY
+            </span>
+          </div>
+
+          {/* KPI strip — effective CTC = net paid + contributions + deductions + reimbursement */}
+          <div className="flex shrink-0 items-stretch gap-1 rounded-xl border border-[#e5e5e5] bg-white px-2.5 py-2.5">
+            {[
+              { tag: "Effective CTC", tone: "#6b46c1", bg: "#f1ecfb", val: "₹4,25,51,690", sub: "2,040 Employees" },
+              { tag: "Net paid", tone: "#1d4ed8", bg: "#e8eefc", val: "₹3,06,06,678" },
+              { tag: "Net contributions", tone: "#9f1239", bg: "#fce8ee", val: "₹23,27,155" },
+              { tag: "Net deductions", tone: "#b42318", bg: "#fdeceb", val: "₹96,17,857" },
+              { tag: "Net reimbursement", tone: "#15803d", bg: "#e7f6ec", val: "₹0" },
+            ].map((k, i) => (
+              /* The operators are siblings of the columns, not children of them.
+                 Nested, they ate into columns 2-5 only, leaving those four ~71px of
+                 content against column 1's ~78px — which is what clipped the longer
+                 figures while the first column had room to spare. */
+              <Fragment key={k.tag}>
+                {i > 0 && (
+                  <span className="mt-[3px] shrink-0 text-[11px] font-normal text-[#cbcbcb]">{i === 1 ? "=" : "+"}</span>
+                )}
+                <div className="min-w-0 flex-1">
+                  <span
+                    className="inline-block max-w-full truncate rounded-[3px] px-1 py-[1px] text-[8px] font-semibold leading-[13px] tracking-[0.01em]"
+                    style={{ color: k.tone, background: k.bg }}
+                  >
+                    {k.tag}
+                  </span>
+                  <div className="mt-[5px] truncate text-[14px] font-bold leading-[18px] tracking-[-0.03em] tabular-nums text-[#171717]">
+                    {k.val}
+                  </div>
+                  {k.sub && (
+                    <div className="truncate text-[8px] leading-[12px] text-[#9a9a9a]">
+                      <span className="font-semibold tabular-nums text-[#6b6b6b]">2,040</span> Employees
+                    </div>
+                  )}
+                </div>
+              </Fragment>
+            ))}
+          </div>
+
+          {/* Salary distribution */}
+          <div className="flex min-h-0 flex-1 flex-col rounded-xl border border-[#e5e5e5] bg-white px-4 py-3">
+            <div className="flex shrink-0 items-center justify-between">
+              <div className="flex items-baseline gap-2">
+                <h3 className="text-[13px] font-bold tracking-[-0.015em] text-[#171717]">Salary Distribution</h3>
+                <span className="text-[9.5px] text-[#8a8a8a]">Yearly</span>
+              </div>
+              {/* segmented control, active segment on the design's surface tone */}
+              <div className="flex overflow-hidden rounded-[6px] border border-[#e5e5e5]">
+                {["Effective CTC", "Net Paid", "CTC Analysis"].map((t, i) => (
+                  <span
+                    key={t}
+                    className={`px-2.5 py-1 text-[9.5px] ${i > 0 ? "border-l border-[#e5e5e5]" : ""} ${
+                      i === 0 ? "bg-[#f5f5f0] font-semibold text-[#171717]" : "text-[#8a8a8a]"
+                    }`}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-2 shrink-0 text-[8px] tracking-[0.02em] text-[#9bb0c2]">Effective CTC (INR)</div>
+
+            <div className="mt-1 flex min-h-0 flex-1 flex-col">
+              <div className="flex min-h-0 flex-1">
+                <div className="flex w-[54px] shrink-0 flex-col justify-between pr-2 text-right text-[8px] leading-none tabular-nums text-[#a3b0bf]">
+                  {["50,000,000", "40,000,000", "30,000,000", "20,000,000", "10,000,000", "0"].map((t) => (
+                    <span key={t}>{t}</span>
+                  ))}
+                </div>
+
+                <div className="relative min-h-0 flex-1">
+                  <svg viewBox="0 0 520 190" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden>
+                    <defs>
+                      <linearGradient id="v1sd" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#b9b7f0" stopOpacity="0.55" />
+                        <stop offset="100%" stopColor="#e9e8fb" stopOpacity="0.15" />
+                      </linearGradient>
+                      {/* the sweep is driven by scroll progress, so the series draws
+                          itself left to right as the section comes into view — the
+                          width is set directly rather than transitioned, because the
+                          scroll already supplies the frames */}
+                      <clipPath id="v1sweep">
+                        <rect x="0" y="0" width={PLOT_W * chart} height="190" />
+                      </clipPath>
+                    </defs>
+
+                    {[0, 1, 2, 3, 4, 5].map((i) => (
+                      <line key={i} x1="0" y1={10 + i * 34} x2="520" y2={10 + i * 34} stroke="#f0f0ea" strokeWidth="1" />
+                    ))}
+
+                    <g clipPath="url(#v1sweep)">
+                      <path d={CTC_AREA} fill="url(#v1sd)" />
+                      <path
+                        d={CTC_LINE}
+                        fill="none"
+                        stroke="#4fc3f7"
+                        strokeWidth="2"
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
+                      />
+                      {CTC_PTS.map(([x, y], i) => (
+                        <circle key={CTC_SERIES[i][0]} cx={x} cy={y} r="2.2" fill="#4fc3f7" />
+                      ))}
+                    </g>
+
+                    {/* the selected month reads as current once the sweep reaches it */}
+                    <circle
+                      cx={CTC_PTS[CTC_PTS.length - 1][0]}
+                      cy={CTC_PTS[CTC_PTS.length - 1][1]}
+                      r="3.6"
+                      fill="#fff"
+                      stroke="#4fc3f7"
+                      strokeWidth="2"
+                      style={{ opacity: chart > 0.96 ? 1 : 0, transition: "opacity 240ms ease-out" }}
+                    />
+                  </svg>
+
+                  <span className="absolute bottom-2.5 right-2 grid h-9 w-9 place-items-center rounded-full bg-[var(--green-deep)] shadow-[0_8px_18px_-8px_rgba(2,86,61,0.8)]">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+                      {[4, 8, 12].map((y) => (
+                        <path key={y} d={`M3 ${y}h10`} stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
+                      ))}
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex shrink-0 pl-[54px] pt-[3px]">
+                {CTC_SERIES.map(([m]) => (
+                  <span key={m} className="flex-1 text-center text-[7.5px] leading-[10px] text-[#a3b0bf]">
+                    {m}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -987,6 +1148,13 @@ function Dashboard() {
 
 /* Size the product settles to after the first scroll — constant at every width, so
    the second-scroll proportion never changes. */
+/* The product's own greens, taken from the Figma node the dashboard shell was
+   built from. The phone is the same app, so it paints with these rather than the
+   marketing site's --green (#0e5a38) / --green-deep (#0b4a2e), which are a
+   lighter, warmer pair and read as a different brand next to the dashboard. */
+const APP_SHELL = "var(--app-shell)"; // topbar + rail ground
+const APP_BRAND = "var(--app-brand)"; // primary actions and brand marks
+
 const SETTLED_SCALE = 0.88;
 /* iPad portrait. At and above this the big-then-shrink behaviour runs and the
    floating cards show; below it the product sits at its natural size alone. */
@@ -1030,7 +1198,13 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
       const mockH = (base * 11) / 16; // mock slot is aspect-[16/11]
       const pb = parseFloat(getComputedStyle(el).paddingBottom) || 0;
       const nextSectionTop = el.getBoundingClientRect().top + window.scrollY + mockH + pb;
-      setReserve(nextSectionTop < window.innerHeight ? mockH * (h - 1) : 0);
+      /* The overhang is mockH*(h-1), but pb below the slot is already clear space
+         — reserving the full overhang on top of it double-counts, and on a tall
+         window that left ~212px of dead cream under the product. Subtracting pb
+         alone lands the blown-up product exactly on the next section's first line,
+         where its shadow still crosses, so keep a 32px cushion. */
+      const CUSHION = 32;
+      setReserve(nextSectionTop < window.innerHeight ? Math.max(0, mockH * (h - 1) - pb + CUSHION) : 0);
     };
     compute();
     window.addEventListener("resize", compute);
@@ -1043,7 +1217,7 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
 
 
   return (
-    <div ref={ref} className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-10 md:px-12 min-[1360px]:pb-28">
+    <div ref={ref} className="relative mx-auto mt-10 max-w-[1320px] px-6 pb-10 md:px-12 min-[1360px]:pb-20">
       <div className="relative">
         {/* dotted-grid backdrop */}
         <div
@@ -1083,25 +1257,45 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
             willChange: p > 0 && p < 1 ? "transform" : undefined,
           }}
         >
-          <Dashboard />
+          <Dashboard p={p} />
         </div>
 
-        {/* cards settle fully in the side gutters — no overlap with the product */}
-        <Float from={[-30, 24]} tilt={-2} t={win(p, 0.4, 0.62)} className="absolute right-[calc(50%+410px)] top-2 z-20 hidden min-[1360px]:block">
-          <AskAI />
-        </Float>
-        <Float from={[-46, 40]} tilt={-1.4} t={win(p, 0.55, 0.78)} className="absolute -left-9 bottom-2 z-20 hidden min-[1360px]:block">
-          <ApprovalMatrix />
-        </Float>
+        {/* Each gutter is a flex column spanning the stage, so the cards space
+            themselves evenly instead of each being pinned to its own offset. The
+            old left column mixed a centre-relative anchor (right-[calc(50%+410px)])
+            with an edge-relative one, which left its edges 27px apart and a 221px
+            hole down the middle while the right gutter overlapped by 16px.
+            items-start / items-end keep each column flush to its outer edge, and
+            the tilts and entry offsets mirror across the product. */}
+        {/* Both gutters are centred columns, which is what puts the two sides in
+            balance: each one's centre of mass lands within a few px of the other's
+            and close to the dashboard's own middle, instead of the left sagging
+            69px lower than the right as it did when they were bottom-anchored.
 
-        {/* the phone anchors the top of the right gutter, sharing its right edge with
-            the card below it and with ApprovalMatrix's hang on the left */}
-        <Float from={[34, 26]} tilt={2} t={win(p, 0.46, 0.68)} className="absolute -right-9 top-[-14px] z-30 hidden min-[1360px]:block">
-          <PhoneAttendance />
-        </Float>
-        <Float from={[46, 52]} tilt={2.5} t={win(p, 0.66, 0.94)} className="absolute -right-9 bottom-2 z-20 hidden min-[1360px]:block">
-          <MultiState />
-        </Float>
+            They centre on the stage rather than on the dashboard's painted box.
+            Dead-centring on the dashboard is better balance on paper, but the right
+            column is 673px against the dashboard's 532px, so it would overhang ~50px
+            above the dashboard's top — and at the scroll position where the reveal
+            settles, that lands the phone's status bar under the sticky nav. The
+            stage's centre sits ~36px lower, which clears the nav and still holds
+            both columns within ~40px of the dashboard's centre. */}
+        <div className="absolute -left-9 inset-y-0 z-20 hidden flex-col items-start justify-center gap-10 min-[1360px]:flex">
+          <Float from={[-34, 26]} tilt={-2} t={win(p, 0.32, 0.52)}>
+            <AskAI />
+          </Float>
+          <Float from={[-46, 42]} tilt={-2} t={win(p, 0.46, 0.64)}>
+            <ApprovalMatrix />
+          </Float>
+        </div>
+
+        <div className="absolute -right-9 inset-y-0 z-20 hidden flex-col items-end justify-center gap-10 min-[1360px]:flex">
+          <Float from={[34, 26]} tilt={2} t={win(p, 0.38, 0.56)} className="z-30">
+            <PhoneAttendance />
+          </Float>
+          <Float from={[46, 42]} tilt={2} t={win(p, 0.52, 0.7)}>
+            <MultiState />
+          </Float>
+        </div>
       </div>
 
       {/* room for the hero blow-up to hang into — see `reserve` above */}
