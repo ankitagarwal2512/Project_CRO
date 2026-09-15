@@ -19,14 +19,14 @@ export default function App() {
           </span>
 
           {/* deliberate two-line break — keeps the rag even at every width */}
-          <h1 className="mt-5 font-display text-[clamp(32px,5.6vw,78px)] font-semibold leading-[0.98] tracking-[-0.032em] text-[var(--ink)]">
+          <h1 className="mt-6 font-display text-[clamp(36px,6.2vw,92px)] font-semibold leading-[0.98] tracking-[-0.034em] text-[var(--ink)]">
             <span className="block">
               Built for <span className="text-[var(--green)]">complex</span>
             </span>
             <span className="block">HR operations</span>
           </h1>
 
-          <p className="mt-[22px] w-full max-w-[600px] text-balance text-[19.5px] leading-[1.58] tracking-[-0.005em] text-[var(--muted)]">
+          <p className="mt-[26px] w-full max-w-[640px] text-balance text-[clamp(17px,1.45vw,20.5px)] leading-[1.58] tracking-[-0.005em] text-[var(--muted)]">
             Bring payroll, workforce, talent and employee operations together with the control and depth
             complex organisations need.
           </p>

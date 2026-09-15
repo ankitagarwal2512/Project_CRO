@@ -31,13 +31,16 @@ export default function App() {
             Enterprise HR Software
           </span>
 
-          {/* Short enough to hold one line at every width, so the conditional break the
-              longer headline needed is gone with it. */}
-          <h1 className="mt-[clamp(10px,1.8vh,16px)] font-display text-[clamp(30px,min(4.4vw,7.4vh),64px)] [@media(max-height:700px)]:text-[clamp(28px,min(4.4vw,5.9vh),42px)] font-semibold leading-[0.98] tracking-[-0.032em] text-[var(--ink)]">
+          {/* Short enough to hold one line at every width, so the conditional break the longer
+              headline needed is gone with it — and being one line, it can take far more size.
+              Sized off the smaller of a width and a height term: width so it never outgrows
+              its measure (it sits at ~85% of it on a laptop), height so a short screen does
+              not spend the fold on type. The second clamp is the short-screen regime. */}
+          <h1 className="mt-[clamp(10px,1.8vh,16px)] font-display text-[clamp(32px,min(6.4vw,10.4vh),96px)] [@media(max-height:700px)]:text-[clamp(30px,min(6.4vw,9vh),56px)] font-semibold leading-[0.98] tracking-[-0.032em] text-[var(--ink)]">
             Built for <span className="text-[var(--green)]">complex</span> HR.
           </h1>
 
-          <p className="mt-[clamp(12px,2.2vh,18px)] w-full max-w-[680px] text-balance text-[clamp(16px,min(1.3vw,2.2vh),18.5px)] leading-[1.58] tracking-[-0.005em] text-[var(--muted)]">
+          <p className="mt-[clamp(12px,2.2vh,18px)] w-full max-w-[720px] text-balance text-[clamp(16px,min(1.45vw,2.4vh),20px)] leading-[1.58] tracking-[-0.005em] text-[var(--muted)]">
             {/* non-breaking space: "HR operations" is one term and the balanced rag was
                 splitting it across the two lines */}
             Deep configurability, powerful automation, and connected HR&nbsp;operations — built to work the

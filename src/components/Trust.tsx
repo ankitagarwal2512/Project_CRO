@@ -72,7 +72,7 @@ const certs: [string, () => React.JSX.Element][] = [
 
 export function Trust() {
   return (
-    <section className="mx-auto max-w-[1280px] px-6 pb-16 pt-6">
+    <section className="mx-auto max-w-[1200px] px-6 pb-16 pt-6">
       {/* headline + stats */}
       <div className="grid items-center gap-x-10 gap-y-8 border-t border-[var(--border)] py-10 lg:grid-cols-[1fr_auto]">
         {/* deliberate two-line break, same idiom as the hero h1 — the natural rag put

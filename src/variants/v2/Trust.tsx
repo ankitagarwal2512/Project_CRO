@@ -62,7 +62,7 @@ const certs: [string, () => React.JSX.Element][] = [
 
 export function Trust() {
   return (
-    <section className="mx-auto max-w-[1280px] px-6 pb-16 pt-6">
+    <section className="mx-auto max-w-[1200px] px-6 pb-16 pt-6">
       {/* logos — seamless marquee */}
       <div
         className="group relative overflow-hidden border-t border-[var(--border)] py-8"

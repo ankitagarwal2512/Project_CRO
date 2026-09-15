@@ -17,8 +17,8 @@
   --coral-hover: #d9553e;
   --border: rgba(20, 40, 25, 0.1);
 
-  --font-display: 'Clash Grotesk', system-ui, sans-serif;
-  --font-body: 'Public Sans', system-ui, sans-serif;
+  --font-display: 'Clash Grotesk';
+  --font-body: 'Public Sans';
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 

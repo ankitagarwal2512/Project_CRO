@@ -21,7 +21,7 @@ function Logo({ className = "" }: { className?: string }) {
 export function TopStripe() {
   return (
     <div className="w-full border-b border-[var(--border)] bg-[var(--panel)]/70 backdrop-blur">
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-6 py-2.5 text-[13px]">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-4 px-6 py-2.5 text-[13px]">
         <div className="flex min-w-0 items-center gap-3">
           <span className="flex items-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--green)]">
             <img src={newsIcon} alt="" aria-hidden className="h-[15px] w-auto" />
@@ -54,7 +54,7 @@ export function NavBar() {
   const hasCaret = new Set(["HR Software", "HR AI Agents", "HROne Studio", "HR Resources", "About"]);
   return (
     <nav className="w-full border-b border-[var(--border)] bg-[var(--cream)]/80 backdrop-blur">
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-6 px-6 py-4">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-6 px-6 py-4">
         <Logo />
         <div className="hidden items-center gap-7 text-[15px] font-medium lg:flex">
           {links.map((l) => (
