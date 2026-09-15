@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import gartnerIcon from "@/imports/gartner-icon.svg";
 import g2Icon from "@/imports/g2icon.svg";
+import logoHr from "@/imports/logohr.png";
 import { NavBar, TopStripe } from "./Chrome";
 
 /* Both marks are drawn in the same 62x62 box, but Gartner's is a circle inscribed in it
@@ -13,7 +15,59 @@ const ratings: [string, string, string, number][] = [
 import { ProductShowcase } from "./ProductShowcase";
 import { Trust } from "./Trust";
 
+/* iPad portrait, the same line the root variation draws. Below it the hero is not a
+   layout that degrades — it is a 1120px product window that opens out on scroll, and
+   shrinking that to a phone leaves neither the screen readable nor the effect intact.
+   Rather than ship a hollowed-out phone version of a desktop concept, the variation
+   asks for a bigger screen. Copied rather than imported: each variation owns its own
+   App so a change to one cannot reach another. */
+const DESKTOP_MIN = 768;
+
+function useIsDesktop() {
+  const query = `(min-width: ${DESKTOP_MIN}px)`;
+  /* Read synchronously on first render so the page never flashes the wrong one —
+     this is a client-rendered app, so window is always there. */
+  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia(query).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", onChange);
+    setIsDesktop(mq.matches);
+    return () => mq.removeEventListener("change", onChange);
+  }, [query]);
+  return isDesktop;
+}
+
+function SmallScreenNotice() {
+  return (
+    <div className="flex min-h-[100svh] flex-col items-center justify-center px-8 text-center">
+      <img src={logoHr} alt="HROne" className="h-7 w-auto" />
+
+      <h1 className="mt-8 font-display text-[clamp(26px,7.5vw,34px)] font-semibold leading-[1.1] tracking-[-0.025em] text-[var(--ink)]">
+        Best viewed on a<br />
+        <span className="text-[var(--green)]">desktop or laptop</span>
+      </h1>
+
+      <p className="mt-4 max-w-[300px] text-[15px] leading-[1.55] text-[var(--muted)]">
+        This preview is built around a full-size product view. Open it on a wider screen to see it as
+        intended.
+      </p>
+
+      <span className="mt-7 inline-flex items-center gap-2 rounded-full border border-[var(--green-line)] bg-[var(--green-soft)]/70 px-3.5 py-[7px] font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--green)]">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <rect x="2" y="4" width="20" height="13" rx="2" />
+          <path d="M8 20h8M12 17v3" />
+        </svg>
+        {DESKTOP_MIN}px or wider
+      </span>
+    </div>
+  );
+}
+
 export default function App() {
+  const isDesktop = useIsDesktop();
+  if (!isDesktop) return <SmallScreenNotice />;
+
   return (
     <div className="min-h-full">
       <header className="sticky top-0 z-50">
