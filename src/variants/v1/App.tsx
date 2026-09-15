@@ -72,10 +72,13 @@ export default function App() {
 
           {/* deliberate two-line break — keeps the rag even at every width */}
           <h1 className="mt-6 font-display text-[clamp(39.6px,6.82vw,101.2px)] font-semibold leading-[0.9] tracking-[-0.034em] text-[var(--ink)]">
-            <span className="block">
-              Built for <span className="text-[var(--green)]">complex</span>
-            </span>
-            <span className="block">HR operations</span>
+            {/* Green sits on the full noun phrase, not the adjective. "complex" green at
+                the end of line 1 split the phrase across the break — a modifier lit up
+                while its noun stayed dark below — and doubled the highlight the Trust h2
+                already puts on "operationally complex". Black setup line, green payload
+                line reads as one deliberate structure. */}
+            <span className="block">Built for complex</span>
+            <span className="block text-[var(--green)]">HR operations</span>
           </h1>
 
           <p className="mt-[26px] w-full max-w-[640px] text-balance text-[clamp(17px,1.45vw,20.5px)] leading-[1.45] tracking-[-0.005em] text-[var(--muted)]">

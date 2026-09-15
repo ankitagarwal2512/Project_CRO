@@ -87,11 +87,13 @@ export function Trust() {
             equal slots the short labels (ORGANISATIONS, FUNDING RAISED) left an ~80px
             hole before their rule while the long ones (EMPLOYEES MANAGED) nearly touched
             theirs, so the rules read as attached to the stat on their right instead of
-            sitting between the two. gap-x-8 against pl-8 also makes the space either
-            side of each rule equal — it was 12px before and 20px after. */}
-        <div className="flex flex-wrap gap-x-8 gap-y-6">
+            sitting between the two. gap-x-6 against pl-6 also makes the space either
+            side of each rule equal — it was 12px before and 20px after. 24px a side
+            rather than 32px: at 64px apart the four read as separate items, at 48px
+            they read as one strip while the rules still have room to sit between. */}
+        <div className="flex flex-wrap gap-x-6 gap-y-6">
           {stats.map(([n, l], i) => (
-            <div key={l} className={i > 0 ? "border-l border-[var(--border)] pl-8" : ""}>
+            <div key={l} className={i > 0 ? "border-l border-[var(--border)] pl-6" : ""}>
               <div className="text-[30px] font-bold leading-none tracking-[-0.01em] text-[var(--green)]">{n}</div>
               <div className="mt-2 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">{l}</div>
             </div>
