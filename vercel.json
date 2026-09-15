@@ -4,6 +4,7 @@
     { "source": "/v2", "destination": "/index.html" },
     { "source": "/v3", "destination": "/index.html" },
     { "source": "/v4", "destination": "/index.html" },
-    { "source": "/original", "destination": "/index.html" }
+    { "source": "/original", "destination": "/index.html" },
+    { "source": "/current", "destination": "/index.html" }
   ]
 }
