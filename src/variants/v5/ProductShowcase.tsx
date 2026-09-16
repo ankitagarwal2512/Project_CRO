@@ -139,237 +139,228 @@ const Warn = () => (
 
 /* ---------- the snippets ---------- */
 
-function MultiState() {
-  /* The employer-contribution breakdown from the product's payroll dashboard.
-     The three rows sum to ₹23,27,155 — which is exactly the "Net contributions"
-     figure on the strip in the product behind this card. The card is the detail
-     behind a number already on screen rather than a second invented total, which
-     is the thing that makes a mock survive someone actually reading it. */
-  const rows: [string, string][] = [
-    ["ESI Employer", "₹5,190"],
-    ["LWF Employer", "₹784"],
-    ["PF Employer", "₹23,21,181"],
-  ];
+function PayrollSummary() {
+  /* One figure, its scope, and where it has got to — not a breakdown. The card this
+     replaced listed three employer-contribution rows summing to ₹23,27,155, which only
+     meant anything while the payroll dashboard sat behind it; with the inbox there now,
+     it was three numbers with nothing to reconcile against.
+
+     Net payout, not effective CTC: CTC is what the workforce costs on paper, payout is what
+     the run actually moved. This card sits under a headline about operations, and a payroll
+     card should state the thing payroll did. ₹3,06,06,678 is the "Net paid" figure from the
+     payroll screen the other variation still shows.
+
+     The period is September 2026, not the May the payroll screen used. Every request in the
+     queue behind this card is dated September and the sign-off is days away; a payroll card
+     four months stale next to them is the kind of thing that unravels on a second look.
+
+     The status is deliberately not "verified and done": the queue behind this card carries
+     "Payroll sign-off — Kavya Reddy, due in 8 days". A card claiming payroll was signed off
+     while the inbox is still asking for the sign-off is the kind of contradiction a
+     prospect notices in a demo. Inputs verified, sign-off outstanding, same eight days. */
   return (
     <Card className="w-[236px]">
-      {/* header — title, period and the product's help affordance */}
       <div className="-mx-4 -mt-4 flex items-center gap-1.5 border-b border-[var(--border)] px-4 pb-2.5 pt-3">
-        <span className="text-[12px] font-bold tracking-[-0.01em] text-[var(--ink)]">Contributions</span>
-        <span className="text-[8.5px] text-[var(--muted)]">Monthly</span>
+        <span className="text-[12px] font-bold tracking-[-0.01em] text-[var(--ink)]">Payroll</span>
+        <span className="text-[8.5px] text-[var(--muted)]">Sep 2026</span>
         <span className="grid h-[13px] w-[13px] shrink-0 place-items-center rounded-full bg-[var(--muted)]/30 text-[7.5px] font-bold leading-none text-white">
           ?
         </span>
       </div>
 
-      {/* rows bleed to the card edge and alternate, the way the product lists them */}
-      <div className="-mx-4">
-        {rows.map(([label, value], i) => (
-          <div
-            key={label}
-            className={`flex items-center justify-between gap-2 px-4 py-[9px] ${
-              i % 2 ? "bg-[var(--cream-2)]/35" : ""
-            }`}
-          >
-            <span className="truncate text-[9.5px] text-[var(--muted)]">{label}</span>
-            <span className="shrink-0 text-[10px] font-semibold tabular-nums text-[var(--ink)]">{value}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className="-mx-4 -mb-4 flex items-center justify-between gap-2 border-t border-[var(--border)] bg-[var(--green-soft)] px-4 py-[11px]">
-        <span className="text-[9.5px] font-semibold text-[var(--green-deep)]">Total contributions</span>
-        <span className="text-[11.5px] font-bold tabular-nums text-[var(--green-deep)]">₹23,27,155</span>
-      </div>
-    </Card>
-  );
-}
-
-function ShiftRoster() {
-  return (
-    <Card className="w-[244px]">
-      <div className="mb-3 text-[15px] font-bold">Shift roster</div>
-      {["Pune", "Chennai"].map((c) => (
-        <div key={c} className="mb-1.5 flex items-center justify-between">
-          <span className="text-[12px] text-[var(--muted)]">{c}</span>
-          <div className="flex gap-1">
-            {["A", "B", "C"].map((x) => (
-              <span key={x} className="grid h-6 w-6 place-items-center rounded-md bg-[var(--cream-2)] font-mono text-[11px]">
-                {x}
-              </span>
-            ))}
-          </div>
+      <div className="pb-1 pt-3">
+        <div className="text-[8.5px] font-semibold uppercase tracking-[0.08em] text-[var(--muted)]">
+          Net payout
         </div>
-      ))}
-      <div className="mt-3 rounded-lg bg-[var(--green-soft)] px-3 py-2">
-        <div className="text-[17px] font-bold text-[var(--green-deep)]">186 h</div>
-        <div className="text-[11px] text-[var(--green)]">Overtime computed</div>
+        <div className="mt-[3px] text-[22px] font-bold leading-none tracking-[-0.03em] tabular-nums text-[var(--ink)]">
+          ₹3,06,06,678
+        </div>
+        <div className="mt-[7px] text-[9.5px] leading-[13px] text-[var(--muted)]">
+          <span className="font-semibold tabular-nums text-[var(--ink)]">2,040</span> employees ·{" "}
+          <span className="font-semibold tabular-nums text-[var(--ink)]">14</span> locations
+        </div>
       </div>
-    </Card>
-  );
-}
 
-function ContractWorkforce() {
-  return (
-    <Card className="w-[224px]">
-      <div className="mb-2 text-[15px] font-bold">Contract workforce</div>
-      <div className="flex items-baseline gap-2">
-        <span className="text-[26px] font-bold leading-none">360</span>
-        <span className="text-[11px] text-[var(--muted)]">workers · 6 vendors</span>
-      </div>
-      <div className="mt-3 flex items-center justify-between text-[12px]">
-        <span className="text-[var(--muted)]">12 days to expiry</span>
-        <span className="flex items-center gap-1.5 text-[var(--ink)]">
-          <Check /> CLRA ready
+      <div className="-mx-4 -mb-4 mt-3 flex items-center justify-between gap-2 border-t border-[var(--border)] bg-[var(--green-soft)] px-4 py-[10px]">
+        <span className="flex items-center gap-1.5 text-[9.5px] font-semibold text-[var(--green-deep)]">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0">
+            <path d="m5 12.5 4.5 4.5L19 7.5" />
+          </svg>
+          Inputs verified
         </span>
+        <span className="shrink-0 text-[8.5px] text-[var(--green-deep)]/75">Sign-off in 8 days</span>
       </div>
     </Card>
   );
 }
 
-function ApprovalMatrix() {
-  /* Mirrors the product's request-workflow screen: a vertical thread down the
-     avatars, one node per approver, with the level badge on the right and the
-     action link under the status. The old build was a five-dot stepper, which
-     shows the shape of an approval chain but not who is holding it up. */
-  const steps = [
-    { who: "Ananya Rao", id: "#AVK0730", avatar: avatarAnanya, note: "On duty · 11/09", state: "raised" as const },
-    { who: "Rohan Mehta", id: "#AVK0172", avatar: avatarUser, note: "Request is approved.", state: "approved" as const, level: "Level 1" },
-    { who: "Priya Shah", id: "#AVK0190", initials: "PS", note: "Pending…", state: "pending" as const, level: "Level 2" },
+/* Replaces the approval-workflow card, which showed a three-step chain ending in a green
+   tick. The inbox behind it already demonstrates approvals — ten of them, across seven kinds
+   of work — so the card was spending a gutter slot restating the centre screen's point.
+
+   Shift rostering argues the other half of the headline instead. Two plants on different
+   patterns (Pune runs three shifts, Chennai two) with overtime falling out of the configured
+   rules is "automate the most complex operations" in a form a reader can check at a glance:
+   the complexity is visible, and the outcome is one line.
+
+   Pune and Chennai are not arbitrary — the Ask One AI card beside it answers "Which sites
+   drive overtime?" with those two. The cards describe one tenant. */
+function ShiftOvertime() {
+  const sites: [string, string[]][] = [
+    ["Pune", ["A", "B", "C"]],
+    ["Chennai", ["A", "B"]],
   ];
   return (
-    <Card className="w-[244px]">
-      {/* header — carries the request's own status */}
-      <div className="-mx-4 -mt-4 mb-3 flex items-center border-b border-[var(--border)] px-4 pt-3">
-        <span className="relative flex shrink-0 items-center gap-1.5 whitespace-nowrap pb-2 text-[12px] font-bold text-[var(--ink)]">
-          Approval workflow
-          <span className="rounded-[4px] bg-[#fdf1dc] px-1.5 py-[1px] text-[9px] font-semibold text-[#9a6412]">Pending</span>
-          <span className="absolute inset-x-0 -bottom-px h-[2px] rounded-full bg-[var(--green-deep)]" />
+    <Card className="w-[236px]">
+      <div className="-mx-4 -mt-4 flex items-center gap-1.5 border-b border-[var(--border)] px-4 pb-2.5 pt-3">
+        <span className="text-[12px] font-bold tracking-[-0.01em] text-[var(--ink)]">Shift roster</span>
+        <span className="text-[8.5px] text-[var(--muted)]">This week</span>
+        <span className="grid h-[13px] w-[13px] shrink-0 place-items-center rounded-full bg-[var(--muted)]/30 text-[7.5px] font-bold leading-none text-white">
+          ?
         </span>
       </div>
 
-      <div className="mb-2 text-[10.5px] font-semibold text-[var(--ink)]">Your request workflow</div>
+      <div className="pt-2.5">
+        {sites.map(([site, shifts]) => (
+          <div key={site} className="mb-2 flex items-center justify-between gap-2 last:mb-0">
+            <span className="flex min-w-0 items-center gap-1.5">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0 text-[var(--green)]">
+                <path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z" />
+                <circle cx="12" cy="10" r="2.4" />
+              </svg>
+              <span className="truncate text-[10.5px] font-semibold text-[var(--ink)]">{site}</span>
+            </span>
 
-      <div className="flex flex-col">
-        {steps.map((st, i) => (
-          <div key={st.id} className="flex gap-2.5">
-            {/* Avatar + the thread that joins it to the next node. Both photos take
-                the same 1.3 crop: AVATAR.png carries an uneven white rim baked into
-                the file (thickest at ~1.26x radius) that a smaller scale leaves
-                showing, and applying the same factor to ANANYA.png keeps the two
-                heads filling their discs to the same degree rather than one sitting
-                tight in frame and the other floating in it. */}
-            <div className="flex w-7 shrink-0 flex-col items-center">
-              {st.avatar ? (
-                <span className="block h-7 w-7 shrink-0 overflow-hidden rounded-full ring-1 ring-[var(--border)]">
-                  <img src={st.avatar} alt="" aria-hidden className="h-full w-full scale-[1.3] object-cover" />
-                </span>
-              ) : (
-                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--green-soft)] text-[10px] font-bold text-[var(--green-deep)] ring-1 ring-[var(--green-line)]">
-                  {st.initials}
-                </span>
-              )}
-              {i < steps.length - 1 && <span className="w-px flex-1 bg-[var(--border)]" />}
-            </div>
-
-            <div className={`min-w-0 flex-1 rounded-lg border border-[var(--border)] px-2.5 py-2 ${i < steps.length - 1 ? "mb-2" : ""}`}>
-              <div className="flex items-start justify-between gap-2">
-                <div className="truncate text-[11.5px] font-bold text-[var(--ink)]">{st.who}</div>
-                {st.level && (
-                  <span className="shrink-0 rounded-full bg-[#f1ecfb] px-2 py-[1px] text-[9px] font-semibold text-[#6b46c1]">
-                    {st.level}
+            {/* all three letters always show; the ones this site does not run stay outlined,
+                which is what makes "different patterns per location" readable at a glance */}
+            <span className="flex shrink-0 gap-1">
+              {["A", "B", "C"].map((sh) => {
+                const on = shifts.includes(sh);
+                return (
+                  <span
+                    key={sh}
+                    className={`grid h-[18px] w-[18px] place-items-center rounded-[5px] font-mono text-[9px] font-semibold ${
+                      on
+                        ? "bg-[var(--green-soft)] text-[var(--green-deep)] ring-1 ring-[var(--green-line)]"
+                        : "text-[var(--muted)]/55 ring-1 ring-[var(--border)]"
+                    }`}
+                  >
+                    {sh}
                   </span>
-                )}
-              </div>
-              <div className="truncate font-mono text-[9px] text-[var(--muted)]">{st.id}</div>
-              <div
-                className={`mt-[3px] truncate text-[10.5px] ${
-                  st.state === "approved" ? "text-[var(--green)]" : "text-[var(--muted)]"
-                }`}
-              >
-                {st.note}
-              </div>
-            </div>
+                );
+              })}
+            </span>
           </div>
         ))}
+      </div>
+
+      <div className="-mx-4 -mb-4 mt-3 border-t border-[var(--border)] bg-[var(--green-soft)] px-4 py-[10px]">
+        <div className="flex items-center gap-1.5">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0 text-[var(--green-deep)]">
+            <path d="m5 12.5 4.5 4.5L19 7.5" />
+          </svg>
+          <span className="text-[11px] font-bold tracking-[-0.01em] text-[var(--green-deep)]">
+            Overtime calculated
+          </span>
+        </div>
+        <div className="mt-[3px] pl-[17px] text-[8.5px] leading-[11px] text-[var(--green-deep)]/75">
+          1,284 hrs across 5 shift rules · no manual entry
+        </div>
       </div>
     </Card>
   );
 }
 
-/* Each prompt carries its own answer, so the card reads as a real exchange
-   instead of one fixed result sitting under a rotating question. */
-const ASK_ITEMS = [
-  {
-    q: "Which sites drive overtime?",
-    a: "Pune and Chennai drive 62% of overtime hours this month.",
-    tag: "+18% vs Aug",
-  },
-  {
-    q: "Who is due for PF revision?",
-    a: "14 employees cross the ₹15,000 wage ceiling in September.",
-    tag: "3 need Form 11",
-  },
-  {
-    q: "Summarise attrition in Sales",
-    a: "Sales attrition is 3.1%, against 1.4% company-wide.",
-    tag: "9 exits · 4 regretted",
-  },
-  {
-    q: "Any statutory approvals due?",
-    a: "6 approvals open — PT Maharashtra is due in 2 days.",
-    tag: "2 overdue",
-  },
-];
-const ASK_PROMPTS = ASK_ITEMS.map((i) => i.q);
+/* One question carried all the way through: asked, worked, answered. The card used to
+   rotate three question/answer pairs, which showed that One AI replies but not that it does
+   anything to get there — and "reply" is the cheap half of the claim.
 
-function useTypewriter(phrases: string[]) {
-  const [text, setText] = useState("");
-  const [done, setDone] = useState(false);
-  const [index, setIndex] = useState(0);
+   The research steps are the shipped agent's own, condensed from eight to six: "Learning
+   Rules Generator" and "Getting Columns Values" are internal names that mean nothing to a
+   prospect and cost two rows each at this size. */
+const ASK_PROMPT = "Monthly employee exits, past 12 months?";
+const ASK_STEPS = [
+  "Elaborate query",
+  "Select tables",
+  "Validate schema",
+  "Select columns",
+  "Generate steps",
+  "Generate SQL query",
+];
+/* Twelve months, Oct 2025 to Sep 2026 — the question says "past 12 months", so the series
+   has to be twelve and has to end on the month the rest of the mock is in. It ran Sep to May
+   before: nine points, ending four months before the demo's own present.
+
+   Counts, not percentages: "employee exits" is a number of people, and the axis, the title
+   and the callout all state it the same way. The shape is the point — flat single digits
+   through the winter, then the post-appraisal spike in Mar-Apr that every Indian HR team
+   recognises, settling back through the monsoon. A smooth curve would read as invented. */
+const ATTRITION: [string, number][] = [
+  ["Oct", 9], ["Nov", 7], ["Dec", 9], ["Jan", 8], ["Feb", 11], ["Mar", 18],
+  ["Apr", 24], ["May", 17], ["Jun", 13], ["Jul", 12], ["Aug", 10], ["Sep", 14],
+];
+const ASK_TOTAL = ASK_STEPS.length + 1; // steps, then the chart
+
+const CHART_W = 196;
+const CHART_H = 54;
+const ATTR_MAX = 25;
+/* Inset by the dot radius on every side. Plotted edge to edge, the Sep and May points sat
+   exactly on the viewBox bounds and their markers were sliced in half, and the Apr peak's
+   stroke ran off the top. */
+const PAD_X = 3.5;
+const PAD_Y = 6;
+const ATTR_PTS = ATTRITION.map(([, v], i): [number, number] => [
+  PAD_X + (i * (CHART_W - PAD_X * 2)) / (ATTRITION.length - 1),
+  CHART_H - PAD_Y - (v / ATTR_MAX) * (CHART_H - PAD_Y * 2),
+]);
+const ATTR_LINE = ATTR_PTS.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
+
+function useAskFlow() {
+  const [t, setT] = useState(0);
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setText(phrases[0]);
-      setDone(true);
+      setT(ASK_TOTAL);
       return;
     }
-    let i = 0; // phrase index
-    let c = 0; // char index
-    let deleting = false;
-    let timer = 0 as unknown as ReturnType<typeof setTimeout>;
-    const tick = () => {
-      const phrase = phrases[i];
-      if (!deleting) {
-        c++;
-        setText(phrase.slice(0, c));
-        setDone(c === phrase.length);
-        if (c === phrase.length) {
-          timer = setTimeout(() => {
-            deleting = true;
-            tick();
-          }, 2200);
-          return;
-        }
-      } else {
-        c--;
-        setText(phrase.slice(0, c));
-        setDone(false);
-        if (c === 0) {
-          deleting = false;
-          i = (i + 1) % phrases.length;
-          setIndex(i);
-        }
-      }
-      timer = setTimeout(tick, deleting ? 28 : 55);
+    let id = 0;
+    /* the question needs reading time, each step is a glance, the chart is the payoff */
+    const dwell = (v: number) => (v === 0 ? 2500 : v <= ASK_STEPS.length ? 430 : 1700);
+    const tick = (v: number) => {
+      id = window.setTimeout(() => {
+        const next = v >= ASK_TOTAL + 1 ? 0 : v + 1;
+        setT(next);
+        tick(next);
+      }, dwell(v));
     };
-    timer = setTimeout(tick, 500);
-    return () => clearTimeout(timer);
-  }, [phrases]);
-  return { text, done, index };
+    tick(0);
+    return () => window.clearTimeout(id);
+  }, []);
+  return t;
 }
 
 function AskAI() {
-  const { text, done, index } = useTypewriter(ASK_PROMPTS);
-  const item = ASK_ITEMS[index];
+  const t = useAskFlow();
+
+  /* the prompt types itself only on the opening beat; every later beat shows it in full */
+  const [typed, setTyped] = useState(ASK_PROMPT.length);
+  useEffect(() => {
+    if (t !== 0) {
+      setTyped(ASK_PROMPT.length);
+      return;
+    }
+    setTyped(0);
+    let c = 0;
+    const id = window.setInterval(() => {
+      c += 1;
+      setTyped(c);
+      if (c >= ASK_PROMPT.length) window.clearInterval(id);
+    }, 42);
+    return () => window.clearInterval(id);
+  }, [t]);
+
+  const ticked = Math.min(t, ASK_STEPS.length);
+  const showChart = t > ASK_STEPS.length;
+
   return (
     <Card className="w-[244px]">
       <div className="mb-2.5 flex items-center gap-2">
@@ -382,41 +373,112 @@ function AskAI() {
         <span className="text-[15px] font-bold">Ask One AI</span>
       </div>
 
-      {/* animated prompt input */}
-      <div className="flex min-h-[34px] items-center gap-2 rounded-xl border border-[var(--green-line)] bg-white px-3 py-2 text-[12px] text-[var(--ink)] shadow-[0_1px_0_rgba(14,90,56,0.04)_inset]">
-        <span className="text-[var(--green)]">✦</span>
-        <span className="truncate">{text}</span>
-        <span
-          className="ml-px inline-block h-[15px] w-px bg-[var(--green)]"
-          style={{ animation: done ? "askblink 1s step-end infinite" : "none", opacity: done ? undefined : 1 }}
-        />
+      {/* the question, typed */}
+      {/* two lines reserved from the first character: the prompt wraps once it is fully
+          typed, and letting the box grow mid-type moved everything under it */}
+      <div className="flex min-h-[51px] items-start gap-2 rounded-xl border border-[var(--green-line)] bg-white px-3 py-2 text-[12px] leading-[1.35] text-[var(--ink)] shadow-[0_1px_0_rgba(14,90,56,0.04)_inset]">
+        <span className="mt-[1px] shrink-0 text-[var(--green)]">✦</span>
+        <span className="min-w-0 flex-1">
+          {ASK_PROMPT.slice(0, typed)}
+          <span
+            className="ml-px inline-block h-[13px] w-px translate-y-[2px] bg-[var(--green)]"
+            style={{ animation: typed >= ASK_PROMPT.length ? "askblink 1s step-end infinite" : "none" }}
+          />
+        </span>
       </div>
 
-      {/* answer — reserves its height so the card never jumps between prompts */}
-      <div className="mt-2.5 min-h-[66px]">
-        {done ? (
+      {/* One reserve sized to the TALLER state, which is the six-step list at ~121px, not
+          the chart at ~85px. Sized to the chart, the card grew 17px every time the research
+          ran and shrank again — in a gutter card that reads as a glitch. */}
+      <div className="mt-2.5 min-h-[121px]">
+        {showChart ? (
           <div className="animate-[askin_260ms_ease-out_both]">
-            <p className="text-[11.5px] leading-[1.5] text-[var(--ink)]">{item.a}</p>
-            <span className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-[var(--green-soft)] px-2 py-[3px] font-mono text-[9.5px] font-semibold text-[var(--green)]">
-              {item.tag}
-            </span>
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="truncate text-[10.5px] font-bold tracking-[-0.01em] text-[var(--ink)]">
+                Employee exits
+              </span>
+              {/* the finding, not just the picture: the latest month, in the same unit as
+                  the axis, so the chart says something rather than only showing something */}
+              <span className="shrink-0 text-[10.5px] font-bold tabular-nums text-[var(--green)]">
+                14 in Sep
+              </span>
+            </div>
+            <svg viewBox={`0 0 ${CHART_W} ${CHART_H}`} className="mt-1.5 w-full" role="img" aria-label="Monthly employee exits, October 2025 to September 2026: 14 exits in September, down from a peak of 24 in April">
+              {[0, 0.5, 1].map((g) => (
+                <line
+                  key={g}
+                  x1="0"
+                  x2={CHART_W}
+                  y1={CHART_H - PAD_Y - g * (CHART_H - PAD_Y * 2)}
+                  y2={CHART_H - PAD_Y - g * (CHART_H - PAD_Y * 2)}
+                  stroke="var(--border)"
+                  strokeWidth="1"
+                />
+              ))}
+              {/* pathLength=1 lets one dash length describe the whole line whatever its real
+                  geometry, so the draw reads at the same speed if the series ever changes */}
+              <path
+                d={ATTR_LINE}
+                fill="none"
+                stroke="var(--green)"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                pathLength={1}
+                strokeDasharray="1"
+                style={{ animation: "askdraw 900ms ease-out both" }}
+              />
+              {ATTR_PTS.map(([x, y], i) => (
+                <circle
+                  key={i}
+                  cx={x}
+                  cy={y}
+                  r={i === ATTR_PTS.length - 1 ? 2.6 : 1.7}
+                  fill="var(--green)"
+                  style={{
+                    transformOrigin: `${x}px ${y}px`,
+                    animation: `askpop 220ms ${180 + (i / (ATTR_PTS.length - 1)) * 760}ms ease-out both`,
+                  }}
+                />
+              ))}
+            </svg>
+            <div className="mt-[3px] flex justify-between font-mono text-[8px] text-[var(--muted)]">
+              {["Oct", "Mar", "Sep"].map((m) => (
+                <span key={m}>{m}</span>
+              ))}
+            </div>
           </div>
         ) : (
-          /* Three 5px dots left the reserve visibly empty; skeleton lines fill it,
-             so the card holds the same weight mid-question as it does with an
-             answer on screen. */
-          <div className="pt-[3px]" aria-hidden>
-            {[92, 78, 58].map((w, d) => (
-              <span
-                key={w}
-                className="mb-[5px] block h-[7px] rounded-full bg-[var(--green)]/14"
-                style={{ width: `${w}%`, animation: `askdot 1.4s ${d * 0.18}s ease-in-out infinite` }}
-              />
-            ))}
-            <span
-              className="mt-[7px] block h-[13px] w-[42%] rounded-md bg-[var(--green-soft)]"
-              style={{ animation: "askdot 1.4s 0.54s ease-in-out infinite" }}
-            />
+          <div>
+            <div className="mb-1 text-[10px] font-bold tracking-[-0.01em] text-[var(--ink)]">Research</div>
+            {ASK_STEPS.map((label, i) => {
+              const state = i < ticked ? "done" : i === ticked ? "busy" : "idle";
+              return (
+                <div key={label} className="flex items-center gap-1.5 py-[2px]">
+                  {state === "done" ? (
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0">
+                      <path d="m5 12.5 4.5 4.5L19 7.5" />
+                    </svg>
+                  ) : (
+                    <span
+                      className="block h-[9px] w-[9px] shrink-0 rounded-full border-[1.6px] border-[var(--green)]/25"
+                      style={
+                        state === "busy"
+                          ? { borderTopColor: "var(--green)", animation: "askspin 700ms linear infinite" }
+                          : undefined
+                      }
+                    />
+                  )}
+                  <span
+                    className={`truncate text-[10px] leading-[13px] ${
+                      state === "idle" ? "text-[var(--muted)]/50" : "text-[var(--ink)]"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
@@ -424,7 +486,107 @@ function AskAI() {
   );
 }
 
-function PhoneAttendance() {
+/* The Action Agent flow, condensed to four turns. The shipped agent asks for six fields in
+   one message and the reply runs past two screens; at 192px that is a wall of grey. The
+   point a visitor needs is the shape — you ask in a sentence, it comes back filed — so the
+   question is one line and the answer is the receipt. */
+const AGENT_TURNS = [
+  { who: "user" as const, text: "Apply Leave" },
+  { who: "agent" as const, text: "Sure! I can help with that 😊 Which leave type and dates?" },
+  { who: "user" as const, text: "Casual leave, 21 Sep" },
+  { who: "agent" as const, receipt: true },
+];
+
+/* The agent's quick actions. The shipped screen offers eight; these six are the ones that
+   carry the breadth claim — leave, attendance, on-duty, expense and helpdesk are five
+   different corners of HR reachable from one prompt. Short Leave and Restricted Holiday are
+   left out as near-duplicates of Apply Leave at this size. */
+const AGENT_CHIPS: [string, string][] = [
+  ["Apply Leave", "cal"],
+  ["Helpdesk", "help"],
+  ["Mark Attendance", "punch"],
+  ["On Duty", "duty"],
+  ["Raise Expense", "money"],
+  ["Attendance Regularization", "calAlert"],
+];
+
+const ChipIcon = ({ kind }: { kind: string }) => (
+  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0">
+    {(kind === "cal" || kind === "calAlert") && (
+      <>
+        <rect x="3" y="5" width="18" height="16" rx="2.5" />
+        <path d="M8 2.5v4M16 2.5v4M3 10h18" />
+        {kind === "calAlert" && <path d="M12 13.5v3M12 19v.01" />}
+      </>
+    )}
+    {kind === "help" && (
+      <>
+        <circle cx="9.5" cy="8" r="3.5" />
+        <path d="M3 20a6.5 6.5 0 0 1 11-4.7" />
+        <circle cx="17.5" cy="16.5" r="3" />
+        <path d="m20 19 2 2" />
+      </>
+    )}
+    {kind === "punch" && <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5M10 17l5-5-5-5M15 12H3" />}
+    {kind === "duty" && (
+      <>
+        <circle cx="9" cy="7.5" r="3.5" />
+        <path d="M2.5 20a6.5 6.5 0 0 1 10-5.5" />
+        <circle cx="17" cy="16" r="4.5" />
+        <path d="M17 14v2.2l1.4 1" />
+      </>
+    )}
+    {kind === "money" && (
+      <>
+        <rect x="2.5" y="6" width="19" height="12" rx="2.5" />
+        <circle cx="12" cy="12" r="2.6" />
+      </>
+    )}
+  </svg>
+);
+
+/* Self-driving rather than scroll-driven: the phone sits in a gutter that may never cross
+   a scroll threshold on a short screen, and a conversation that only advances when the page
+   moves reads as broken. Two ticks of dwell at the end before it starts over. */
+function useAgentFlow(turns: number) {
+  const [step, setStep] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setStep(turns);
+      return;
+    }
+    /* Per-step timing rather than one interval. The opening frame is the only one with
+       anything to read — the agent's name, what it does, and six quick actions — and at a
+       flat 1450ms it was gone before any of that landed. It holds about two and a half
+       beats; the turns themselves are a few words each and register immediately. */
+    let id = 0;
+    const dwell = (v: number) => (v === 0 ? 3600 : 1450);
+    const tick = (v: number) => {
+      id = window.setTimeout(() => {
+        const next = v >= turns + 2 ? 0 : v + 1;
+        setStep(next);
+        tick(next);
+      }, dwell(v));
+    };
+    tick(0);
+    return () => window.clearTimeout(id);
+  }, [turns]);
+  return Math.min(step, turns);
+}
+
+const AgentMark = ({ size = 20 }: { size?: number }) => (
+  /* the rail's own One AI spark, on the product's brand green */
+  <span
+    className="grid shrink-0 place-items-center rounded-full"
+    style={{ height: size, width: size, background: APP_BRAND }}
+  >
+    <img src={navOneAi} alt="" aria-hidden style={{ height: size * 0.55, width: size * 0.55 }} />
+  </span>
+);
+
+function PhoneOneAiLeave() {
+  const shown = useAgentFlow(AGENT_TURNS.length);
+
   return (
     /* Bezel is a pale warm alloy rather than near-black: on a cream page the only
        pure-dark object steals the eye from the product behind it. The hairline
@@ -485,115 +647,109 @@ function PhoneAttendance() {
           </span>
         </div>
 
-        {/* App header — same #01241a as the dashboard's topbar and rail. */}
-        <div
-          className="flex shrink-0 items-center gap-2 px-2.5 py-2 text-white"
-          style={{ background: APP_SHELL }}
-        >
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-            className="shrink-0"
-          >
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          <span className="flex-1 truncate text-[11px] font-semibold tracking-[-0.01em]">Mark Attendance</span>
-          <span className="flex shrink-0 flex-col items-center gap-[2.5px]" aria-hidden>
+        {/* App header, matched to the shipped agent screen: menu, the agent's name with its
+            switcher, the Beta tag and compose. */}
+        <div className="flex shrink-0 items-center gap-1.5 border-b border-[var(--border)] px-2.5 py-[7px]">
+          <span className="flex shrink-0 flex-col gap-[2.5px]" aria-hidden>
             {[0, 1, 2].map((d) => (
-              <span key={d} className="block h-[2.5px] w-[2.5px] rounded-full bg-white/85" />
+              <span key={d} className="block h-[1.5px] w-[11px] rounded-full bg-[var(--ink)]/70" />
             ))}
           </span>
+          <span className="truncate text-[10px] font-bold tracking-[-0.01em] text-[var(--ink)]">Action Agent</span>
+          <svg width="8" height="8" viewBox="0 0 12 12" aria-hidden className="shrink-0 text-[var(--ink)]/60">
+            <path d="M3 4.5 6 7.5l3-3" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span className="flex-1" />
+          {/* mint, not the shipped lavender — the page has no purple left in it */}
+          <span className="shrink-0 rounded-full bg-[var(--green-soft)] px-1.5 py-[1px] text-[7px] font-semibold text-[var(--green-deep)]">
+            Beta
+          </span>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0 text-[var(--ink)]/70">
+            <path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17z" />
+          </svg>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-hidden bg-[#f3f4f2] px-2 py-[7px]">
-          <div className="shrink-0 rounded-lg bg-[var(--panel)] px-2 py-2 shadow-[0_1px_3px_rgba(11,74,46,0.09)]">
-            <div className="mb-[5px] flex shrink-0 items-center justify-between">
-              <span className="text-[8px] font-bold uppercase tracking-[0.09em] text-[var(--ink)]">
-                Current location
-              </span>
-              <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden>
-                <path d="M12 7a5 5 0 1 1-1.6-3.7" stroke={APP_BRAND} strokeWidth="1.6" strokeLinecap="round" />
-                <path d="M12.2 1.6v3h-3" stroke={APP_BRAND} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-
-            <div className="mb-[7px] shrink-0">
-              <div className="text-[7.5px] leading-[11px] text-[var(--muted)]">Address</div>
-              <div className="whitespace-pre-line text-[10px] leading-[1.35] text-[var(--ink)]">
-                {"Gat 214, Phase II, MIDC Chakan,\nPune, Maharashtra 410501"}
+        {/* the conversation — anchored to the bottom so the newest turn is always the one
+            in frame, the way a chat that has scrolled looks */}
+        {/* justify-end still, so the newest turn is the one in frame — but the turns are now
+            large enough that by the receipt the thread fills the screen instead of sitting
+            as a small block under a field of white */}
+        <div className="flex min-h-0 flex-1 flex-col justify-end gap-[7px] overflow-hidden px-2.5 py-2">
+          {shown === 0 ? (
+            <div className="flex flex-1 flex-col items-center justify-center gap-1.5 text-center">
+              <AgentMark size={30} />
+              <div className="text-[11px] font-bold tracking-[-0.01em] text-[var(--ink)]">Action Agent</div>
+              <p className="px-1 text-[8px] leading-[1.4] text-[var(--muted)]">
+                OneAI takes care of all your requests — quick, easy, and hassle-free
+              </p>
+              {/* wrapped rather than stacked: six stacked rows would push the composer off
+                  the screen, and the shipped agent flows them the same way */}
+              <div className="mt-1 flex w-full flex-wrap justify-center gap-[3px]">
+                {AGENT_CHIPS.map(([label, kind]) => (
+                  <span
+                    key={label}
+                    className="flex items-center gap-[3px] rounded-[6px] border border-[var(--border)] px-[5px] py-[4px] text-[7px] font-medium leading-none text-[var(--ink)]"
+                  >
+                    <ChipIcon kind={kind} />
+                    {label}
+                  </span>
+                ))}
               </div>
             </div>
-
-            <div className="mb-[7px] shrink-0">
-              <div className="flex items-center justify-between gap-1">
-                <span className="text-[7.5px] leading-[11px] text-[var(--muted)]">Coordinates</span>
-                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden className="shrink-0">
-                  <circle cx="8" cy="8" r="3.4" stroke={APP_BRAND} strokeWidth="1.4" />
-                  <circle cx="8" cy="8" r="1.1" fill={APP_BRAND} />
-                  <path d="M8 1v2.1M8 12.9V15M1 8h2.1M12.9 8H15" stroke={APP_BRAND} strokeWidth="1.4" strokeLinecap="round" />
-                </svg>
-              </div>
-              <div className="text-[10px] leading-[1.35] tabular-nums text-[var(--ink)]">18.7601483, 73.8634127</div>
-            </div>
-
-            {/* accuracy and punch time share a row — two short values do not each
-                need a full line, and the space buys the type its size back */}
-            <div className="mb-[7px] shrink-0">
-              <div className="text-[7.5px] leading-[11px] text-[var(--muted)]">Accuracy (in meter)</div>
-              <div className="text-[10px] leading-[1.35] tabular-nums text-[var(--ink)]">8.32</div>
-            </div>
-
-            <div className="shrink-0">
-              <div className="text-[7.5px] leading-[11px] text-[var(--muted)]">Punch Time</div>
-              <div className="whitespace-nowrap text-[10px] leading-[1.35] tabular-nums text-[var(--ink)]">
-                15-09-2026 08:58
-              </div>
-            </div>
-          </div>
-
-          <div className="shrink-0 rounded-lg bg-[var(--panel)] px-2 py-2 shadow-[0_1px_3px_rgba(11,74,46,0.09)]">
-            <div className="text-[8px] font-bold uppercase tracking-[0.09em] text-[var(--ink)]">
-              Please fill the below fields
-            </div>
-
-            {/* photo capture — what an attendance punch actually asks for */}
-            <div className="mt-2 flex items-center gap-2">
-              <span
-                className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-md border border-dashed"
-                style={{ borderColor: "var(--green-line)", background: "var(--green-soft)" }}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={APP_BRAND} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h2L8 5h8l1.5 2h2A1.5 1.5 0 0 1 21 8.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5z" />
-                  <circle cx="12" cy="12.5" r="3.2" />
-                </svg>
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="text-[10px] font-semibold leading-[1.35] text-[var(--ink)]">Add photo</div>
-                <div className="text-[7.5px] leading-[11px] text-[var(--muted)]">Selfie required to punch in</div>
-              </div>
-            </div>
-
-            <div className="mt-2 border-b border-[var(--border)] pb-1 text-[10px] text-[var(--muted)]">
-              Comments
-            </div>
-            <div className="mt-[3px] text-right text-[7.5px] text-[var(--muted)]">0/500</div>
-          </div>
+          ) : (
+            AGENT_TURNS.slice(0, shown).map((t, i) =>
+              t.who === "user" ? (
+                <div key={i} className="flex shrink-0 items-start justify-end gap-1.5">
+                  <span className="max-w-[126px] rounded-[9px] rounded-tr-[3px] bg-[#eceff0] px-2 py-[6px] text-[9.5px] leading-[1.3] text-[var(--ink)]">
+                    {t.text}
+                  </span>
+                  <span className="block h-[17px] w-[17px] shrink-0 overflow-hidden rounded-full ring-1 ring-[var(--border)]">
+                    <img src={avatarAnanya} alt="" aria-hidden className="h-full w-full scale-[1.3] object-cover" />
+                  </span>
+                </div>
+              ) : (
+                <div key={i} className="flex shrink-0 items-start gap-1.5">
+                  <AgentMark size={17} />
+                  {t.receipt ? (
+                    <div className="min-w-0 flex-1 rounded-[9px] rounded-tl-[3px] border border-[var(--border)] px-2 py-[6px]">
+                      <div className="text-[10px] font-bold leading-[1.3] text-[var(--ink)]">
+                        Leave request submitted 🎉
+                      </div>
+                      {[
+                        ["Type", "Casual Leave"],
+                        ["Date", "21 Sep 2026"],
+                        ["Duration", "Full Day"],
+                      ].map(([k, v]) => (
+                        <div key={k} className="mt-[3px] flex items-baseline justify-between gap-1 text-[8.5px] leading-[11px]">
+                          <span className="shrink-0 text-[var(--muted)]">{k}</span>
+                          <span className="truncate font-medium text-[var(--ink)]">{v}</span>
+                        </div>
+                      ))}
+                      <div className="mt-[5px] border-t border-[var(--border)] pt-[5px] text-[8px] leading-[11px] text-[var(--muted)]">
+                        With Priya Shah · balance now <span className="font-semibold text-[var(--ink)]">12.0</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <span className="max-w-[132px] rounded-[9px] rounded-tl-[3px] bg-[var(--green-soft)] px-2 py-[6px] text-[9.5px] leading-[1.3] text-[var(--ink)]">
+                      {t.text}
+                    </span>
+                  )}
+                </div>
+              ),
+            )
+          )}
         </div>
 
-        <div className="shrink-0 bg-[var(--panel)] px-2 pb-[5px] pt-[5px]">
-          <div
-            className="rounded-md py-[7px] text-center text-[10px] font-semibold text-white shadow-[0_5px_12px_-6px_rgba(2,86,61,0.9)]"
-            style={{ background: APP_BRAND }}
-          >
-            Submit Request
-          </div>
+        {/* composer */}
+        <div className="flex shrink-0 items-center gap-1.5 border-t border-[var(--border)] px-2.5 py-[7px]">
+          <span className="flex-1 truncate text-[8.5px] text-[var(--muted)]">Ask anything</span>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="shrink-0 text-[var(--ink)]/60">
+            <rect x="9" y="2.5" width="6" height="11" rx="3" />
+            <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" />
+          </svg>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="shrink-0" style={{ color: APP_BRAND }}>
+            <path d="M3.4 20.4 21 12 3.4 3.6 3.4 10l12 2-12 2z" />
+          </svg>
         </div>
 
         {/* home indicator */}
@@ -608,55 +764,78 @@ function PhoneAttendance() {
 /* ---------- main dashboard (chrome matched to HROne product) ---------- */
 
 
-/* Monthly effective CTC for the trailing year, ending on the month the header
-   selects. The last point IS the KPI headline above it (₹4,25,51,690) rather than
-   a second invented number, so the card and the strip agree — which is the thing
-   that separates a real dashboard from a placeholder.
+/* The inbox screen the hero now shows.
 
-   The shape is what an Indian payroll actually does over a year: steady growth on
-   headcount, a step in Sep when the increment cycle lands, a festival-bonus month
-   in Oct, the post-bonus settle in Nov, and the FY-end arrears/variable spike in
-   Mar before the new year resets. A monotonic line would read as invented. */
-const CTC_SERIES: [string, number][] = [
-  ["Jun", 36918400],
-  ["Jul", 37240100],
-  ["Aug", 37506800],
-  ["Sep", 38944200],
-  ["Oct", 41882600],
-  ["Nov", 39688900],
-  ["Dec", 40102400],
-  ["Jan", 40512700],
-  ["Feb", 40884600],
-  ["Mar", 43908300],
-  ["Apr", 41730500],
-  ["May", 42551690],
+   The queue is mixed on purpose. Filtered to Confirmation it read "Confirmation request
+   for…" nine times down one column, which proves HROne does one thing a lot — the opposite
+   of a headline about the whole of HR landing in one place. Leave, expense, onboarding,
+   attendance, recruitment, payroll and performance in one screenshot is the claim itself.
+
+   The category column then has to hold exactly the categories the rows belong to: a Leave
+   row under a column with no Leave entry contradicts itself. That is also what brings the
+   column down from 17 entries to 11 — the density fix and the coherence fix are the same
+   edit. "All" is selected, which is what makes the All Messages chip above the list true.
+
+   Counts stay small and still sum to the group header. */
+const INBOX_NEW = 76;
+const INBOX_GROUPS: [string, string][] = [
+  ["All", ""],
+  ["Attendance", "9"],
+  ["Confirmation", "12"],
+  ["Expense", "9"],
+  ["Final clearance", "4"],
+  ["Leave", "14"],
+  ["Manage asset", "2"],
+  ["On boarding", "8"],
+  ["Payroll", "6"],
+  ["Performance", "5"],
+  ["Recruitment", "7"],
 ];
-const AXIS_MAX = 50_000_000;
-const PLOT_W = 520;
-const PLOT_TOP = 10;
-const PLOT_BOT = 180;
 
-/* Points sit at the centre of twelve equal slots, which is exactly where the
-   flex-1 month labels below the plot centre themselves — so the axis lines up
-   with the data instead of drifting half a slot off it. */
-const ctcPt = (i: number, v: number): [number, number] => [
-  ((i + 0.5) * PLOT_W) / CTC_SERIES.length,
-  PLOT_BOT - (v / AXIS_MAX) * (PLOT_BOT - PLOT_TOP),
+/* subject, received, days until due, and the category chip the row carries — the chip has
+   to come from the row now that the rows are not all the same kind of work */
+/* The employee id sits on the meta line, not in the subject. In the shipped product the
+   subject carries it and the column truncates it away ("…(#BCPL…"), which is authentic but
+   reads as sloppy at hero size — and the id is the part that gets cut. Moving it down keeps
+   the record identifiable, lets every subject set in full, and is what allows the list to
+   take the narrow share of the width it has in the real screen.
+
+   The category chip under each row already states the type, so the subject does not repeat
+   it ("Regularisation" under an "Attendance" chip, not "Attendance regularisation"). */
+const MESSAGES: [string, string, string, string][] = [
+  ["Confirmation request — Rahul Verma", "#AVK10266 · 15/09, 2:26 PM", "19", "Confirmation"],
+  ["Leave approval — Priya Nair", "#AVK10265 · 15/09, 11:05 AM", "2", "Leave"],
+  ["Expense ₹12,400 — Rohan Deshmukh", "#AVK10264 · 14/09, 6:40 PM", "4", "Expense"],
+  ["Onboarding Day 1 — Ayesha Khan", "#AVK10263 · 14/09, 9:12 AM", "1", "On boarding"],
+  ["Regularisation — Vikram Iyer", "#AVK10262 · 13/09, 4:55 PM", "3", "Attendance"],
+  ["Offer approval — Sneha Kulkarni", "#AVK10261 · 12/09, 2:20 PM", "5", "Recruitment"],
+  ["Full & final — Arjun Mehta", "#AVK10260 · 12/09, 11:48 AM", "6", "Final clearance"],
+  ["Payroll sign-off — Kavya Reddy", "#AVK10259 · 11/09, 5:02 PM", "8", "Payroll"],
+  ["Asset handover — Imran Sheikh", "#AVK10258 · 11/09, 10:30 AM", "9", "Manage asset"],
+  ["Goal check-in — Divya Menon", "#AVK10257 · 10/09, 3:15 PM", "11", "Performance"],
 ];
-const CTC_PTS = CTC_SERIES.map(([, v], i) => ctcPt(i, v));
-const CTC_LINE =
-  `M0 ${CTC_PTS[0][1].toFixed(1)} ` +
-  CTC_PTS.map(([x, y]) => `L${x.toFixed(1)} ${y.toFixed(1)}`).join(" ") +
-  ` L${PLOT_W} ${CTC_PTS[CTC_PTS.length - 1][1].toFixed(1)}`;
-const CTC_AREA = `${CTC_LINE} L${PLOT_W} ${PLOT_BOT} L0 ${PLOT_BOT} Z`;
 
-function Dashboard({ p }: { p: number }) {
+const Tick = () => (
+  <span className="mt-[1px] block h-[7px] w-[7px] shrink-0 rounded-[1.5px] border border-[#c9c9c9]" />
+);
+
+/* The rail's icon assets were exported in whatever state they happened to be in: analytics
+   at #BAE8D5 because it was the selected tab in the source file, payroll at #D4D4D4, inbox
+   at pure white, the other ten at #F0F5F2. With the active row moved to Inbox, analytics
+   was left glowing mint next to an untinted Inbox — the rail read as though Analytics were
+   still open. Flattening every icon to white makes the row's background tint the only thing
+   that says "active", which is what it should have been.
+
+   Done here rather than in the SVGs: imports/v1/nav is shared with option-a, and recolouring
+   the files would change that page too. One AI opts out — its mark is a brand gradient. */
+const RAIL_ICON = { filter: "brightness(0) invert(1)" } as const;
+
+function Dashboard() {
   /* The plot draws itself once the product has settled and just ahead of the
-     cards' cascade (AskAI 0.40, phone 0.46, Approval 0.58, MultiState 0.64), so
+     cards' cascade (AskAI 0.40, phone 0.46, Shift 0.58, Payroll 0.64), so
      the order reads product -> chart -> cards rather than all at once. */
-  const chart = win(p, 0.28, 0.58);
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-[0_50px_90px_-40px_rgba(11,74,46,0.55)]">
+    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-[0_18px_44px_-26px_rgba(11,74,46,0.3)]">
       {/* browser chrome — tab strip over a toolbar, the way a real window reads */}
       <div className="shrink-0 bg-[var(--cream-2)]">
         {/* tab strip */}
@@ -797,7 +976,11 @@ function Dashboard({ p }: { p: number }) {
 
       <div className="flex min-h-0 flex-1">
         {/* L0 rail */}
-        <div className="flex w-[140px] shrink-0 flex-col justify-between overflow-hidden" style={{ background: APP_SHELL }}>
+        {/* Icon-only, 44px against the 140px it was. The labelled rail spent 19% of an
+            880px mock on navigation a hero reader never needs to read — the shipped product
+            uses a 56px icon strip for exactly that reason. The 96px comes back to the three
+            panels that carry the argument. */}
+        <div className="flex w-[44px] shrink-0 flex-col justify-between overflow-hidden" style={{ background: APP_SHELL }}>
           <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden px-1.5 pt-2.5">
             <div className="flex flex-col border-b border-[rgba(230,247,240,0.2)] pb-2.5">
               {[
@@ -808,29 +991,28 @@ function Dashboard({ p }: { p: number }) {
                 [navOneAi, "One AI"],
                 [navMySpace, "My space"],
               ].map(([icon, label]) => (
-                <div key={label as string} className="flex h-7 items-center gap-1.5 overflow-hidden rounded-[5px] px-2.5">
-                  <img src={icon as string} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0" />
-                  {/* One AI is the one label the design paints with a brand gradient */}
-                  <p
-                    className={`min-w-0 flex-1 truncate text-[11px] leading-4 ${
-                      label === "One AI"
-                        ? "bg-gradient-to-r from-[#b3574d] via-[#c7ca2c] via-[11%] to-[#21902e] to-[28%] bg-clip-text text-transparent"
-                        : "text-[#f0f5f2]"
-                    }`}
-                  >
-                    {label}
-                  </p>
-                  {label === "Projects" && (
-                    <img src={navExternal} alt="" aria-hidden className="h-3 w-3 shrink-0" />
-                  )}
+                /* Inbox carries the active tint now: the screen beside it is the inbox, and
+                   a rail highlighting Analytics while an inbox is open reads as a mistake. */
+                <div
+                  key={label as string}
+                  title={label as string}
+                  className={`grid h-7 place-items-center rounded-[5px] ${
+                    label === "Inbox" ? "bg-[#013226]" : ""
+                  }`}
+                >
+                  <img
+                    src={icon as string}
+                    alt=""
+                    aria-hidden
+                    className="h-[14px] w-[14px] shrink-0"
+                    style={label === "One AI" ? undefined : RAIL_ICON}
+                  />
                 </div>
               ))}
             </div>
 
             <div className="flex flex-col gap-1 pb-2">
-              <div className="flex items-center px-2.5">
-                <p className="flex-1 text-[9.5px] leading-4 tracking-[0.11px] text-[rgba(73,191,155,0.7)]">APPS</p>
-              </div>
+              <div className="mx-auto h-px w-4 bg-[rgba(230,247,240,0.25)]" aria-hidden />
               <div className="flex flex-col">
                 {[
                   [navHrDesk, "HR Desk"],
@@ -841,14 +1023,9 @@ function Dashboard({ p }: { p: number }) {
                   [navPerformance, "Performance"],
                   [navAnalytics, "Analytics"],
                 ].map(([icon, label]) => (
-                  <div
-                    key={label as string}
-                    className={`flex h-7 items-center gap-1.5 overflow-hidden rounded-[5px] px-2.5 ${
-                      label === "Analytics" ? "bg-[#013226]" : ""
-                    }`}
-                  >
-                    <img src={icon as string} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0" />
-                    <p className="min-w-0 flex-1 truncate text-[11px] leading-4 text-[#f0f5f2]">{label}</p>
+                  /* nothing active in APPS — the open screen is Inbox, above */
+                  <div key={label as string} title={label as string} className="grid h-7 place-items-center rounded-[5px]">
+                    <img src={icon as string} alt="" aria-hidden className="h-[14px] w-[14px] shrink-0" style={RAIL_ICON} />
                   </div>
                 ))}
               </div>
@@ -856,277 +1033,214 @@ function Dashboard({ p }: { p: number }) {
           </div>
 
           <div className="flex shrink-0 flex-col border-t border-[rgba(230,247,240,0.2)] px-1.5 pb-2.5 pt-2.5">
-            <div className="flex h-7 items-center gap-1.5 overflow-hidden rounded-[5px] px-2.5">
-              <img src={navSettings} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0" />
-              <p className="min-w-0 flex-1 truncate text-[11px] leading-4 text-[#f0f5f2]">Settings</p>
+            <div title="Settings" className="grid h-7 place-items-center rounded-[5px]">
+              <img src={navSettings} alt="" aria-hidden className="h-[14px] w-[14px] shrink-0" style={RAIL_ICON} />
             </div>
           </div>
         </div>
 
-        {/* L1 sub-nav, styled to the product's own panel pattern: titled header
-            with the collapse control over a rule, a search field, then collapsible
-            groups whose active row is a full-bleed green tint. The design sizes
-            this 200px, but at 1440 that leaves 1040px of content whereas our 880px
-            mock would be left with 480px, so it runs at 140px with 26px rows. */}
-        <div className="flex w-[140px] shrink-0 flex-col overflow-hidden border-r border-[#e5e5e5] bg-white">
+        {/* L1 — the inbox's own queue list. Same panel pattern the sub-nav used (titled
+            header over a rule, then rows), so swapping the screen does not swap the
+            shell's grammar. 150px rather than 140: the longest label here is "Declare
+            statutory details" against the old "Payroll". */}
+        {/* 108px. Measured, not guessed: the widest row is "Final clearance" plus its count
+            at 90px including padding, so 150 was 59px of dead gap down the middle of every
+            row — width spent on nothing under a headline that says "Simplest". */}
+        <div className="flex w-[108px] shrink-0 flex-col overflow-hidden border-r border-[#e5e5e5] bg-white">
           <div className="flex h-8 shrink-0 items-center justify-between gap-1 border-b border-[#e5e5e5] px-2">
-            <p className="truncate text-[10px] font-bold text-[#171717]">CXO</p>
-            <img src={navCollapse} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0" />
+            <p className="truncate text-[10px] font-bold text-[#171717]">Inbox</p>
+            <img src={navCollapse} alt="" aria-hidden className="h-[11px] w-[11px] shrink-0" />
           </div>
 
-          <div className="shrink-0 px-2.5 pb-1.5 pt-2">
-            <div className="flex h-[26px] items-center gap-1.5 rounded-[6px] border border-[#d4d4d4] px-2">
-              <img src={navSearch} alt="" aria-hidden className="h-3 w-3 shrink-0" />
-              <span className="truncate text-[10px] text-[#737373]">Search...</span>
-            </div>
-          </div>
-
-          <div className="flex shrink-0 items-center gap-1 px-3 py-1">
-            <span className="flex-1 truncate text-[11px] font-semibold text-[var(--green-deep)]">Dashboards</span>
-            {/* the design's own chevron, turned to point up for the open group */}
-            <img src={navChevron} alt="" aria-hidden className="h-[13px] w-[13px] shrink-0 -rotate-90" />
+          <div className="flex h-[22px] shrink-0 items-center gap-1 px-2">
+            <img src={navInbox} alt="" aria-hidden className="h-[9px] w-[9px] shrink-0 opacity-70" />
+            <span className="flex-1 truncate text-[9px] font-semibold text-[var(--app-brand)]">New- {INBOX_NEW}</span>
+            {/* the design's chevron, turned down for the open group */}
+            <img src={navChevron} alt="" aria-hidden className="h-[9px] w-[9px] shrink-0 rotate-90 opacity-50" />
           </div>
 
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-            {[
-              "Employee movement",
-              "Engage",
-              "Expense",
-              "Happiness index",
-              "Helpdesk",
-              "HR ops",
-              "Payroll",
-              "Performance",
-              "Performance 9 box",
-              "Pulse",
-              "Recruitment",
-              "ROI",
-              "Survey",
-              "Time office",
-            ].map((item) => (
+            {INBOX_GROUPS.map(([label, count]) => {
+              const active = label === "All";
+              return (
+                <div
+                  key={label}
+                  className={`flex h-[26px] shrink-0 items-center gap-1 px-2 ${
+                    active ? "bg-[#e9f2ec]" : ""
+                  }`}
+                >
+                  <span
+                    className={`min-w-0 flex-1 truncate text-[9px] leading-none ${
+                      active ? "font-semibold text-[var(--app-brand)]" : "text-[#404040]"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                  <span
+                    className={`shrink-0 text-[9px] font-semibold leading-none tabular-nums ${
+                      active ? "text-[var(--app-brand)]" : "text-[#737373]"
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* L2 — the message list. Its own column rather than part of the content pane:
+            the queue has to stay put while a request is open beside it, which is the whole
+            reason an inbox reads differently from a dashboard. */}
+        {/* Column widths follow the real product's proportions rather than whatever the
+            subjects happened to need. Beside its rail, the shipped screen splits roughly
+            10 / 22 / 67 between categories, list and the open record; this was running
+            20 / 39 / 40, so the list was close to twice its share and the record — the
+            thing the screen is actually about — had less room than the queue.
+
+            With the rail at 44px, 108 / 250 / 478 of the remaining 836 is about 13 / 30 / 57. Not the shipped ratio: our rail
+            is a 140px labelled one against their 56px icon strip, and type here has a
+            legibility floor the real screen does not have at 1920. But the record pane is
+            now more than twice the queue, which is the point. */}
+        <div className="flex w-[250px] shrink-0 flex-col overflow-hidden border-r border-[#e5e5e5] bg-white">
+          <div className="flex h-8 shrink-0 items-center gap-1.5 border-b border-[#e5e5e5] px-2">
+            <Tick />
+            <span className="flex items-center gap-1 rounded-[5px] border border-[#e5e5e5] px-1.5 py-[2px] text-[8.5px] font-medium text-[#171717]">
+              All Messages
+              <svg width="7" height="7" viewBox="0 0 12 12" aria-hidden className="text-[#737373]">
+                <path d="M1.5 3h9M3 6h6M4.5 9h3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+              </svg>
+            </span>
+            <span className="flex-1" />
+            {[0, 1].map((i) => (
+              <svg key={i} width="9" height="9" viewBox="0 0 12 12" aria-hidden className="shrink-0 text-[#8a8a8a]">
+                {i === 0 ? (
+                  <path d="M1.5 2.5h9M3 6h6M4.5 9.5h3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+                ) : (
+                  <path d="M1.8 3.2h8.4v6.2H1.8zM1.2 2h9.6v1.2H1.2z" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
+                )}
+              </svg>
+            ))}
+            <img src={navSearch} alt="" aria-hidden className="h-[9px] w-[9px] shrink-0 opacity-60" />
+          </div>
+
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+            {MESSAGES.map(([title, when, due, kind], i) => (
               <div
-                key={item}
-                className={`flex h-[26px] shrink-0 items-center truncate pl-4 pr-2 text-[11px] ${
-                  item === "Payroll"
-                    ? "bg-[#eef6f1] font-semibold text-[var(--green-deep)]"
-                    : "text-[#171717]"
-                }`}
+                key={title + when}
+                className={`shrink-0 border-b border-[#eeeeee] px-2 py-[7px] ${i === 0 ? "bg-[#f1f7f3]" : ""}`}
               >
-                {item}
+                <div className="flex items-start gap-1.5">
+                  <Tick />
+                  <p className="min-w-0 flex-1 truncate text-[9px] font-semibold leading-[12px] text-[#171717]">
+                    {title}
+                  </p>
+                </div>
+                <p className="mt-[2px] pl-[13px] text-[7.5px] leading-[10px] text-[#8a8a8a]">{when}</p>
+                <div className="mt-[5px] flex items-center justify-between pl-[13px]">
+                  <span className="text-[7.5px] font-medium text-[var(--app-brand)]">{kind}</span>
+                  <span className="text-[7.5px] font-medium uppercase tracking-[0.02em] text-[#737373]">
+                    Due in : {due} days
+                  </span>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* ── content: the region the design leaves as a raster, rebuilt from the
-            same elements — the MONTHLY chip, the KPI equation strip with its
-            coloured metric tags, and the Salary Distribution card ───────────── */}
-        <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden bg-[#fafaf6] px-4 py-3">
-          {/* page head — title + blurb on the left, the view/period controls and the
-              refresh stamp on the right, as the payroll dashboard carries them.
-
-              Type runs on four steps so each role is legible as a role, rather than
-              the seven sizes bunched between 8 and 12px this block started with:
-                16  page title
-                14  the KPI figures — the only numbers that should carry weight
-                13  card titles, kept under the page title so it stays the head
-                9.5 body, control values and control labels
-                8   tags, meta, axis and the period chip
-              plus 11 for the +/= operators, which are connective marks rather
-              than part of the text ramp.
-              Everything that is a label rather than a value also loses weight or
-              gains tracking, so size is not doing the work on its own. */}
-          <div className="flex shrink-0 items-start justify-between gap-3">
+        {/* ── the open request ─────────────────────────────────────────────────── */}
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-white">
+          <div className="flex shrink-0 items-start justify-between gap-3 px-3 pb-2 pt-2.5">
             <div className="min-w-0">
-              <h2 className="text-[16px] font-bold leading-[20px] tracking-[-0.02em] text-[#171717]">Payroll</h2>
-              <p className="mt-[5px] max-w-[300px] text-[9.5px] leading-[1.45] text-[#737373]">
-                Payroll dashboard gives you overview of effective cost of employees, outstanding liabilities
-                and <span className="text-[#c2622f]">ongoing loans in HROne.</span>
+              {/* 9px, not the 10px the panel titles elsewhere use, and allowed to wrap: this
+                  pane is 340px against the design's 1245px, and a full name plus employee id
+                  does not fit one line at any size that stays readable. Wrapping keeps the id
+                  — truncating dropped the one part of the subject that says which record is
+                  open. */}
+              <p className="text-[9px] font-bold leading-[12px] text-[#171717]">
+                Confirmation request — Rahul Verma (#AVK10266)
+              </p>
+              <p className="mt-[5px] text-[7.5px] leading-[11px] text-[#8a8a8a]">
+                From : <span className="text-[#404040]">System</span>
+              </p>
+              <p className="text-[7.5px] leading-[11px] text-[#8a8a8a]">
+                To : <span className="text-[#404040]">Rajnikant A Rao</span>
               </p>
             </div>
 
-            <div className="flex shrink-0 flex-col items-end gap-[5px]">
-              <div className="flex items-center gap-1.5">
-                <span className="text-[9.5px] text-[#a0a0a0]">Select View</span>
-                {["Enterprise", null, "May, 2026"].map((label, i) =>
-                  label ? (
-                    <span
-                      key={label}
-                      className="flex h-[22px] items-center gap-1.5 rounded-[4px] border border-[#d4d4d4] bg-white pl-2 pr-1.5 text-[9.5px] font-medium text-[#171717]"
-                    >
-                      {label}
-                      {/* the design's chevron, turned down for a select */}
-                      <img src={navChevron} alt="" aria-hidden className="h-2.5 w-2.5 shrink-0 rotate-90" />
-                    </span>
-                  ) : (
-                    <span
-                      key={i}
-                      className="grid h-[22px] w-[22px] shrink-0 place-items-center rounded-[4px] border border-[#d4d4d4] bg-white"
-                    >
-                      <svg width="10" height="10" viewBox="0 0 12 12" aria-hidden>
-                        {[0, 1, 2].map((r) => (
-                          <path
-                            key={r}
-                            d={`M${1.5 + r} ${3 + r * 2.5}h${9 - r * 2}`}
-                            stroke="#525252"
-                            strokeWidth="1.1"
-                            strokeLinecap="round"
-                          />
-                        ))}
-                      </svg>
-                    </span>
-                  ),
-                )}
-                <span className="grid h-3.5 w-3.5 shrink-0 place-items-center rounded-full bg-[var(--green-deep)] text-[7px] font-bold leading-none text-white">
-                  ?
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1">
-                <span className="text-[8px] italic text-[#8a8a8a]">Last updated time-15-09-2026</span>
-                <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden className="shrink-0">
-                  <path
-                    d="M12 7a5 5 0 1 1-1.6-3.7"
-                    stroke="var(--green)"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                  <path d="M12.2 1.6v3h-3" stroke="var(--green)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex shrink-0 items-center gap-2">
-            <span className="rounded-[4px] bg-[#8d9192] px-2 py-[3px] text-[8px] font-semibold uppercase tracking-[0.12em] text-white">
-              MONTHLY
-            </span>
-          </div>
-
-          {/* KPI strip — effective CTC = net paid + contributions + deductions + reimbursement */}
-          <div className="flex shrink-0 items-stretch gap-1 rounded-xl border border-[#e5e5e5] bg-white px-2.5 py-2.5">
-            {[
-              { tag: "Effective CTC", tone: "#6b46c1", bg: "#f1ecfb", val: "₹4,25,51,690", sub: "2,040 Employees" },
-              { tag: "Net paid", tone: "#1d4ed8", bg: "#e8eefc", val: "₹3,06,06,678" },
-              { tag: "Net contributions", tone: "#9f1239", bg: "#fce8ee", val: "₹23,27,155" },
-              { tag: "Net deductions", tone: "#b42318", bg: "#fdeceb", val: "₹96,17,857" },
-              { tag: "Net reimbursement", tone: "#15803d", bg: "#e7f6ec", val: "₹0" },
-            ].map((k, i) => (
-              /* The operators are siblings of the columns, not children of them.
-                 Nested, they ate into columns 2-5 only, leaving those four ~71px of
-                 content against column 1's ~78px — which is what clipped the longer
-                 figures while the first column had room to spare. */
-              <Fragment key={k.tag}>
-                {i > 0 && (
-                  <span className="mt-[3px] shrink-0 text-[11px] font-normal text-[#cbcbcb]">{i === 1 ? "=" : "+"}</span>
-                )}
-                <div className="min-w-0 flex-1">
-                  <span
-                    className="inline-block max-w-full truncate rounded-[3px] px-1 py-[1px] text-[8px] font-semibold leading-[13px] tracking-[0.01em]"
-                    style={{ color: k.tone, background: k.bg }}
-                  >
-                    {k.tag}
-                  </span>
-                  <div className="mt-[5px] truncate text-[14px] font-bold leading-[18px] tracking-[-0.03em] tabular-nums text-[#171717]">
-                    {k.val}
-                  </div>
-                  {k.sub && (
-                    <div className="truncate text-[8px] leading-[12px] text-[#9a9a9a]">
-                      <span className="font-semibold tabular-nums text-[#6b6b6b]">2,040</span> Employees
-                    </div>
-                  )}
-                </div>
-              </Fragment>
-            ))}
-          </div>
-
-          {/* Salary distribution */}
-          <div className="flex min-h-0 flex-1 flex-col rounded-xl border border-[#e5e5e5] bg-white px-4 py-3">
-            <div className="flex shrink-0 items-center justify-between">
-              <div className="flex items-baseline gap-2">
-                <h3 className="text-[13px] font-bold tracking-[-0.015em] text-[#171717]">Salary Distribution</h3>
-                <span className="text-[9.5px] text-[#8a8a8a]">Yearly</span>
-              </div>
-              {/* segmented control, active segment on the design's surface tone */}
-              <div className="flex overflow-hidden rounded-[6px] border border-[#e5e5e5]">
-                {["Effective CTC", "Net Paid", "CTC Analysis"].map((t, i) => (
-                  <span
-                    key={t}
-                    className={`px-2.5 py-1 text-[9.5px] ${i > 0 ? "border-l border-[#e5e5e5]" : ""} ${
-                      i === 0 ? "bg-[#f5f5f0] font-semibold text-[#171717]" : "text-[#8a8a8a]"
-                    }`}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-2 shrink-0 text-[8px] tracking-[0.02em] text-[#9bb0c2]">Effective CTC (INR)</div>
-
-            <div className="mt-1 flex min-h-0 flex-1 flex-col">
-              <div className="flex min-h-0 flex-1">
-                <div className="flex w-[54px] shrink-0 flex-col justify-between pr-2 text-right text-[8px] leading-none tabular-nums text-[#a3b0bf]">
-                  {["50,000,000", "40,000,000", "30,000,000", "20,000,000", "10,000,000", "0"].map((t) => (
-                    <span key={t}>{t}</span>
-                  ))}
-                </div>
-
-                <div className="relative min-h-0 flex-1">
-                  <svg viewBox="0 0 520 190" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden>
-                    <defs>
-                      <linearGradient id="v1sd" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#b9b7f0" stopOpacity="0.55" />
-                        <stop offset="100%" stopColor="#e9e8fb" stopOpacity="0.15" />
-                      </linearGradient>
-                      {/* the sweep is driven by scroll progress, so the series draws
-                          itself left to right as the section comes into view — the
-                          width is set directly rather than transitioned, because the
-                          scroll already supplies the frames */}
-                      <clipPath id="v1sweep">
-                        <rect x="0" y="0" width={PLOT_W * chart} height="190" />
-                      </clipPath>
-                    </defs>
-
-                    {[0, 1, 2, 3, 4, 5].map((i) => (
-                      <line key={i} x1="0" y1={10 + i * 34} x2="520" y2={10 + i * 34} stroke="#f0f0ea" strokeWidth="1" />
-                    ))}
-
-                    <g clipPath="url(#v1sweep)">
-                      <path d={CTC_AREA} fill="url(#v1sd)" />
-                      <path
-                        d={CTC_LINE}
-                        fill="none"
-                        stroke="#4fc3f7"
-                        strokeWidth="2"
-                        strokeLinejoin="round"
-                        strokeLinecap="round"
-                      />
-                      {CTC_PTS.map(([x, y], i) => (
-                        <circle key={CTC_SERIES[i][0]} cx={x} cy={y} r="2.2" fill="#4fc3f7" />
-                      ))}
-                    </g>
-
-                    {/* the selected month reads as current once the sweep reaches it */}
-                    <circle
-                      cx={CTC_PTS[CTC_PTS.length - 1][0]}
-                      cy={CTC_PTS[CTC_PTS.length - 1][1]}
-                      r="3.6"
-                      fill="#fff"
-                      stroke="#4fc3f7"
-                      strokeWidth="2"
-                      style={{ opacity: chart > 0.96 ? 1 : 0, transition: "opacity 240ms ease-out" }}
-                    />
+            <div className="flex shrink-0 flex-col items-end gap-2">
+              <p className="whitespace-nowrap text-[7.5px] font-semibold text-[#404040]">Due date : 05/10/2026</p>
+              {/* the request's own actions, drawn at the weight the topbar icons use */}
+              <div className="flex items-center gap-1.5 rounded-[6px] border border-[#ededed] px-1.5 py-1">
+                {["comment", "add", "reply", "forward", "chart", "more"].map((k) => (
+                  <svg key={k} width="9" height="9" viewBox="0 0 14 14" aria-hidden className="text-[#6b6b6b]" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                    {k === "comment" && <path d="M12 8.5a1.5 1.5 0 0 1-1.5 1.5H4.5L2 12V3.5A1.5 1.5 0 0 1 3.5 2h7A1.5 1.5 0 0 1 12 3.5z" />}
+                    {k === "add" && <><rect x="2" y="2" width="10" height="10" rx="2" /><path d="M7 5v4M5 7h4" /></>}
+                    {k === "reply" && <path d="M6 3 2.5 6.5 6 10M2.5 6.5h5A4 4 0 0 1 11.5 10.5v1" />}
+                    {k === "forward" && <path d="M8 3l3.5 3.5L8 10M11.5 6.5h-5A4 4 0 0 0 2.5 10.5v1" />}
+                    {k === "chart" && <><rect x="5.5" y="1.8" width="3" height="3" rx="0.8" /><rect x="1.8" y="9.2" width="3" height="3" rx="0.8" /><rect x="9.2" y="9.2" width="3" height="3" rx="0.8" /><path d="M7 4.8v2.4M3.3 9.2V7.2h7.4v2" /></>}
+                    {k === "more" && <path d="M7 3.2v.01M7 7v.01M7 10.8v.01" strokeWidth="2" />}
                   </svg>
-                </div>
-              </div>
-
-              <div className="flex shrink-0 pl-[54px] pt-[3px]">
-                {CTC_SERIES.map(([m]) => (
-                  <span key={m} className="flex-1 text-center text-[7.5px] leading-[10px] text-[#a3b0bf]">
-                    {m}
-                  </span>
                 ))}
+              </div>
+            </div>
+          </div>
+
+          {/* the decision itself, on the product's own surface tone */}
+          <div className="flex min-h-0 flex-1 items-start justify-center bg-[#f7f7f4] px-3 pb-3 pt-3">
+            <div className="w-full max-w-[330px] rounded-[10px] border border-[#ececec] bg-white px-4 pb-4 pt-3.5 text-center shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+              <span className="inline-block rounded-[4px] px-2 py-[3px] text-[7px] font-bold uppercase tracking-[0.1em] text-white" style={{ background: APP_BRAND }}>
+                Due in : 19 days
+              </span>
+
+              {/* was "Would you like to proceed?" — the biggest text in the focal pane, and
+                  the only line a scanner reads, saying nothing about the situation or the
+                  decision. This states both in five words. */}
+              <p className="mt-2.5 text-[13px] font-semibold leading-[1.25] tracking-[-0.01em] text-[#171717]">
+                Probation complete. Confirm Rahul?
+              </p>
+
+              <div className="mt-2.5 rounded-[8px] border border-[#ececec] px-3 py-3">
+                {/* The same 1.3 crop the approval card uses: AVATAR.png has an uneven white
+                    rim baked into the file, which a smaller scale leaves showing as a sliver
+                    inside the disc. */}
+                <span className="mx-auto block h-[38px] w-[38px] overflow-hidden rounded-full ring-1 ring-[#e5e5e5]">
+                  <img src={avatarUser} alt="" aria-hidden className="h-full w-full scale-[1.3] object-cover" />
+                </span>
+                <p className="mt-2 text-[10px] font-bold leading-[13px] text-[#171717]">
+                  Rahul Verma (#AVK10266)
+                </p>
+                {/* the capture had "Account" over a bare "A" — the design's own field labels
+                    showing through with nothing filled in. A role and a location are what an
+                    approver actually needs to place the person they are confirming. */}
+                <p className="mt-[3px] text-[8.5px] leading-[12px] text-[#404040]">
+                  Assistant Manager, Finance &amp; Accounts
+                </p>
+                <p className="text-[8.5px] leading-[12px] text-[#404040]">Band A · Mumbai</p>
+                {/* was 25/09, ten days BEFORE the 05/10 the request is due — the approver was
+                    being asked to decide a confirmation that had already passed. The decision
+                    now falls due first and the confirmation takes effect after it. */}
+                <p className="mt-[1px] text-[8.5px] font-semibold leading-[12px] text-[#171717]">
+                  Confirmation Date : 10/10/2026
+                </p>
+
+                <p className="mt-2 text-[8.5px] font-medium text-[var(--app-brand)]">View profile</p>
+
+                <span
+                  className="mt-2 block rounded-[6px] py-[7px] text-[9px] font-bold uppercase tracking-[0.06em] text-white"
+                  style={{ background: APP_BRAND }}
+                >
+                  Confirm
+                </span>
+
+                {/* Terminate is gone: on a page that closes with "Finally, HR feels right",
+                    the focal card should not contain that word. It is dropped rather than
+                    swapped for a softer fake action — inventing UI in a product shot is
+                    worse than showing a blunt real one, so one real secondary action stands
+                    on its own. */}
+                <p className="mt-2.5 text-[8.5px] leading-none">
+                  <span className="font-medium text-[var(--app-brand)]">Extend probation</span>
+                </p>
               </div>
             </div>
           </div>
@@ -1249,7 +1363,7 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
             willChange: p > 0 && p < 1 ? "transform" : undefined,
           }}
         >
-          <Dashboard p={p} />
+          <Dashboard />
         </div>
 
         {/* Each gutter is a flex column spanning the stage, so the cards space
@@ -1276,16 +1390,16 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
             <AskAI />
           </Float>
           <Float from={[-46, 42]} tilt={-2} t={win(p, 0.46, 0.64)}>
-            <ApprovalMatrix />
+            <ShiftOvertime />
           </Float>
         </div>
 
         <div className="absolute -right-9 inset-y-0 z-20 hidden flex-col items-end justify-center gap-10 min-[1360px]:flex">
           <Float from={[34, 26]} tilt={2} t={win(p, 0.38, 0.56)} className="z-30">
-            <PhoneAttendance />
+            <PhoneOneAiLeave />
           </Float>
           <Float from={[46, 42]} tilt={2} t={win(p, 0.52, 0.7)}>
-            <MultiState />
+            <PayrollSummary />
           </Float>
         </div>
       </div>
