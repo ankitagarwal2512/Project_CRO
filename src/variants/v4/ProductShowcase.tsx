@@ -121,17 +121,25 @@ const CHROME_H = 73;
 const MOCK_H = CHROME_H + IMAGE_H;
 
 /* The presentation is hrone.studio's, measured off the live page rather than eyeballed:
-   a 1120px window on the page's own ground — no panel behind it — that grows from 1.05 to
-   1.2 over the first 560px of scroll and then holds. 1120 x 1.2 is the 1344px the studio
-   page settles at, so the product lands at the same size here.
+   a window on the page's own ground — no panel behind it — that grows on scroll and then
+   holds. Two numbers are deliberately below studio's.
+
+   Studio runs a 1120px window out to 1.2, which is 1344px — in a 1440px viewport that
+   leaves 48px a side and reads as though it is about to burst the window. Here the base
+   is 1040 (~7% smaller) and the growth is capped at 10% rather than studio's ~14%, so the
+   window settles at ~1201px with ~120px of air either side and stays a window on a page
+   rather than something straining against the browser edge.
 
    The growth is anchored `center bottom`, which is the whole effect: scaling about the
    centre would push the window down into the section below as hard as it pushes up, and
    scaling about the top would pin the header and slide the body away. Held at the bottom,
    the window rises into the space under the hero as it opens out. */
-const BASE_W = 1120;
+const BASE_W = 1040;
 const START_SCALE = 1.05;
-const END_SCALE = 1.2;
+/* How far it opens out from rest, as a ratio — the cap is a property of the effect, so
+   it is written as one rather than buried in an end scale that has to be divided back. */
+const GROWTH = 1.1;
+const END_SCALE = START_SCALE * GROWTH;
 const GROW_DISTANCE = 560;
 
 function useGrow() {
@@ -175,25 +183,31 @@ function useGrow() {
 }
 
 export function ProductShowcase() {
-  const box = useRef<HTMLDivElement>(null);
+  const shell = useRef<HTMLDivElement>(null);
   const growth = useGrow();
 
-  /* The reserved box is fluid up to BASE_W, so its width has to be measured rather than
-     assumed — the mock inside is laid out at its own fixed MOCK_W and scaled to fit, which
-     keeps the coded chrome in proportion with the screenshot at every width. */
-  const [boxW, setBoxW] = useState(0);
+  /* The width available to the window, measured rather than assumed — the mock inside is
+     laid out at its own fixed MOCK_W and scaled to fit, which keeps the coded chrome in
+     proportion with the screenshot at every width. */
+  const [availW, setAvailW] = useState(0);
   /* Layout effect, not effect: the reserved height depends on this measurement, so
      measuring after paint would flash a collapsed box and shove the logos up the page. */
   useLayoutEffect(() => {
-    const el = box.current;
+    const el = shell.current;
     if (!el) return;
-    const measure = () => setBoxW(el.clientWidth);
+    const measure = () => setAvailW(el.clientWidth);
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
+  /* The cap is on the GROWN width, not the resting one. Sizing the box to the space and
+     then scaling it up is what put the window past the viewport edge on anything under
+     ~1250px and raised a horizontal scrollbar: at 1152px the 1201px grown window hung 24px
+     off each side. Dividing by END_SCALE reserves room for the growth up front, so the
+     window opens out to exactly the space available and never past it. */
+  const boxW = availW ? Math.min(BASE_W, availW / END_SCALE) : 0;
   const fit = boxW ? boxW / MOCK_W : 0;
   /* Only the unscaled window is reserved in flow, exactly as the studio page does it: the
      growth spills out of this box rather than pushing the page around as it scrolls. */
@@ -204,8 +218,8 @@ export function ProductShowcase() {
        it moves the reserved box itself: nudging the mock with a translate instead would
        fight the bottom-anchored growth, which holds that edge on purpose. */
     <section className="w-full px-6 pt-[45px] lg:px-8">
-      <div className="mx-auto w-full max-w-[1280px]">
-        <div ref={box} className="relative mx-auto w-full" style={{ maxWidth: BASE_W, height: reserveH || undefined }}>
+      <div ref={shell} className="mx-auto w-full max-w-[1280px]">
+        <div className="relative mx-auto" style={{ width: boxW || undefined, height: reserveH || undefined }}>
           {boxW > 0 && (
             <div
               className="absolute bottom-0 overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-[0_25px_50px_-12px_rgba(15,42,28,0.28)]"
