@@ -6,6 +6,7 @@ import V1 from './variants/v1/App'
 import V2 from './variants/v2/App'
 import V3 from './variants/v3/App'
 import V4 from './variants/v4/App'
+import V5 from './variants/v5/App'
 import './index.css'
 
 /* Each entry under src/variants/ is a FULL, independent copy of the page — its own
@@ -29,12 +30,15 @@ import './index.css'
    "/"                      – v1, the live design
    "/option-a" or "/#option-a"   – the same page as "/" (v1), as shared for review
    "/option-b" or "/#option-b"   – v4, as shared for review
+   "/option-c" or "/#option-c"   – v5, a full copy of option-a taken 2026-09-16 so it
+                                   can be changed without touching what was shared
    "/v1"        or "/#v1"        – the same page as "/", on its own path
    "/current"   or "/#current"   – the design "/" served before v1 was promoted,
                                    kept reachable for comparison
    "/v2"        or "/#v2"        – variation 2
    "/v3"        or "/#v3"        – variation 3 (started as a copy of v2)
    "/v4"        or "/#v4"        – variation 4 (started as a copy of v3)
+   "/v5"        or "/#v5"        – variation 5 (started as a copy of v1)
    "/original"  or "/#original"  – the earlier proportions, kept for comparison
 
    The paths only resolve on a host that falls back to index.html for unknown
@@ -47,10 +51,15 @@ const variants: Record<string, React.ComponentType> = {
      vN path does, so there is one page to edit rather than two that can drift */
   'option-a': V1,
   'option-b': V4,
+  /* option-c is its own component, not an alias like the two above: it is a replica of
+     option-a meant to be edited away from it, so it gets its own copy under variants/v5
+     rather than a second name for V1. */
+  'option-c': V5,
   v1: V1,
   v2: V2,
   v3: V3,
   v4: V4,
+  v5: V5,
 }
 
 const route = (window.location.pathname.replace(/^\/|\/$/g, '') ||
