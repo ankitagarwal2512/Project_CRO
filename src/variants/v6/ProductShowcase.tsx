@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
 import hrIcon from "@/imports/HRICON.svg";
 import avatarUser from "@/imports/AVATAR.png";
 import avatarAnanya from "@/imports/ANANYA.png";
@@ -777,20 +777,39 @@ function PhoneOneAiLeave() {
    column down from 17 entries to 11 — the density fix and the coherence fix are the same
    edit. "All" is selected, which is what makes the All Messages chip above the list true.
 
-   Counts stay small and still sum to the group header. */
+   Counts stay small and still sum to the group header.
+
+   Ordered by HROne's own module sequence — Core HR, Recruitment, Workforce, Time Office,
+   Payroll, Expense, Performance, Engagement, Asset, Helpdesk — rather than alphabetically,
+   so the column reads in the order the product is sold in. Each row sits under the module
+   it belongs to:
+
+     Core HR      On boarding, Confirmation, Final clearance — and in lifecycle order
+                  within that, joining then confirmation then exit, which is also roughly
+                  descending importance
+     Recruitment  Recruitment
+     Time Office  Leave, then Attendance (the module is billed "leave & attendance", and
+                  Leave is the heaviest queue at 14)
+     Payroll      Payroll
+     Expense      Expense
+     Performance  Performance
+     Asset        Manage asset
+
+   Alphabetical put "Attendance" first and buried On boarding and Payroll in the middle,
+   which is an ordering the product does not use anywhere else. */
 const INBOX_NEW = 76;
 const INBOX_GROUPS: [string, string][] = [
   ["All", ""],
-  ["Attendance", "9"],
-  ["Confirmation", "12"],
-  ["Expense", "9"],
-  ["Final clearance", "4"],
-  ["Leave", "14"],
-  ["Manage asset", "2"],
   ["On boarding", "8"],
-  ["Payroll", "6"],
-  ["Performance", "5"],
+  ["Confirmation", "12"],
+  ["Final clearance", "4"],
   ["Recruitment", "7"],
+  ["Leave", "14"],
+  ["Attendance", "9"],
+  ["Payroll", "6"],
+  ["Expense", "9"],
+  ["Performance", "5"],
+  ["Manage asset", "2"],
 ];
 
 /* subject, received, days until due, and the category chip the row carries — the chip has
@@ -803,17 +822,28 @@ const INBOX_GROUPS: [string, string][] = [
 
    The category chip under each row already states the type, so the subject does not repeat
    it ("Regularisation" under an "Attendance" chip, not "Attendance regularisation"). */
+/* Same module sequence as the column beside it: Core HR (confirmation, final clearance),
+   Recruitment, Time Office (leave, attendance), Payroll, Expense, Performance, Asset. The
+   two read in one order instead of two.
+
+   Nine rows, not ten — the onboarding request came out, which moves Performance up into
+   the visible run. The On boarding category stays in the column with its count of 8: the
+   list is one page of 76, so a category having nothing on this page is normal.
+
+   The timestamps were re-stamped to run newest-first down that order. Reordering the rows
+   alone would have left the dates jumping 15/09, 14/09, 12/09, 14/09 — a list that looks
+   sorted by nothing, which reads as a bug rather than as a sort. Due-in values stay with
+   their rows: an SLA belongs to the kind of request, not to when it arrived. */
 const MESSAGES: [string, string, string, string][] = [
   ["Confirmation request — Rahul Verma", "#AVK10266 · 15/09, 2:26 PM", "19", "Confirmation"],
-  ["Leave approval — Priya Nair", "#AVK10265 · 15/09, 11:05 AM", "2", "Leave"],
-  ["Expense ₹12,400 — Rohan Deshmukh", "#AVK10264 · 14/09, 6:40 PM", "4", "Expense"],
-  ["Onboarding Day 1 — Ayesha Khan", "#AVK10263 · 14/09, 9:12 AM", "1", "On boarding"],
+  ["Full & final — Arjun Mehta", "#AVK10260 · 15/09, 11:05 AM", "6", "Final clearance"],
+  ["Offer approval — Sneha Kulkarni", "#AVK10261 · 14/09, 6:40 PM", "5", "Recruitment"],
+  ["Leave approval — Priya Nair", "#AVK10265 · 14/09, 9:12 AM", "2", "Leave"],
   ["Regularisation — Vikram Iyer", "#AVK10262 · 13/09, 4:55 PM", "3", "Attendance"],
-  ["Offer approval — Sneha Kulkarni", "#AVK10261 · 12/09, 2:20 PM", "5", "Recruitment"],
-  ["Full & final — Arjun Mehta", "#AVK10260 · 12/09, 11:48 AM", "6", "Final clearance"],
-  ["Payroll sign-off — Kavya Reddy", "#AVK10259 · 11/09, 5:02 PM", "8", "Payroll"],
+  ["Payroll sign-off — Kavya Reddy", "#AVK10259 · 12/09, 2:20 PM", "8", "Payroll"],
+  ["Expense ₹12,400 — Rohan Deshmukh", "#AVK10264 · 12/09, 11:48 AM", "4", "Expense"],
+  ["Goal check-in — Divya Menon", "#AVK10257 · 11/09, 5:02 PM", "11", "Performance"],
   ["Asset handover — Imran Sheikh", "#AVK10258 · 11/09, 10:30 AM", "9", "Manage asset"],
-  ["Goal check-in — Divya Menon", "#AVK10257 · 10/09, 3:15 PM", "11", "Performance"],
 ];
 
 const Tick = () => (
@@ -831,12 +861,179 @@ const Tick = () => (
    the files would change that page too. One AI opts out — its mark is a brand gradient. */
 const RAIL_ICON = { filter: "brightness(0) invert(1)" } as const;
 
+/* ---------- the desk demo ----------
+
+   A pointer works through two requests and stops. What separates this from the stock
+   "watch the cursor" loop is mostly restraint:
+
+   - a real macOS arrow at its real size, not a cartoon hand
+   - travel eases out and settles; it never moves at constant speed
+   - a beat of hesitation before each click, because people hesitate
+   - the button takes the press (dips and darkens) before anything happens
+   - the result is the state the product would actually show — a resolved band, a row
+     ticking off, counters dropping by one — not a celebration
+   - it ends, holds, and starts over rather than running continuously
+
+   Under prefers-reduced-motion it does not run at all; the screen sits in its opening
+   state, which is a complete composition on its own. */
+
+type Step = {
+  at: "confirm" | "row" | "approve" | null;
+  press?: boolean;
+  open: "confirm" | "offer";
+  done: string[];
+  ms: number;
+};
+
+const DEMO: Step[] = [
+  { at: null, open: "confirm", done: [], ms: 1200 },
+  { at: "confirm", open: "confirm", done: [], ms: 880 },
+  { at: "confirm", press: true, open: "confirm", done: [], ms: 170 },
+  { at: "confirm", open: "confirm", done: ["Confirmation"], ms: 1500 },
+  { at: "row", open: "confirm", done: ["Confirmation"], ms: 780 },
+  { at: "row", press: true, open: "confirm", done: ["Confirmation"], ms: 170 },
+  { at: "row", open: "offer", done: ["Confirmation"], ms: 820 },
+  { at: "approve", open: "offer", done: ["Confirmation"], ms: 700 },
+  { at: "approve", press: true, open: "offer", done: ["Confirmation"], ms: 170 },
+  { at: "approve", open: "offer", done: ["Confirmation", "Recruitment"], ms: 1900 },
+  { at: null, open: "offer", done: ["Confirmation", "Recruitment"], ms: 700 },
+];
+
+function useDeskDemo() {
+  const [i, setI] = useState(0);
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setReduced(true);
+      return;
+    }
+    let id = 0;
+    const tick = (v: number) => {
+      id = window.setTimeout(() => {
+        const next = (v + 1) % DEMO.length;
+        setI(next);
+        tick(next);
+      }, DEMO[v].ms);
+    };
+    tick(0);
+    return () => window.clearTimeout(id);
+  }, []);
+  return reduced ? DEMO[0] : DEMO[i];
+}
+
+/* The system arrow, drawn rather than imported so it inherits the mock's own scale. */
+const Pointer = () => (
+  <svg width="15" height="18" viewBox="0 0 15 18" fill="none" aria-hidden>
+    <path d="M1.2 1 1.2 15.2 4.9 11.8 7.2 16.9 9.4 15.9 7.1 10.9 12 10.6z" fill="#fff" stroke="#1d1d1f" strokeWidth="1.1" strokeLinejoin="round" />
+  </svg>
+);
+
+type RecordDef = {
+  kind: string;
+  subject: string;
+  to: string;
+  due: string;
+  pill: string;
+  ask: string;
+  who: string;
+  avatar?: string;
+  initials?: string;
+  meta: string[];
+  primary: string;
+  secondary: string;
+  resolved: string;
+  /* Three lines, three jobs. The status word lives on the pill and nowhere else: the
+     headline says what now holds true for the person, the band says what the system did,
+     and its second line says what followed. "Confirmed. Nothing left to do." said the same
+     word as the pill above it and the band below it, three times in one card, and the only
+     new information in it was that there was none. */
+  resolvedHeadline: string;
+  resolvedNote: string;
+  resolvedMeta: string;
+};
+
+const RECORDS: Record<"confirm" | "offer", RecordDef> = {
+  confirm: {
+    kind: "Confirmation",
+    subject: "Confirmation request — Rahul Verma (#AVK10266)",
+    to: "Rajnikant A Rao",
+    due: "Due date : 05/10/2026",
+    pill: "Due in : 19 days",
+    ask: "Probation complete. Confirm Rahul?",
+    who: "Rahul Verma (#AVK10266)",
+    avatar: avatarUser,
+    meta: ["Assistant Manager, Finance & Accounts", "Band A · Mumbai", "Confirmation Date : 10/10/2026"],
+    primary: "Confirm",
+    secondary: "Extend probation",
+    resolved: "Confirmed",
+    resolvedHeadline: "Rahul is confirmed from 10 Oct.",
+    resolvedNote: "Confirmation letter sent",
+    resolvedMeta: "Payroll updated · probation closed",
+  },
+  offer: {
+    kind: "Recruitment",
+    subject: "Offer approval — Sneha Kulkarni (#AVK10261)",
+    to: "Rajnikant A Rao",
+    due: "Due date : 21/09/2026",
+    pill: "Due in : 5 days",
+    ask: "Offer ready. Approve for Sneha?",
+    who: "Sneha Kulkarni (#AVK10261)",
+    /* initials, not a photo: the three faces this project has are already spoken for, and
+       reusing one would put the same person under two names on one screen */
+    initials: "SK",
+    meta: ["Senior Analyst, Finance & Accounts", "Band B · Pune", "CTC ₹18,00,000 · joins 06/10/2026"],
+    primary: "Approve offer",
+    secondary: "Send back to recruiter",
+    resolved: "Approved",
+    resolvedHeadline: "Offer is out with Sneha.",
+    resolvedNote: "Offer letter released",
+    resolvedMeta: "Joins 06/10/2026 · onboarding queued",
+  },
+};
+
+/* the mock's own coordinate space — `w-full max-w-[880px]` on the wrapper */
+const MOCK_W = 880;
+
 function Dashboard() {
-  /* The plot draws itself once the product has settled and just ahead of the
-     cards' cascade (AskAI 0.40, phone 0.46, Shift 0.58, Payroll 0.64), so
-     the order reads product -> chart -> cards rather than all at once. */
+  const step = useDeskDemo();
+  const rec = RECORDS[step.open];
+  const isDone = step.done.includes(rec.kind);
+
+  const root = useRef<HTMLDivElement>(null);
+  const confirmRef = useRef<HTMLSpanElement>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const approveRef = useRef<HTMLSpanElement>(null);
+  const [pt, setPt] = useState<{ x: number; y: number } | null>(null);
+
+  /* Measured from the live DOM rather than hardcoded, then divided back through the mock's
+     current scale so the coordinates land in its own 880-wide space. The product is scaled
+     by the page as it reveals, and an offset taken straight off the screen would drift. */
+  useLayoutEffect(() => {
+    const el =
+      step.at === "confirm"
+        ? confirmRef.current
+        : step.at === "row"
+          ? rowRef.current
+          : step.at === "approve"
+            ? approveRef.current
+            : null;
+    /* Only a step with no target hides the pointer. The button it just pressed is replaced
+       by the resolved band, so its ref goes null the instant the click lands — clearing the
+       position there made the pointer blink out mid-sequence. It holds its last position
+       instead, which is also what a real one does: it stays where you left it. */
+    if (!root.current || (!el && step.at !== null)) return;
+    if (!el) {
+      setPt(null);
+      return;
+    }
+    const r = root.current.getBoundingClientRect();
+    const k = r.width / MOCK_W || 1;
+    const t = el.getBoundingClientRect();
+    setPt({ x: (t.left + t.width * 0.5 - r.left) / k, y: (t.top + t.height * 0.5 - r.top) / k });
+  }, [step]);
+
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-[0_18px_44px_-26px_rgba(11,74,46,0.3)]">
+    <div ref={root} className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-[0_18px_44px_-26px_rgba(11,74,46,0.3)]">
       {/* browser chrome — tab strip over a toolbar, the way a real window reads */}
       <div className="shrink-0 bg-[var(--cream-2)]">
         {/* tab strip */}
@@ -1055,7 +1252,9 @@ function Dashboard() {
 
           <div className="flex h-[22px] shrink-0 items-center gap-1 px-2">
             <img src={navInbox} alt="" aria-hidden className="h-[9px] w-[9px] shrink-0 opacity-70" />
-            <span className="flex-1 truncate text-[9px] font-semibold text-[var(--app-brand)]">New- {INBOX_NEW}</span>
+            <span className="flex-1 truncate text-[9px] font-semibold text-[var(--app-brand)]">
+              New- {INBOX_NEW - step.done.length}
+            </span>
             {/* the design's chevron, turned down for the open group */}
             <img src={navChevron} alt="" aria-hidden className="h-[9px] w-[9px] shrink-0 rotate-90 opacity-50" />
           </div>
@@ -1077,12 +1276,14 @@ function Dashboard() {
                   >
                     {label}
                   </span>
+                  {/* a resolved request leaves its category too — a total that drops while
+                      the categories hold still is the tell that nothing really happened */}
                   <span
                     className={`shrink-0 text-[9px] font-semibold leading-none tabular-nums ${
                       active ? "text-[var(--app-brand)]" : "text-[#737373]"
                     }`}
                   >
-                    {count}
+                    {count && step.done.includes(label) ? String(Number(count) - 1) : count}
                   </span>
                 </div>
               );
@@ -1126,26 +1327,53 @@ function Dashboard() {
           </div>
 
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-            {MESSAGES.map(([title, when, due, kind], i) => (
-              <div
-                key={title + when}
-                className={`shrink-0 border-b border-[#eeeeee] px-2 py-[7px] ${i === 0 ? "bg-[#f1f7f3]" : ""}`}
-              >
-                <div className="flex items-start gap-1.5">
-                  <Tick />
-                  <p className="min-w-0 flex-1 truncate text-[9px] font-semibold leading-[12px] text-[#171717]">
-                    {title}
-                  </p>
+            {/* The selected row follows the open record, not the top of the list. Rahul's
+                confirmation is what the pane on the right shows, and it sits second now that
+                the queue runs in module order — highlighting row 0 regardless would have the
+                list and the record disagree about what is open. */}
+            {MESSAGES.map(([title, when, due, kind]) => {
+              const rowDone = step.done.includes(kind);
+              const open = kind === rec.kind;
+              return (
+                <div
+                  key={title + when}
+                  ref={kind === "Recruitment" ? rowRef : undefined}
+                  className={`shrink-0 border-b border-[#eeeeee] px-2 py-[7px] transition-colors duration-300 ${
+                    open ? "bg-[#f1f7f3]" : ""
+                  } ${step.press && step.at === "row" && kind === "Recruitment" ? "bg-[#e9f2ec]" : ""}`}
+                >
+                  <div className="flex items-start gap-1.5">
+                    {/* the checkbox becomes the tick — the row is how the queue shows the
+                        work leaving it, and it is the half of the click most demos forget */}
+                    {rowDone ? (
+                      <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="var(--app-brand)" strokeWidth="3.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="mt-[2px] shrink-0">
+                        <path d="m5 12.5 4.5 4.5L19 7.5" />
+                      </svg>
+                    ) : (
+                      <Tick />
+                    )}
+                    <p
+                      className={`min-w-0 flex-1 truncate text-[9px] font-semibold leading-[12px] transition-colors duration-300 ${
+                        rowDone ? "text-[#9a9a9a]" : "text-[#171717]"
+                      }`}
+                    >
+                      {title}
+                    </p>
+                  </div>
+                  <p className="mt-[2px] pl-[13px] text-[7.5px] leading-[10px] text-[#8a8a8a]">{when}</p>
+                  <div className="mt-[5px] flex items-center justify-between pl-[13px]">
+                    <span className="text-[7.5px] font-medium text-[var(--app-brand)]">{kind}</span>
+                    <span
+                      className={`text-[7.5px] font-medium uppercase tracking-[0.02em] ${
+                        rowDone ? "text-[var(--app-brand)]" : "text-[#737373]"
+                      }`}
+                    >
+                      {rowDone ? "Done" : `Due in : ${due} days`}
+                    </span>
+                  </div>
                 </div>
-                <p className="mt-[2px] pl-[13px] text-[7.5px] leading-[10px] text-[#8a8a8a]">{when}</p>
-                <div className="mt-[5px] flex items-center justify-between pl-[13px]">
-                  <span className="text-[7.5px] font-medium text-[var(--app-brand)]">{kind}</span>
-                  <span className="text-[7.5px] font-medium uppercase tracking-[0.02em] text-[#737373]">
-                    Due in : {due} days
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -1153,25 +1381,17 @@ function Dashboard() {
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-white">
           <div className="flex shrink-0 items-start justify-between gap-3 px-3 pb-2 pt-2.5">
             <div className="min-w-0">
-              {/* 9px, not the 10px the panel titles elsewhere use, and allowed to wrap: this
-                  pane is 340px against the design's 1245px, and a full name plus employee id
-                  does not fit one line at any size that stays readable. Wrapping keeps the id
-                  — truncating dropped the one part of the subject that says which record is
-                  open. */}
-              <p className="text-[9px] font-bold leading-[12px] text-[#171717]">
-                Confirmation request — Rahul Verma (#AVK10266)
-              </p>
+              <p className="text-[9px] font-bold leading-[12px] text-[#171717]">{rec.subject}</p>
               <p className="mt-[5px] text-[7.5px] leading-[11px] text-[#8a8a8a]">
                 From : <span className="text-[#404040]">System</span>
               </p>
               <p className="text-[7.5px] leading-[11px] text-[#8a8a8a]">
-                To : <span className="text-[#404040]">Rajnikant A Rao</span>
+                To : <span className="text-[#404040]">{rec.to}</span>
               </p>
             </div>
 
             <div className="flex shrink-0 flex-col items-end gap-2">
-              <p className="whitespace-nowrap text-[7.5px] font-semibold text-[#404040]">Due date : 05/10/2026</p>
-              {/* the request's own actions, drawn at the weight the topbar icons use */}
+              <p className="whitespace-nowrap text-[7.5px] font-semibold text-[#404040]">{rec.due}</p>
               <div className="flex items-center gap-1.5 rounded-[6px] border border-[#ededed] px-1.5 py-1">
                 {["comment", "add", "reply", "forward", "chart", "more"].map((k) => (
                   <svg key={k} width="9" height="9" viewBox="0 0 14 14" aria-hidden className="text-[#6b6b6b]" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
@@ -1187,63 +1407,101 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* the decision itself, on the product's own surface tone */}
           <div className="flex min-h-0 flex-1 items-start justify-center bg-[#f7f7f4] px-3 pb-3 pt-3">
             <div className="w-full max-w-[330px] rounded-[10px] border border-[#ececec] bg-white px-4 pb-4 pt-3.5 text-center shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-              <span className="inline-block rounded-[4px] px-2 py-[3px] text-[7px] font-bold uppercase tracking-[0.1em] text-white" style={{ background: APP_BRAND }}>
-                Due in : 19 days
+              <span
+                className={`inline-block rounded-[4px] px-2 py-[3px] text-[7px] font-bold uppercase tracking-[0.1em] ${
+                  isDone ? "bg-[var(--green-soft)] text-[var(--green-deep)]" : "text-white"
+                }`}
+                style={isDone ? undefined : { background: APP_BRAND }}
+              >
+                {isDone ? rec.resolved : rec.pill}
               </span>
 
-              {/* was "Would you like to proceed?" — the biggest text in the focal pane, and
-                  the only line a scanner reads, saying nothing about the situation or the
-                  decision. This states both in five words. */}
               <p className="mt-2.5 text-[13px] font-semibold leading-[1.25] tracking-[-0.01em] text-[#171717]">
-                Probation complete. Confirm Rahul?
+                {isDone ? rec.resolvedHeadline : rec.ask}
               </p>
 
               <div className="mt-2.5 rounded-[8px] border border-[#ececec] px-3 py-3">
-                {/* The same 1.3 crop the approval card uses: AVATAR.png has an uneven white
-                    rim baked into the file, which a smaller scale leaves showing as a sliver
-                    inside the disc. */}
-                <span className="mx-auto block h-[38px] w-[38px] overflow-hidden rounded-full ring-1 ring-[#e5e5e5]">
-                  <img src={avatarUser} alt="" aria-hidden className="h-full w-full scale-[1.3] object-cover" />
-                </span>
-                <p className="mt-2 text-[10px] font-bold leading-[13px] text-[#171717]">
-                  Rahul Verma (#AVK10266)
-                </p>
-                {/* the capture had "Account" over a bare "A" — the design's own field labels
-                    showing through with nothing filled in. A role and a location are what an
-                    approver actually needs to place the person they are confirming. */}
-                <p className="mt-[3px] text-[8.5px] leading-[12px] text-[#404040]">
-                  Assistant Manager, Finance &amp; Accounts
-                </p>
-                <p className="text-[8.5px] leading-[12px] text-[#404040]">Band A · Mumbai</p>
-                {/* was 25/09, ten days BEFORE the 05/10 the request is due — the approver was
-                    being asked to decide a confirmation that had already passed. The decision
-                    now falls due first and the confirmation takes effect after it. */}
-                <p className="mt-[1px] text-[8.5px] font-semibold leading-[12px] text-[#171717]">
-                  Confirmation Date : 10/10/2026
-                </p>
+                {rec.avatar ? (
+                  <span className="mx-auto block h-[38px] w-[38px] overflow-hidden rounded-full ring-1 ring-[#e5e5e5]">
+                    <img src={rec.avatar} alt="" aria-hidden className="h-full w-full scale-[1.3] object-cover" />
+                  </span>
+                ) : (
+                  <span
+                    className="mx-auto grid h-[38px] w-[38px] place-items-center rounded-full text-[12px] font-bold text-white"
+                    style={{ background: APP_BRAND }}
+                  >
+                    {rec.initials}
+                  </span>
+                )}
+                <p className="mt-2 text-[10px] font-bold leading-[13px] text-[#171717]">{rec.who}</p>
+                {rec.meta.map((m, i) => (
+                  <p
+                    key={m}
+                    className={`text-[8.5px] leading-[12px] ${
+                      i === rec.meta.length - 1 ? "mt-[1px] font-semibold text-[#171717]" : "text-[#404040]"
+                    }`}
+                  >
+                    {m}
+                  </p>
+                ))}
 
-                <p className="mt-2 text-[8.5px] font-medium text-[var(--app-brand)]">View profile</p>
-
-                <span
-                  className="mt-2 block rounded-[6px] py-[7px] text-[9px] font-bold uppercase tracking-[0.06em] text-white"
-                  style={{ background: APP_BRAND }}
-                >
-                  Confirm
-                </span>
-
-                {/* Terminate is gone: on a page that closes with "Finally, HR feels right",
-                    the focal card should not contain that word. It is dropped rather than
-                    swapped for a softer fake action — inventing UI in a product shot is
-                    worse than showing a blunt real one, so one real secondary action stands
-                    on its own. */}
-                <p className="mt-2.5 text-[8.5px] leading-none">
-                  <span className="font-medium text-[var(--app-brand)]">Extend probation</span>
-                </p>
+                {isDone ? (
+                  /* The resolved state is the one the product would show: a quiet band and a
+                     line saying what followed. No tick animation, no confetti — the point is
+                     that the work is gone, not that something happened. */
+                  <div className="mt-2.5 rounded-[6px] bg-[var(--green-soft)] px-2 py-[7px]">
+                    <span className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-[var(--green-deep)]">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d="m5 12.5 4.5 4.5L19 7.5" />
+                      </svg>
+                      {rec.resolvedNote}
+                    </span>
+                    <span className="mt-[3px] block text-[8px] leading-[11px] text-[var(--green-deep)]/75">
+                      {rec.resolvedMeta}
+                    </span>
+                  </div>
+                ) : (
+                  <>
+                    <p className="mt-2 text-[8.5px] font-medium text-[var(--app-brand)]">View profile</p>
+                    {/* the press lives on the button, not on the pointer: a control that dips
+                        and darkens under the click is what makes the click read as real */}
+                    <span
+                      ref={step.open === "confirm" ? confirmRef : approveRef}
+                      className="mt-2 block rounded-[6px] py-[7px] text-[9px] font-bold uppercase tracking-[0.06em] text-white transition-[transform,filter] duration-150 ease-out"
+                      style={{
+                        background: APP_BRAND,
+                        transform: step.press ? "scale(0.97)" : "scale(1)",
+                        filter: step.press ? "brightness(0.86)" : "none",
+                      }}
+                    >
+                      {rec.primary}
+                    </span>
+                    <p className="mt-2.5 text-[8.5px] leading-none">
+                      <span className="font-medium text-[var(--app-brand)]">{rec.secondary}</span>
+                    </p>
+                  </>
+                )}
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* the pointer. Positioned in the mock's own coordinate space, so it stays put on
+            the button it is over while the product scales. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-40 overflow-hidden">
+          <div
+            className="absolute left-0 top-0"
+            style={{
+              transform: `translate3d(${pt ? pt.x - 2 : MOCK_W * 0.72}px, ${pt ? pt.y - 3 : 560}px, 0) scale(${step.press ? 0.9 : 1})`,
+              opacity: pt ? 1 : 0,
+              /* the travel eases out and settles; the fade is quicker than the move so the
+                 pointer is already visible by the time it is going anywhere */
+              transition: "transform 620ms cubic-bezier(0.22,0.61,0.36,1), opacity 260ms ease-out",
+            }}
+          >
+            <Pointer />
           </div>
         </div>
       </div>
@@ -1408,10 +1666,20 @@ export function ProductShowcase({ heroScale = 1.35 }: { heroScale?: number }) {
         </div>
 
         <div
-          className="absolute -right-9 inset-y-0 z-20 hidden flex-col items-end justify-center gap-11 min-[1360px]:flex"
+          /* items-start, not items-end: the column is 244px to match the cards, and the cards
+             fill it — but the phone is 186px, so aligning to the outer edge pushed it 58px
+             further from the product than everything else, purely because it is narrower.
+             Aligning on the INNER edge puts all four objects the same 17px off the product,
+             which is the gap the composition is actually read against. The phone's outer
+             edge now sits inside the Payroll card's; that edge faces empty page, where a
+             58px difference costs nothing. */
+          className="absolute -right-9 inset-y-0 z-20 hidden flex-col items-start justify-center gap-11 min-[1360px]:flex"
           style={{ transform: `translateY(${-(1 - scale) * 50}%)` }}
         >
-          <Float from={[26, 18]} t={win(p, 0.38, 0.56)} className="z-30">
+          {/* 19px past the column's inner edge, which puts the phone 36px off the product
+              against the cards' 17px. A device reads as a separate object rather than as
+              another panel of the same screen, so it wants more air than a card does. */}
+          <Float from={[26, 18]} t={win(p, 0.38, 0.56)} className="z-30 ml-[19px]">
             <PhoneOneAiLeave />
           </Float>
           <Float from={[26, 18]} t={win(p, 0.52, 0.7)}>

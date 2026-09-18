@@ -9,6 +9,8 @@
     { "source": "/option-a", "destination": "/index.html" },
     { "source": "/option-b", "destination": "/index.html" },
     { "source": "/option-c", "destination": "/index.html" },
-    { "source": "/v5", "destination": "/index.html" }
+    { "source": "/v5", "destination": "/index.html" },
+    { "source": "/option-d", "destination": "/index.html" },
+    { "source": "/v6", "destination": "/index.html" }
   ]
 }
