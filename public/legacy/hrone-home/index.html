@@ -7094,6 +7094,33 @@ Transformation Journey</h2>
 </div>
 </section>
 
+<style>
+/* Latest Blogs — CSS-only refinement; markup and content untouched (desktop only).
+   Deeper field with a soft light at the top, header on the page's heading scale, a ghost
+   button, and the posts as a hairline grid (same system as the feature grid above) with
+   quiet meta, two-line titles and a hover state. */
+@media (min-width:768px){
+section.latest-blog-section{background:radial-gradient(1100px 480px at 12% -12%,rgba(255,255,255,.07),transparent 62%),#063b2b !important;padding:104px 0 96px !important}
+.latest-blog-section .latest-blog-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:56px !important}
+.latest-blog-section .latest-blog-header h2{font-size:min(3.0556vw,44px) !important;line-height:1.1 !important;font-weight:700 !important;letter-spacing:-.02em;color:#fff !important;margin:0 !important}
+.latest-blog-section .latest-blog-header .btn{display:inline-flex !important;align-items:center;gap:8px;margin:0 !important;padding:11px 18px !important;background:transparent !important;border:1px solid rgba(255,255,255,.28) !important;border-radius:8px !important;color:#fff !important;font:600 15px/1 "Public Sans",sans-serif !important;letter-spacing:-.005em;box-shadow:none !important;transition:background .2s,color .2s,border-color .2s}
+.latest-blog-section .latest-blog-header .btn img{width:13px !important;height:auto !important;filter:brightness(0) invert(1);transition:transform .2s,filter .2s}
+.latest-blog-section .latest-blog-header .btn:hover{background:#fff !important;border-color:#fff !important;color:#063b2b !important}
+.latest-blog-section .latest-blog-header .btn:hover img{filter:none;transform:translateX(3px)}
+.latest-blog-section .blog-grid{display:grid !important;grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:0 56px !important;border:0 !important}
+.latest-blog-section .blog-card{position:relative;display:flex !important;flex-direction:column;padding:26px 0 34px !important;border:0 !important;border-top:1px solid rgba(255,255,255,.14) !important;border-radius:0 !important;text-decoration:none !important}
+.latest-blog-section .blog-card::after{content:"";position:absolute;top:28px;right:0;width:14px;height:14px;opacity:0;transform:translate(-4px,4px);transition:opacity .25s,transform .25s;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23cfe2d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M8 7h9v9'/%3E%3C/svg%3E")}
+.latest-blog-section .blog-card:hover::after{opacity:1;transform:none}
+/* meta: category as a small tracked label first, then the date, split by a dot */
+.latest-blog-section .blog-meta{display:flex;align-items:center;height:18px;min-height:0 !important;margin:0 0 12px !important;padding-right:24px}
+.latest-blog-section .blog-meta img{display:none !important}
+.latest-blog-section .blog-meta .date{font:400 13px/1 "Public Sans",sans-serif !important;letter-spacing:.005em;text-transform:none;color:rgba(229,240,232,.55) !important;font-variant-numeric:tabular-nums}
+.latest-blog-section .blog-meta .badge{order:-1;display:inline-flex;align-items:center;font:600 11px/1 "Public Sans",sans-serif !important;letter-spacing:.09em;text-transform:uppercase;color:#8fd0ab !important;background:none !important;border:0 !important;border-radius:0 !important;padding:0 !important;margin:0 !important}
+.latest-blog-section .blog-meta .badge::after{content:"";width:3px;height:3px;border-radius:50%;background:rgba(229,240,232,.35);margin:0 10px}
+.latest-blog-section .blog-card h5{font:600 19px/1.42 "Public Sans",sans-serif !important;letter-spacing:-.01em;color:#fff !important;margin:0 !important;padding-right:24px;display:-webkit-box !important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;transition:color .25s}
+.latest-blog-section .blog-card:hover h5{color:#cfe2d4 !important}
+}
+</style>
 <section class="latest-blog-section">
 <div class="latest-blog-container container_cus">
 
@@ -7106,21 +7133,21 @@ Transformation Journey</h2>
 <a class="blog-card" href="https://hrone.cloud/blog/7-leadership-rules-that-break-the-moment-you-scale-and-what-to-do-instead/">
 <p class="blog-meta">
 <img alt="calendar-icon" height="30px" src="assets/appointments.svg" width="30px"/>
-<span class="date">23<sup>rd</sup> September 2026</span>
+<span class="date">23 Sep 2026</span>
 </p>
 <h5>7 Leadership Rules That Break the Moment You Scale (And What to Do Instead)</h5>
 </a>
 <a class="blog-card" href="https://hrone.cloud/blog/hr-operations-excellence-summit/">
 <p class="blog-meta">
 <img alt="calendar-icon" height="30px" src="assets/appointments.svg" width="30px"/>
-<span class="date">17<sup>th</sup> September 2026</span>
+<span class="date">17 Sep 2026</span>
 </p>
 <h5>HR Operations Excellence Summit 2026: Benchmark, Maturity, Trust &amp; CHRO Insights</h5>
 </a>
 <a class="blog-card" href="https://hrone.cloud/blog/top-10-rewards-recognition-platforms-india/">
 <p class="blog-meta">
 <img alt="calendar-icon" height="30px" src="assets/appointments.svg" width="30px"/>
-<span class="date">17<sup>th</sup> September 2026</span>
+<span class="date">17 Sep 2026</span>
 <span class="badge">Engagement</span>
 </p>
 <h5>Top 10 Rewards and Recognition Platforms in India (2026)</h5>
@@ -7128,7 +7155,7 @@ Transformation Journey</h2>
 <a class="blog-card" href="https://hrone.cloud/blog/top-assessment-platforms-in-india/">
 <p class="blog-meta">
 <img alt="calendar-icon" height="30px" src="assets/appointments.svg" width="30px"/>
-<span class="date">15<sup>th</sup> September 2026</span>
+<span class="date">15 Sep 2026</span>
 <span class="badge">Recruitment</span>
 </p>
 <h5>Top 10 Assessment Platforms in India in 2026: A Complete Comparison Guide</h5>
@@ -7136,7 +7163,7 @@ Transformation Journey</h2>
 <a class="blog-card" href="https://hrone.cloud/blog/best-job-portals-in-india-for-employers/">
 <p class="blog-meta">
 <img alt="calendar-icon" height="30px" src="assets/appointments.svg" width="30px"/>
-<span class="date">11<sup>th</sup> September 2026</span>
+<span class="date">11 Sep 2026</span>
 <span class="badge">Recruitment</span>
 </p>
 <h5>Best Job Portals in India for Employers in 2026: A Complete Comparison Guide</h5>
@@ -7144,7 +7171,7 @@ Transformation Journey</h2>
 <a class="blog-card" href="https://hrone.cloud/blog/best-lms-platforms-india/">
 <p class="blog-meta">
 <img alt="calendar-icon" height="30px" src="assets/appointments.svg" width="30px"/>
-<span class="date">9<sup>th</sup> September 2026</span>
+<span class="date">9 Sep 2026</span>
 </p>
 <h5>10 Best LMS Platforms in India for Corporate Training (2026)</h5>
 </a>
