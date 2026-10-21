@@ -8,6 +8,7 @@ import V3 from './variants/v3/App'
 import V4 from './variants/v4/App'
 import V5 from './variants/v5/App'
 import V6 from './variants/v6/App'
+import V7 from './variants/v7/App'
 import './index.css'
 
 /* Each entry under src/variants/ is a FULL, independent copy of the page — its own
@@ -33,7 +34,7 @@ import './index.css'
    "/option-b" or "/#option-b"   – v4, as shared for review
    "/option-c" or "/#option-c"   – v6, the further-developed build (see the swap note
                                    below the map)
-   "/option-d" or "/#option-d"   – v5, the build v6 grew out of, kept for comparison
+   "/option-d" or "/#option-d"   – v7, a replica of option-c (v6) to be edited away from it
    "/v1"        or "/#v1"        – the same page as "/", on its own path
    "/current"   or "/#current"   – the design "/" served before v1 was promoted,
                                    kept reachable for comparison
@@ -42,6 +43,7 @@ import './index.css'
    "/v4"        or "/#v4"        – variation 4 (started as a copy of v3)
    "/v5"        or "/#v5"        – variation 5 (started as a copy of v1)
    "/v6"        or "/#v6"        – variation 6 (started as a copy of v5)
+   "/v7"        or "/#v7"        – variation 7 (started as a copy of v6)
    "/original"  or "/#original"  – the earlier proportions, kept for comparison
 
    The paths only resolve on a host that falls back to index.html for unknown
@@ -63,13 +65,16 @@ const variants: Record<string, React.ComponentType> = {
      /v5 and /v6 still point at the code they are named after and any link to those is
      unchanged. */
   'option-c': V6,
-  'option-d': V5,
+  /* 2026-10-14: option-d now points at v7, a fresh copy of v6 to diverge from option-c.
+     v5 (its previous target) is still reachable at /v5. */
+  'option-d': V7,
   v1: V1,
   v2: V2,
   v3: V3,
   v4: V4,
   v5: V5,
   v6: V6,
+  v7: V7,
 }
 
 const route = (window.location.pathname.replace(/^\/|\/$/g, '') ||

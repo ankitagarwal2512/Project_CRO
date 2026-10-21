@@ -1,0 +1,582 @@
+.voucher_section {
+    min-height: 514px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.voucher_section img {
+    position: absolute;
+    width: 100%;
+    top: 0px;
+}
+
+.voucher_section .voucher_main {
+    z-index: 9;
+    position: relative;
+}
+
+.voucher_section h2 {
+    color: #272727;
+    font-family: "Clash Grotesk";
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.voucher_section h2 span {
+    color: #E56046;
+    font-weight: 600;
+}
+
+.voucher_section p {
+    color: #272727;
+    text-align: center;
+    font-family: "Clash Grotesk";
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.2;
+    text-transform: capitalize;
+}
+
+.about-onetowin-cheer-title {
+    color: #23A578;
+}
+
+.cricket-fever {
+    background: #00553C;
+}
+
+.lp-t20-banner-26 img,
+.voucher_section img {
+    width: 100% !important;
+}
+
+.lp-t20-banner-26 .mobile-banner-image {
+    display: none;
+}
+
+.page-template-page-one2win .about-onetowin-gri>div {
+    width: 100%;
+}
+
+.page-template-page-one2win .about-onetowin-cheer {
+    display: none;
+}
+
+.join-mission-con .join-mission-img {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+@media screen and (min-width:1199px) {
+    .lp-t20-banner {
+        /* padding-top: 20px; */
+        background-position: center;
+        /* height: 100vh; */
+        height: 765px;
+    }
+
+    .lp-t20-banner .winlogo {
+        margin-top: 0px;
+    }
+
+    .lp-t20-banner-mainimage {
+        bottom: 0px;
+        line-height: 0px;
+    }
+
+    .lp-t20-banner-heading {
+        color: #FFFAF0;
+        text-align: center;
+        font-family: "Clash Grotesk";
+        font-size: 71.305px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 89.131px;
+        letter-spacing: 1.426px;
+    }
+
+    .lp-t20-banner-subtitle span {
+        color: #000;
+        text-align: center;
+        font-family: "Clash Grotesk";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 96.7%;
+        letter-spacing: 1.481px;
+        text-transform: capitalize;
+        padding: 0px 7px;
+    }
+
+    .lp-t20-banner-title {
+        color: #F6DA81;
+        text-align: center;
+        font-family: "Public Sans";
+        font-size: 20.263px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 125%;
+        letter-spacing: -0.405px;
+    }
+
+    .lp-t20-banner-subtitle {
+        border-radius: 2px;
+        text-transform: uppercase;
+        font-style: normal;
+        font-weight: 500;
+        font-family: "Clash Grotesk";
+        color: #000;
+        padding: 8px 18px;
+        display: inline-block;
+        line-height: 0px;
+    }
+
+    .lp-t20-banner .emoji-mobile {
+        margin-bottom: 13px;
+    }
+
+    .about-onetowin {
+        padding: 60px 0px 75px 0px;
+    }
+
+    .about-onetowin-gri {
+        display: flex;
+        justify-content: space-between;
+        gap: 90px;
+        align-items: center;
+    }
+
+    .about-onetowin-gri>div {
+        width: 50%;
+    }
+
+    .about-onetowin-cheer-box {
+        background: #DEF2EB;
+        border-radius: 10px;
+        padding: 48px 32px 18px 48px;
+    }
+
+    .about-onetowin-cheer-title {
+        font-family: "Public Sans";
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 800;
+        line-height: 36px;
+        margin-bottom: 11px;
+        color: #23A578;
+    }
+
+    .about-onetowin-content-desc {
+        color: #272727;
+        font-family: "Public Sans";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 30px;
+        margin-bottom: 16px;
+    }
+
+    .cricket-fever-desc-p {
+        margin: 0px;
+        font-family: "Public Sans";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 38px;
+    }
+
+    .cricket-fever {
+        margin: 0px;
+    }
+
+
+
+    .about-onetowin-content-heading {
+        font-size: 44px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 46px;
+        margin-bottom: 40px;
+    }
+
+    .how-toplay {
+        padding: 100px 0px 60px 0px;
+        background: #fffaf0;
+    }
+
+    .how-toplay-flex-heading {
+        font-size: 44px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 46px;
+    }
+
+    .how-toplay-score {
+        padding: 42px;
+    }
+
+    .how-toplay-score-point-title {
+        font-family: "Clash Grotesk";
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 150%;
+        text-transform: capitalize;
+    }
+
+    .how-toplay-flex-desc {
+        color: #272727;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 30px;
+    }
+
+    .how-toplay-score-desc {
+        margin-bottom: 32px;
+        color: #272727;
+        font-family: "Public Sans";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 30px;
+    }
+
+    .how-toplay-score ul li {
+        color: #272727;
+        font-family: "Public Sans";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 29px;
+        margin-bottom: 20px;
+    }
+
+    .how-toplay .higher-point-desc2,
+    .how-toplay .higher-point ul li {
+        margin-bottom: 15px;
+        color: #272727;
+        font-family: "Public Sans";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 30px;
+    }
+
+    .how-toplay .higher-point-desc {
+        font-size: 26px;
+        line-height: 34px;
+        margin-bottom: 24px;
+    }
+
+    .higher-point h4 {
+        font-size: 24px;
+        line-height: 32px;
+        font-family: 'Public Sans';
+        font-weight: 600;
+        margin: 32px 0px 20px 0px;
+    }
+
+    .join-mission {
+        padding: 32px 0px 100px;
+    }
+
+    .join-mission-con {
+        padding: 48px 20px 48px 70px;
+    }
+
+    .join-mission-con .right-content .hrone-h2 {
+        font-family: "Clash Grotesk" !important;
+        font-size: 54px !important;
+        font-style: normal;
+        font-weight: 600 !important;
+        line-height: 48px !important;
+    }
+
+    .join-mission-con .right-content .hrone-p {
+        font-size: 26px !important;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 36px ! IMPORTANT;
+    }
+
+    .subscribe {
+        background-size: cover;
+        padding: 80px 0;
+        background-position: center;
+    }
+
+    .subscribe-t20form {
+        padding: 34px 60px 60px;
+        min-width: 680px;
+    }
+
+    .subscribe-form-container label,
+    .subscribe-form-container input[type=email],
+    .subscribe-form-container input[type=text] {
+        font-family: 'Public Sans';
+    }
+
+    .subscribe-t20form h2 {
+        margin-bottom: 10px;
+        text-align: center;
+        color: #FFDC78;
+        text-align: center;
+        font-family: 'Public Sans';
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 40px;
+    }
+
+    .subscribe-t20form p {
+        margin-bottom: 32px;
+        text-align: center;
+        color: #FFF;
+        text-align: center;
+        font-family: "Public Sans";
+        font-size: 18px;
+        font-style: italic;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+    .hrone-lp-footer-container {
+        padding: 40px 0px;
+    }
+
+    .hrone-lp-footer-container p {
+        text-align: center;
+        font-family: "Public Sans";
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+    .subscribe-message.subscribe-message-success {
+        color: #fff;
+        font-family: 'Public Sans';
+        font-size: 28px;
+        line-height: 125%;
+        text-align: center;
+    }
+
+    .page-template-page-one2win .about-onetowin-content-note {
+        font-family: 'Public Sans';
+        font-size: 22px;
+        line-height: 1.5;
+    }
+}
+
+@media screen and (max-width:1199px) {
+    .voucher_section h2 {
+        font-size: 60px;
+    }
+}
+
+@media screen and (min-width:768px) {
+    .lp-t20-banner-mainimage {
+        bottom: 50px;
+        line-height: 0px;
+    }
+
+    .lp-t20-banner-desktop {
+        z-index: 9;
+        position: relative;
+    }
+
+    .lp-t20-banner-mainimage .img {
+        width: 100%;
+        z-index: 99;
+        top: 0px;
+        /* margin-bottom: 10%; */
+        max-width: 100%;
+    }
+
+    .mobile-bg {
+        background-image: unset !important;
+    }
+
+    .cricket-fever-img-div img {
+        max-width: unset;
+        height: -webkit-fill-available;
+        top: -60px;
+    }
+
+    .cricket-fever-main-width {
+        width: 60%;
+        z-index: 9;
+        flex: 0 0 60%;
+    }
+
+    .voucher_section {
+        min-height: 400px;
+    }
+
+    .about-onetowin {
+        padding: 60px 0px 75px 0px;
+        ;
+    }
+
+    .about-onetowin-gri {
+        display: flex;
+        justify-content: space-between;
+        gap: 90px;
+        align-items: center;
+    }
+
+    .about-onetowin-gri>div {
+        width: 50%;
+    }
+
+    .about-onetowin-cheer-box {
+        border-radius: 10px;
+        padding: 0px;
+        background: transparent;
+        line-height: 0px;
+    }
+
+    .about-onetowin .map-button {
+        margin: 0px;
+    }
+
+    .join-mission-con .right-content .apply-btn {
+        padding: 12px 24px;
+        font-size: 18px !important;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .mobile-bg {
+        height: calc(100vh - min(27.027027027vw, 13.3333333333vh));
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: bottom;
+        background-position-x: center;
+    }
+
+    .lp-t20-banner {
+        background-image: unset !important;
+        padding: 0px;
+        height: 100%;
+    }
+
+    .lp-t20-banner .mobile-bg {
+        height: 85vh;
+    }
+
+    .lp-t20-banner .winlogo {
+        margin-top: 0px;
+        padding-top: 20px;
+    }
+
+    .lp-t20-banner-mobile-subtitle {
+        font-size: 16px;
+        line-height: 95%;
+        padding: 7px 12px;
+    }
+
+    .lp-t20-banner-mobile {
+        margin-top: 8px;
+    }
+
+    .lp-t20-banner-title {
+        font-size: 12px;
+        line-height: 125%;
+    }
+
+    .lp-t20-banner-heading {
+        font-size: 36px;
+        line-height: 46px;
+    }
+
+    .lp-t20-banner .emoji-mobile {
+        margin-bottom: 13px;
+        margin: 0px;
+    }
+
+    .about-onetowin-cheer-box {
+        background: transparent;
+        padding-bottom: 0px;
+        line-height: 0px;
+    }
+
+    .about-onetowin .map-button {
+        margin: 0px;
+    }
+
+    .about-onetowin {
+        padding-bottom: 0px;
+    }
+
+    .voucher_section h2 {
+        font-size: 32px;
+        line-height: 40px;
+    }
+
+    .voucher_section p {
+        font-size: 24px;
+        line-height: 32px;
+        margin-top: 12px;
+    }
+
+    .voucher_section {
+        min-height: 240px;
+    }
+
+    .voucher_section img {
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .voucher_section .voucher_main {
+        padding: 0px 32px;
+    }
+
+    .subscribe-message.subscribe-message-success {
+        font-size: 20px;
+        color: #fff;
+        text-align: center;
+        font-family: 'Public Sans';
+        line-height: 28px;
+    }
+
+    .lp-t20-banner-26 .mobile-banner-image {
+        display: block;
+    }
+
+    .lp-t20-banner-26 .desktop-banner-image {
+        display: none;
+    }
+
+    .cricket-fever-desc-p {
+        font-size: 18px;
+        line-height: 26px;
+        font-weight: 400;
+    }
+
+    .higher-point-desc {
+        font-size: 25px !important;
+    }
+
+    .higher-point h4 {
+        font-size: 18px;
+        line-height: 26px;
+        margin: 25px 0px 16px 0px;
+        font-family: 'Public Sans';
+    }
+
+    .cricket-fever-main {
+        padding-bottom: 0px;
+    }
+}
