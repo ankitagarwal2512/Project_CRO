@@ -300,7 +300,7 @@ export default function SalaryCalculatorPage() {
 
           {/* one tight group (title → subhead → description → proof), one left edge shared
               with the calculator; the team-payroll prompt is a quiet link, not a second card */}
-          <div className="mt-4 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="mt-7 flex flex-col gap-5 sm:mt-9 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-[780px]">
               <h1 className="font-display text-[clamp(34px,3.8vw,48px)] font-semibold leading-[1] tracking-[-0.035em]">In-Hand Salary Calculator</h1>
               <p className="mt-3 text-[17px] leading-[1.55] text-[var(--muted)]">
