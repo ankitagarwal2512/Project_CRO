@@ -1,25 +1,32 @@
-/* CTC → in-hand maths for the salary calculator. Same model as the SEO team's
-   redesign brief, so the worked ₹18 LPA example on the page matches the tool.
+/* CTC to in-hand maths for the salary calculator.
 
-   - Basic is 40% or 50% of CTC. HRA is 50% of basic in a metro, 40% elsewhere;
-     special allowance balances the rest of gross.
-   - Employer PF = employee PF = 12% of basic, optionally capped at ₹1,800/month.
-   - Gratuity (4.81% of basic) sits inside CTC when switched on.
+   Inputs are only what an offer letter shows: CTC, variable pay, basic as a
+   share of CTC, and the tax regime. Everything else uses common defaults:
+   - Variable pay is part of CTC but paid separately, so it is left out of the
+     monthly salary. It is still taxed, so it counts toward income tax.
+   - HRA is 50% of basic; special allowance balances the rest of gross.
+   - Employer PF = employee PF = 12% of basic, capped at ₹1,800/month.
+   - Gratuity (4.81% of basic) sits inside CTC.
    - Professional tax is ₹2,400 a year (varies by state).
-   - Income tax: new regime, ₹75,000 standard deduction, nil up to ₹12L taxable
-     (87A rebate, with marginal relief), 4% cess. Surcharge, bonus and ESI are
-     not included, the assumptions note under the breakup says so. */
+   - New regime: ₹75,000 standard deduction, nil tax up to ₹12L taxable (87A
+     rebate, with marginal relief).
+   - Old regime: ₹50,000 standard deduction, professional tax and employee PF
+     (under 80C) deducted, 87A rebate up to ₹5L taxable. No HRA exemption or
+     other investments, which the note under the breakup says.
+   - 4% cess on both. Surcharge is not included. */
+
+export type Regime = "new" | "old";
 
 export type Inputs = {
   ctc: number;
-  basicPct: 40 | 50;
-  metro: boolean;
-  pfCap: boolean;
-  gratuity: boolean;
+  variable: number;
+  basicPct: number;
+  regime: Regime;
 };
 
 export type Result = {
   ctc: number;
+  variable: number;
   basic: number;
   hra: number;
   special: number;
@@ -28,12 +35,16 @@ export type Result = {
   gratuity: number;
   employeePf: number;
   professionalTax: number;
-  tax: number;
+  tax: number; // annual, on salary + variable pay
+  taxOnSalary: number; // the part deducted from monthly salary
   taxable: number;
-  inhand: number;
+  inhand: number; // annual, from fixed pay only
+  takeHome: number; // annual, including variable pay
 };
 
-const SLABS: [number, number][] = [
+export const MAX_CTC = 100000000;
+
+const NEW_SLABS: [number, number][] = [
   [400000, 0],
   [800000, 0.05],
   [1200000, 0.1],
@@ -43,31 +54,57 @@ const SLABS: [number, number][] = [
   [Infinity, 0.3],
 ];
 
-export const MAX_CTC = 100000000;
+const OLD_SLABS: [number, number][] = [
+  [250000, 0],
+  [500000, 0.05],
+  [1000000, 0.2],
+  [Infinity, 0.3],
+];
+
+function slabTax(taxable: number, slabs: [number, number][]) {
+  let tax = 0;
+  let floor = 0;
+  for (const [ceil, rate] of slabs) {
+    if (taxable > floor) tax += (Math.min(taxable, ceil) - floor) * rate;
+    floor = ceil;
+  }
+  return tax;
+}
 
 export function calculate(i: Inputs): Result {
   const ctc = Math.max(0, Math.min(i.ctc || 0, MAX_CTC));
-  const basic = (ctc * i.basicPct) / 100;
-  const employerPf = i.pfCap ? Math.min(basic * 0.12, 21600) : basic * 0.12;
-  const gratuity = i.gratuity ? basic * 0.0481 : 0;
-  const gross = Math.max(ctc - employerPf - gratuity, 0);
-  const hra = Math.min(basic * (i.metro ? 0.5 : 0.4), Math.max(gross - basic, 0));
+  const variable = Math.max(0, Math.min(i.variable || 0, ctc));
+  const fixed = ctc - variable;
+
+  const basic = (fixed * i.basicPct) / 100;
+  const employerPf = Math.min(basic * 0.12, 21600);
+  const gratuity = basic * 0.0481;
+  const gross = Math.max(fixed - employerPf - gratuity, 0);
+  const hra = Math.min(basic * 0.5, Math.max(gross - basic, 0));
   const special = Math.max(gross - basic - hra, 0);
   const employeePf = employerPf;
   const professionalTax = ctc > 0 ? 2400 : 0;
 
-  const taxable = Math.max(gross - 75000, 0);
-  let tax = 0;
-  let floor = 0;
-  for (const [ceil, rate] of SLABS) {
-    if (taxable > floor) tax += (Math.min(taxable, ceil) - floor) * rate;
-    floor = ceil;
+  const income = gross + variable;
+  let taxable: number;
+  let tax: number;
+  if (i.regime === "new") {
+    taxable = Math.max(income - 75000, 0);
+    tax = slabTax(taxable, NEW_SLABS);
+    tax = taxable <= 1200000 ? 0 : Math.min(tax, taxable - 1200000);
+  } else {
+    taxable = Math.max(income - 50000 - professionalTax - Math.min(employeePf, 150000), 0);
+    tax = taxable <= 500000 ? 0 : slabTax(taxable, OLD_SLABS);
   }
-  tax = taxable <= 1200000 ? 0 : Math.min(tax, taxable - 1200000);
   tax *= 1.04;
 
-  const inhand = Math.max(gross - employeePf - professionalTax - tax, 0);
-  return { ctc, basic, hra, special, gross, employerPf, gratuity, employeePf, professionalTax, tax, taxable, inhand };
+  /* TDS on the variable pay is taken from the variable payout, the rest from salary */
+  const taxOnVariable = income > 0 ? (tax * variable) / income : 0;
+  const taxOnSalary = tax - taxOnVariable;
+  const inhand = Math.max(gross - employeePf - professionalTax - taxOnSalary, 0);
+  const takeHome = inhand + variable - taxOnVariable;
+
+  return { ctc, variable, basic, hra, special, gross, employerPf, gratuity, employeePf, professionalTax, tax, taxOnSalary, taxable, inhand, takeHome };
 }
 
 export const inr = (n: number) => "₹" + Math.round(n).toLocaleString("en-IN");

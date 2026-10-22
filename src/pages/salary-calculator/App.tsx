@@ -3,10 +3,15 @@ import { NavBar, TopStripe } from "./Chrome";
 import hrIcon from "@/imports/HRICON.svg";
 import Calculator from "./Calculator";
 import TrustPanel from "./TrustPanel";
+import Credibility from "./Credibility";
 import HomeFooter from "./HomeFooter";
 import { calculate, inr } from "./calc";
+import { track } from "./track";
 
-/* Salary calculator inner page (hrone.cloud/tools/salary-calculator), redesigned.
+/* The salary calculator page, served at /salary-calculator. It uses the simpler,
+   ET Money-style calculator in Calculator.tsx.
+
+   Salary calculator inner page (hrone.cloud/tools/salary-calculator), redesigned.
    Content and section order come from the SEO team's brief ("Salary calculator
    page - SEO, UX and CRO redesign"); the visual system is the homepage's , 
    cream ground, forest green, coral CTAs, Clash Grotesk over Public Sans.
@@ -32,36 +37,15 @@ function PrimaryBtn({ children, href = "#" }: { children: ReactNode; href?: stri
   return (
     <a
       href={href}
-      className="group inline-flex items-center justify-center gap-2.5 rounded-[11px] bg-[var(--coral)] px-6 py-3.5 text-[15.5px] font-semibold text-white shadow-[0_10px_24px_-10px_rgba(233,97,74,0.6)] transition-all hover:bg-[var(--coral-hover)] active:translate-y-px"
+      className="group inline-flex items-center justify-center gap-2.5 rounded-[11px] bg-[var(--coral)] px-6 py-3.5 text-[15.5px] font-semibold text-white transition-all hover:bg-[var(--coral-hover)] active:translate-y-px"
     >
       {children} <Arrow />
     </a>
   );
 }
 
-function GhostBtn({ children, href = "#", dark }: { children: ReactNode; href?: string; dark?: boolean }) {
-  return (
-    <a
-      href={href}
-      className={`inline-flex items-center justify-center rounded-[11px] border px-6 py-3.5 text-[15.5px] font-semibold transition-colors ${
-        dark ? "border-white/25 text-white hover:bg-white/10" : "border-[var(--border)] bg-white text-[var(--ink)] hover:border-[var(--green-line)] hover:text-[var(--green)]"
-      }`}
-    >
-      {children}
-    </a>
-  );
-}
-
 /* content */
 
-const TOOLS = [
-  { name: "TDS calculator", desc: "Compare tax under the old and new regime.", href: "https://hrone.cloud/tools/tds-calculator/" },
-  { name: "Gratuity calculator", desc: "See the gratuity you get when you leave.", href: "https://hrone.cloud/tools/gratuity-calculator/" },
-  { name: "Leave encashment calculator", desc: "Calculate pay for unused leave.", href: "https://hrone.cloud/tools/leave-encashment-calculator/" },
-  { name: "Salary slip generator", desc: "Turn this breakup into a payslip.", href: "#" },
-  { name: "Salary increment letter", desc: "Share a revised CTC with an employee.", href: "#" },
-  { name: "Offer letter generator", desc: "Add this CTC breakup to an offer letter.", href: "#" },
-];
 
 const TOC = [
   { id: "how", label: "How in-hand salary is calculated" },
@@ -114,11 +98,31 @@ const READS = [
   { tag: "HR guide", title: "How to design a salary structure in India", time: "[X] min read" },
 ];
 
-const FREE_TOOLS = [
-  { h: "Calculators", l: ["Salary calculator", "Gratuity calculator", "TDS calculator", "Leave encashment calculator", "HR software ROI calculator"] },
-  { h: "Letter generators", l: ["Offer letter", "Salary increment letter", "Appointment letter", "Relieving letter"] },
-  { h: "Payroll templates", l: ["Salary slip generator", "Invoice generator", "HR policy templates"] },
-  { h: "HROne Payroll", l: ["Payroll software", "Statutory compliance", "Pricing"] },
+/* the next step after a result: the six tools people open right after this one */
+const TOOLS = [
+  { name: "TDS calculator", desc: "Compare tax under the old and new regime.", href: "https://hrone.cloud/tools/tds-calculator/" },
+  { name: "Gratuity calculator", desc: "See the gratuity you get when you leave.", href: "https://hrone.cloud/tools/gratuity-calculator/" },
+  { name: "Leave encashment calculator", desc: "Calculate pay for unused leave.", href: "https://hrone.cloud/tools/leave-encashment-calculator/" },
+  { name: "Salary slip generator", desc: "Turn this breakup into a payslip.", href: "#" },
+  { name: "Salary increment letter", desc: "Share a revised CTC with an employee.", href: "#" },
+  { name: "Offer letter generator", desc: "Add this CTC breakup to an offer letter.", href: "#" },
+];
+
+/* the full tools index near the end of the page: [label, href]. Hrefs are the brief's where it
+   gives them; the rest are placeholders until those pages' URLs are confirmed. */
+const FREE_TOOLS: { h: string; l: [string, string][] }[] = [
+  {
+    h: "Calculators",
+    l: [
+      ["Salary calculator", "#calculator"],
+      ["TDS calculator", "https://hrone.cloud/tools/tds-calculator/"],
+      ["Gratuity calculator", "https://hrone.cloud/tools/gratuity-calculator/"],
+      ["Leave encashment calculator", "https://hrone.cloud/tools/leave-encashment-calculator/"],
+      ["HR software ROI calculator", "#"],
+    ],
+  },
+  { h: "Letter generators", l: [["Offer letter", "#"], ["Salary increment letter", "#"], ["Appointment letter", "#"], ["Relieving letter", "#"]] },
+  { h: "Payslips and templates", l: [["Payslip explained", "#"], ["Salary slip generator", "#"], ["Invoice generator", "#"], ["HR policy templates", "#"]] },
 ];
 
 /* pieces */
@@ -192,7 +196,7 @@ function Faqs() {
 
 function ExampleTable() {
   /* computed, not typed in, the example can never disagree with the calculator */
-  const r = calculate({ ctc: 1800000, basicPct: 50, metro: true, pfCap: true, gratuity: true });
+  const r = calculate({ ctc: 1800000, variable: 0, basicPct: 50, regime: "new" });
   const rows: [string, number, "base" | "minus" | "total"][] = [
     ["Annual CTC", r.ctc, "base"],
     ["− Employer PF (₹1,800 × 12)", r.employerPf, "minus"],
@@ -247,6 +251,33 @@ function ExampleTable() {
 export default function SalaryCalculatorPage() {
   const active = useActiveSection(TOC.map((t) => t.id));
 
+  /* title and description lead with the target keywords ("in hand salary calculator",
+     "salary calculator"); on the live site these belong in the server-rendered <head> */
+  useEffect(() => {
+    document.title = "In-Hand Salary Calculator FY 2026-27: CTC to Take-Home Pay | HROne";
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+    meta.content =
+      "Free in-hand salary calculator. Enter your CTC to see monthly take-home pay after PF, professional tax and income tax, under the new or old tax regime for FY 2026-27.";
+  }, []);
+
+  /* every demo, trial, pricing or expert link counts as a CTA click, named by its text */
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const el = (e.target as HTMLElement).closest("a, button");
+      const text = el?.textContent?.trim() ?? "";
+      if (el && /demo|trial|pricing|payroll expert|how it works|how hrone payroll works/i.test(text)) {
+        track("salary_cta_click", { cta: text.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "") });
+      }
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
+
   return (
     <div className="min-h-full bg-[var(--cream)]">
       <header className="sticky top-0 z-50 print:hidden">
@@ -256,7 +287,7 @@ export default function SalaryCalculatorPage() {
 
       <main>
         {/* hero + calculator */}
-        <section className="mx-auto max-w-[1200px] px-4 pb-16 pt-5 sm:px-6">
+        <section className="mx-auto max-w-[1200px] px-4 pb-6 pt-5 sm:px-6">
           <nav aria-label="Breadcrumb" className="text-[13px] text-[var(--muted)] print:hidden">
             <ol className="flex flex-wrap items-center gap-1.5">
               <li><a href="#" className="hover:text-[var(--green)]">Home</a></li>
@@ -271,20 +302,12 @@ export default function SalaryCalculatorPage() {
               with the calculator; the team-payroll prompt is a quiet link, not a second card */}
           <div className="mt-4 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-[780px]">
-              <h1 className="font-display text-[clamp(34px,3.8vw,48px)] font-semibold leading-[1] tracking-[-0.035em]">Salary Calculator</h1>
-              <p className="mt-2 text-[clamp(18px,1.6vw,21px)] font-semibold leading-[1.3] tracking-[-0.015em] text-[var(--green)]">
-                Find your in-hand salary from CTC
-              </p>
-              <p className="mt-2 text-[15.5px] leading-[1.55] text-[var(--muted)]">
-                See what you take home each month after PF, professional tax and income tax for FY 2026-27.
+              <h1 className="font-display text-[clamp(34px,3.8vw,48px)] font-semibold leading-[1] tracking-[-0.035em]">In-Hand Salary Calculator</h1>
+              <p className="mt-3 text-[17px] leading-[1.55] text-[var(--muted)]">
+                Calculate your in-hand salary from CTC after PF, professional tax and income tax for FY 2026-27.
               </p>
             </div>
-            <a href="#" className="group hidden items-center gap-1.5 pb-0.5 text-[14px] text-[var(--muted)] lg:inline-flex print:hidden">
-              Running payroll for a team?
-              <span className="inline-flex items-center gap-1 font-semibold text-[var(--green)] group-hover:underline">
-                Book a payroll demo <Arrow />
-              </span>
-            </a>
+
           </div>
 
           <div className="mt-4">
@@ -293,38 +316,36 @@ export default function SalaryCalculatorPage() {
         </section>
 
         <div className="print:hidden">
-          {/* HR CTA */}
-          <section className="px-4 sm:px-6">
-            <div className="relative mx-auto max-w-[1200px] overflow-hidden rounded-[22px] bg-[var(--green)] px-7 py-10 text-white sm:px-12 sm:py-12">
-              <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_auto]">
+          {/* HR CTA: a follow-up to the result, on the calculator's own width, not a full slab */}
+          <section className="mx-auto max-w-[1200px] px-4 pb-16 sm:px-6 sm:pb-20">
+            {/* one card: the ask on top, the proof for it underneath */}
+            <div className="overflow-hidden rounded-[20px] border border-[var(--border)] bg-white">
+            <div className="flex flex-col gap-6 p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-start gap-4">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[12px] bg-white border border-[var(--green-line)]">
+                  <img src={hrIcon} alt="" aria-hidden className="h-6 w-auto" />
+                </span>
                 <div>
-                  <h2 className="max-w-[640px] text-[clamp(26px,3vw,38px)] font-bold leading-[1.08] tracking-[-0.02em]">
-                    Need salary breakups for your whole team?
-                  </h2>
-                  <p className="mt-3 max-w-[620px] text-[16px] leading-[1.6] text-white/75">
-                    HROne Payroll builds CTC structures, calculates PF, ESI, PT and TDS for each employee and sends
-                    their payslips.
+                  <h2 className="text-[20px] font-bold leading-[1.25] tracking-[-0.01em] text-[var(--ink)]">Need salary breakups for your whole team?</h2>
+                  <p className="mt-1 max-w-[620px] text-[15px] leading-[1.55] text-[var(--ink)]/70">
+                    HROne Payroll builds CTC structures, calculates PF, ESI, PT and TDS for each employee and sends their
+                    payslips.
                   </p>
                 </div>
-                <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                  <PrimaryBtn>Book a free payroll demo</PrimaryBtn>
-                  <GhostBtn dark>See how HROne Payroll works</GhostBtn>
-                </div>
               </div>
+              <div className="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3 pl-16 lg:pl-0">
+                <PrimaryBtn>Book a payroll demo</PrimaryBtn>
+
+              </div>
+            </div>
+            <Credibility />
             </div>
           </section>
 
-          {/* what to calculate next */}
-          <section className="mx-auto max-w-[1200px] px-6 py-20">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <h2 className="text-[clamp(26px,2.8vw,34px)] font-bold tracking-[-0.02em]">What to calculate next</h2>
-                <p className="mt-2 text-[16px] text-[var(--muted)]">Free tools people use right after the salary calculator.</p>
-              </div>
-              <a href="#" className="group inline-flex items-center gap-1.5 text-[15px] font-semibold text-[var(--green)]">
-                All 25+ free HR tools <Arrow />
-              </a>
-            </div>
+          {/* what to calculate next: right after the result, the visitor's natural next step */}
+          <section className="mx-auto max-w-[1200px] px-6 pb-20">
+            <h2 className="text-[clamp(26px,2.8vw,34px)] font-bold tracking-[-0.02em]">What to calculate next</h2>
+            <p className="mt-2 text-[16px] text-[var(--muted)]">Free tools people use right after the salary calculator.</p>
             <div className="mt-8 grid gap-px overflow-hidden rounded-[18px] border border-[var(--border)] bg-[var(--border)] sm:grid-cols-2 lg:grid-cols-3">
               {TOOLS.map((t) => (
                 <a key={t.name} href={t.href} className="group flex items-start justify-between gap-4 bg-white p-6 transition-colors hover:bg-[var(--cream)]">
@@ -332,7 +353,9 @@ export default function SalaryCalculatorPage() {
                     <div className="text-[16.5px] font-semibold text-[var(--ink)] group-hover:text-[var(--green)]">{t.name}</div>
                     <div className="mt-1 text-[14.5px] text-[var(--muted)]">{t.desc}</div>
                   </div>
-                  <span className="mt-1 text-[var(--muted)] group-hover:text-[var(--green)]"><Arrow /></span>
+                  <span className="mt-1 text-[var(--muted)] group-hover:text-[var(--green)]">
+                    <Arrow />
+                  </span>
                 </a>
               ))}
             </div>
@@ -512,7 +535,7 @@ export default function SalaryCalculatorPage() {
                   <h3 className="text-[18px] font-semibold">Watch: how HR teams run payroll in HROne</h3>
                   <div className="mt-4 grid aspect-video place-items-center rounded-[18px] bg-[var(--app-shell)] text-white/60">
                     <div className="flex flex-col items-center gap-3">
-                      <span className="grid h-16 w-16 place-items-center rounded-full bg-white text-[var(--app-shell)] shadow-lg">
+                      <span className="grid h-16 w-16 place-items-center rounded-full bg-white text-[var(--app-shell)]">
                         <svg aria-hidden width="20" height="20" viewBox="0 0 20 20"><path d="M6 4l10 6-10 6z" fill="currentColor" /></svg>
                       </span>
                       <span className="text-[13.5px]">[Video: 2-minute payroll walkthrough]</span>
@@ -553,80 +576,38 @@ export default function SalaryCalculatorPage() {
             </div>
           </section>
 
-          {/* next step, by audience */}
-          <section className="mx-auto max-w-[1200px] px-6 py-20 sm:py-24">
-            <div className="grid gap-5 lg:grid-cols-[1fr_1.1fr]">
-              {/* employee, a short route through the next tools, not two loose buttons */}
-              <div className="flex flex-col rounded-[20px] border border-[var(--border)] bg-white p-7 sm:p-8">
-                <div className="flex items-center gap-3">
-                  <span className="grid h-10 w-10 place-items-center rounded-[11px] bg-[var(--green-soft)] text-[var(--green)]">
-                    <svg aria-hidden width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="8" r="4" />
-                      <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
-                    </svg>
-                  </span>
-                  <Eyebrow>I&apos;m an employee</Eyebrow>
-                </div>
-                <h3 className="mt-5 text-[26px] font-bold leading-[1.12] tracking-[-0.02em]">Understand your payslip and save tax</h3>
-                <p className="mt-2.5 text-[15.5px] leading-[1.6] text-[var(--muted)]">Read how each line on your payslip is calculated, then plan your tax.</p>
-                <ul className="mt-6 divide-y divide-[var(--border)] border-y border-[var(--border)]">
-                  {[
-                    ["Payslip explained", "What every line on your payslip means", "#"],
-                    ["TDS calculator", "Compare tax under the old and new regime", "https://hrone.cloud/tools/tds-calculator/"],
-                    ["Gratuity calculator", "See the gratuity you get when you leave", "https://hrone.cloud/tools/gratuity-calculator/"],
-                  ].map(([t, d, href]) => (
-                    <li key={t}>
-                      <a href={href} className="group -mx-3 flex items-center justify-between gap-4 rounded-[10px] px-3 py-3.5 transition-colors hover:bg-[var(--cream)]">
-                        <span>
-                          <span className="block text-[15.5px] font-semibold text-[var(--ink)] group-hover:text-[var(--green)]">{t}</span>
-                          <span className="mt-0.5 block text-[13.5px] text-[var(--muted)]">{d}</span>
-                        </span>
-                        <span className="text-[var(--muted)] group-hover:text-[var(--green)]">
-                          <Arrow />
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* HR, the reasons, then pricing; the demo ask is left to the closing band */}
-              <div className="relative flex flex-col overflow-hidden rounded-[20px] bg-[var(--app-shell)] p-7 text-white sm:p-8">
-                <div className="relative flex flex-1 flex-col">
-                  <div className="flex items-center gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-[11px] bg-white/10 text-[#7fb89a]">
-                      <svg aria-hidden width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="9" cy="8" r="3.5" />
-                        <path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.3c1.8.8 3 2.9 3 5.7" />
-                      </svg>
-                    </span>
-                    <Eyebrow tone="light">I&apos;m in HR or payroll</Eyebrow>
-                  </div>
-                  <h3 className="mt-5 max-w-[460px] text-[26px] font-bold leading-[1.12] tracking-[-0.02em]">
-                    Automate salary structures for your whole team
-                  </h3>
-                  <ul className="mb-8 mt-6 space-y-3.5 text-[15px] text-white/80">
-                    {[
-                      "Salary templates for each grade and location",
-                      "PF, ESI, PT and TDS calculated every pay cycle",
-                      "Payslips emailed to employees on payday",
-                    ].map((t) => (
-                      <li key={t} className="flex gap-3">
-                        <svg aria-hidden width="18" height="18" viewBox="0 0 16 16" fill="none" className="mt-0.5 shrink-0 text-[#7fb89a]">
-                          <path d="M3.5 8.5 6.5 11.5 12.5 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        {t}
-                      </li>
-                    ))}
+          {/* tools directory: the employee's next step, before the final ask */}
+          <section aria-labelledby="free-tools" className="mx-auto max-w-[1200px] px-6 pb-12 pt-16">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+              <h2 id="free-tools" className="text-[22px] font-bold tracking-[-0.015em]">
+                More free HR tools
+              </h2>
+              <a href="#" className="group inline-flex items-center gap-1.5 text-[15px] font-semibold text-[var(--green)]">
+                All 25+ free HR tools <Arrow />
+              </a>
+            </div>
+            <div className="mt-4 grid gap-x-8 gap-y-7 border-t border-[var(--border)] pt-6 sm:grid-cols-3">
+              {FREE_TOOLS.map((c) => (
+                <div key={c.h}>
+                  <h3 className="text-[13.5px] font-semibold text-[var(--ink)]">{c.h}</h3>
+                  <ul className="mt-3 space-y-2 text-[14.5px] text-[var(--ink)]/80">
+                    {c.l.map(([label, href]) => {
+                      const current = label === "Salary calculator";
+                      return (
+                        <li key={label}>
+                          <a
+                            href={href}
+                            aria-current={current ? "page" : undefined}
+                            className={`transition-colors hover:text-[var(--green)] ${current ? "font-semibold text-[var(--green)]" : ""}`}
+                          >
+                            {label}
+                          </a>
+                        </li>
+                      );
+                    })}
                   </ul>
-                  <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/10 pt-7">
-                    <PrimaryBtn>See pricing for your team</PrimaryBtn>
-                    <a href="#" className="group inline-flex items-center gap-1.5 text-[15px] font-semibold text-white/85 hover:text-white">
-                      Talk to a payroll expert <Arrow />
-                    </a>
-                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </section>
 
@@ -644,9 +625,21 @@ export default function SalaryCalculatorPage() {
                 <p className="mt-4 max-w-[480px] text-[16.5px] leading-[1.6] text-[var(--muted)]">
                   Set up your salary structures once, and HROne calculates pay for every employee after that.
                 </p>
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <ul className="mt-6 space-y-3 text-[15.5px] text-[var(--ink)]/80">
+                  {["Salary templates for each grade and location", "PF, ESI, PT and TDS calculated every pay cycle", "Payslips emailed to employees on payday"].map((t) => (
+                    <li key={t} className="flex gap-3">
+                      <svg aria-hidden width="18" height="18" viewBox="0 0 16 16" fill="none" className="mt-0.5 shrink-0 text-[var(--green)]">
+                        <path d="M3.5 8.5 6.5 11.5 12.5 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
                   <PrimaryBtn>Book a free demo</PrimaryBtn>
-                  <GhostBtn>Start free trial</GhostBtn>
+                  <a href="#" className="group inline-flex items-center gap-1.5 text-[15px] font-semibold text-[var(--green)]">
+                    See pricing <Arrow />
+                  </a>
                 </div>
               </div>
 
@@ -657,35 +650,6 @@ export default function SalaryCalculatorPage() {
       </main>
 
       <div className="print:hidden">
-        {/* free tools directory, sits directly above the homepage footer */}
-        <section aria-labelledby="free-tools" className="border-t border-[var(--border)] bg-white">
-          <div className="mx-auto max-w-[1200px] px-6 py-14">
-            <h2 id="free-tools" className="text-[22px] font-bold tracking-[-0.02em] text-[var(--ink)]">
-              More free HR tools
-            </h2>
-            <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4">
-              {FREE_TOOLS.map((c) => (
-                <div key={c.h}>
-                  <h3 className="text-[14px] font-semibold text-[var(--ink)]">{c.h}</h3>
-                  <ul className="mt-4 space-y-2.5 text-[15px] text-[var(--ink)]/80">
-                    {c.l.map((l) => (
-                      <li key={l}>
-                        <a
-                          href="#"
-                          aria-current={l === "Salary calculator" ? "page" : undefined}
-                          className={`transition-colors hover:text-[var(--green)] ${l === "Salary calculator" ? "font-semibold text-[var(--green)]" : ""}`}
-                        >
-                          {l}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <HomeFooter />
       </div>
     </div>

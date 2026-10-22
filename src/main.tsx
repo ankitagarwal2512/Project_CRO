@@ -10,7 +10,6 @@ import V5 from './variants/v5/App'
 import V6 from './variants/v6/App'
 import V7 from './variants/v7/App'
 import SalaryCalculator from './pages/salary-calculator/App'
-import SalaryCalculatorV2 from './pages/salary-calculator-v2/App'
 import './index.css'
 
 /* Each entry under src/variants/ is a FULL, independent copy of the page — its own
@@ -47,7 +46,6 @@ import './index.css'
    "/v6"        or "/#v6"        – variation 6 (started as a copy of v5)
    "/v7"        or "/#v7"        – variation 7 (started as a copy of v6)
    "/salary-calculator"         – the redesigned salary calculator inner page
-   "/salary-calculator-v2"      – the same page with a simpler calculator
    "/original"  or "/#original"  – the earlier proportions, kept for comparison
 
    The paths only resolve on a host that falls back to index.html for unknown
@@ -81,8 +79,6 @@ const variants: Record<string, React.ComponentType> = {
   v7: V7,
   /* inner page redesign — hrone.cloud/tools/salary-calculator */
   'salary-calculator': SalaryCalculator,
-  /* same page with the simpler, ET Money-style calculator */
-  'salary-calculator-v2': SalaryCalculatorV2,
 }
 
 const route = (window.location.pathname.replace(/^\/|\/$/g, '') ||
