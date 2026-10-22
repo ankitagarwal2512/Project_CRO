@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { NavBar, TopStripe } from "./Chrome";
 import hrIcon from "@/imports/HRICON.svg";
+import authorPhoto from "@/imports/author-placeholder.png";
 import Calculator from "./Calculator";
 import TrustPanel from "./TrustPanel";
 import Credibility from "./Credibility";
@@ -551,7 +552,9 @@ export default function SalaryCalculatorPage() {
 
                 {/* author */}
                 <div className="mt-12 flex gap-4 rounded-[16px] bg-[var(--cream)] p-6">
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[var(--green)] text-[15px] font-semibold text-white">AN</span>
+                  {/* PLACEHOLDER: a product-mockup face, not a real person. Replace with the
+                      actual author's photo along with the [Author name] text before launch. */}
+                  <img src={authorPhoto} alt="" className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-white" />
                   <div className="text-[14px] leading-[1.6] text-[var(--muted)]">
                     <div className="text-[15px] font-semibold text-[var(--ink)]">Written by [Author name], [Designation]</div>
                     Reviewed by [Payroll expert name], [Designation, years of payroll experience]. Tax rules checked against
