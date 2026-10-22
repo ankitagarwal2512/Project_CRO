@@ -287,7 +287,7 @@ export default function SalaryCalculatorPage() {
 
       <main>
         {/* hero + calculator */}
-        <section className="mx-auto max-w-[1200px] px-4 pb-6 pt-5 sm:px-6">
+        <section className="mx-auto max-w-[1200px] px-4 pb-12 pt-5 sm:px-6 sm:pb-14">
           <nav aria-label="Breadcrumb" className="text-[13px] text-[var(--muted)] print:hidden">
             <ol className="flex flex-wrap items-center gap-1.5">
               <li><a href="#" className="hover:text-[var(--green)]">Home</a></li>
