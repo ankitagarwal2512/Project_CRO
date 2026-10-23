@@ -233,7 +233,7 @@ export default function Calculator() {
 
   return (
     <div className="space-y-5">
-      <form id="calculator" onSubmit={calculateNow} noValidate className="scroll-mt-36 overflow-hidden rounded-[20px] border border-[var(--border)] bg-white">
+      <form id="calculator" onSubmit={calculateNow} noValidate className="scroll-mt-36 overflow-hidden rounded-[20px] border border-[var(--border)] bg-white shadow-[0_1px_2px_rgba(20,40,25,0.04),0_12px_32px_-12px_rgba(14,60,38,0.18)]">
         {/* fill: four labelled controls and the button, in one row */}
         <div className="grid items-start gap-5 p-6 sm:grid-cols-2 sm:p-7 lg:grid-cols-[1.3fr_1fr_1.15fr_auto_auto]">
           <Field id="ctc" label="Annual CTC" error={errors.ctc}>
