@@ -5222,12 +5222,87 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 </head>
 <body class="home wp-singular page-template page-template-page-home page-template-page-home-php page page-id-8 wp-custom-logo wp-embed-responsive wp-theme-twentytwentyone wp-child-theme-hrone-child is-light-theme singular has-main-navigation no-widgets">
 <main class="main home">
+<style>
+/* workplace-way: white field between the cream hero and the mint One AI section.
+   Desktop (>=992px) only; below that the theme swaps the tabs for accordion drawers. */
+section.workplace-way{background-color:#fff !important}
+@media (min-width:992px){
+section.workplace-way{padding:104px 0 112px !important}
+.workplace-way .workplace-way-h2{font-size:min(3.0556vw,44px) !important;line-height:1.1 !important;font-weight:700 !important;letter-spacing:-.02em;color:#141a17}
+.workplace-way .head-desc{max-width:600px !important;text-wrap:balance;padding:14px 0 0 !important;font-size:17px !important;line-height:1.55 !important;color:#5b6660 !important}
+/* the "1 Platform, 127 HR processes" line becomes a quiet proof pill */
+.workplace-way .main-details{display:flex;justify-content:center;padding:24px 0 48px !important}
+.workplace-way .main-details{font-size:0 !important}
+.workplace-way .main-details strong,.workplace-way .main-details b{font:600 15px/1 "Public Sans",sans-serif !important;letter-spacing:-.005em}
+.workplace-way .main-details strong{display:inline-flex;align-items:center;gap:8px;padding:10px 6px 10px 16px;background:#f1f7f3 !important;border:1px solid #cfe2d4;border-right:0;border-radius:99px 0 0 99px;color:#02563d !important}
+.workplace-way .main-details strong::before{content:"";width:6px;height:6px;border-radius:50%;background:#2f9e6a;box-shadow:0 0 0 3px rgba(47,158,106,.16)}
+.workplace-way .main-details b{display:inline-flex;align-items:center;padding:10px 16px 10px 4px;background:#f1f7f3;border:1px solid #cfe2d4;border-left:0;border-radius:0 99px 99px 0;color:#5b6660 !important;font-weight:500 !important}
+/* tabs: same icons, clearer selected state with a pointer into the panel */
+.workplace-way .position-relative{display:flex;gap:14px;align-items:stretch;margin-bottom:20px}
+.workplace-way ul.tabs{flex:1;display:grid !important;grid-template-columns:repeat(5,1fr);gap:14px !important;margin:0 !important}
+.workplace-way ul.tabs li{position:relative;padding:20px 20px 18px !important;border:1px solid #e3e9e5 !important;border-radius:14px !important;background:#fff !important;box-shadow:none !important;transition:border-color .2s,background .2s,box-shadow .2s,transform .2s}
+.workplace-way ul.tabs li .tabs-details{width:auto !important;margin:0 !important}
+.workplace-way ul.tabs li .tabs-details img{width:44px !important;height:44px !important;display:block;transition:transform .25s}
+.workplace-way ul.tabs li p{margin-top:16px !important;font:600 16px/1.3 "Public Sans",sans-serif !important;letter-spacing:-.005em;color:#3f4a44 !important;transition:color .2s}
+.workplace-way ul.tabs li:hover{border-color:#cfe2d4 !important;background:#fbfdfc !important}
+.workplace-way ul.tabs li:hover .tabs-details img{transform:translateY(-2px)}
+.workplace-way ul.tabs li.active{border-color:#02563d !important;background:#fff !important;box-shadow:0 14px 30px -18px rgba(2,86,61,.45) !important}
+.workplace-way ul.tabs li.active p{color:#02563d !important}
+.workplace-way ul.tabs li.active::after{content:"";position:absolute;left:28px;bottom:-7px;width:12px;height:12px;background:#fff;border-right:1px solid #02563d;border-bottom:1px solid #02563d;transform:rotate(45deg)}
+.workplace-way ul.tabs li:focus-visible{outline:2px solid #9fcdb2;outline-offset:3px}
+/* "5+" more modules: a quiet tile at the end of the row instead of a floating badge */
+.workplace-way .plus-more-a{display:flex;text-decoration:none}
+.workplace-way .plus-more{position:static !important;display:flex !important;align-items:center;justify-content:center;width:84px !important;height:auto !important;border:1px dashed #9fcdb2 !important;border-radius:14px !important;background:#f7faf8 !important;box-shadow:none !important;transition:background .2s,border-color .2s}
+.workplace-way .plus-more span{font:700 20px/1 "Public Sans",sans-serif !important;color:#02563d !important}
+.workplace-way .plus-more-a:hover .plus-more{background:#f1f7f3 !important;border-color:#02563d !important}
+/* panel */
+.workplace-way .tab_container{border:1px solid #e3e9e5;border-radius:18px !important;box-sizing:border-box;overflow:hidden !important}
+.workplace-way .tab_content{padding:52px 0 0 56px !important}
+.workplace-way .tab_content .content{gap:32px;min-height:360px}
+.workplace-way .tab_content .content .desc{max-width:420px !important;flex:none;padding-bottom:44px}
+.workplace-way .tab_content .content .desc .simplified-h3{font-size:28px !important;line-height:1.22 !important;font-weight:700 !important;letter-spacing:-.015em;color:#141a17;margin-bottom:12px !important}
+.workplace-way .tab_content .content .desc .simplified-p{font-size:16px !important;line-height:1.55 !important;color:#5b6660 !important;margin-bottom:22px !important}
+.workplace-way .desc ul{margin:0 0 28px !important;padding:0 !important}
+.workplace-way .desc ul li{font-size:15.5px !important;line-height:1.4;color:#26302b !important;padding-left:30px !important;margin-bottom:12px !important}
+.workplace-way .desc ul li:before{width:18px !important;height:18px !important;border-radius:50%;background:#e5f0e8 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"%3E%3Cpath d="M5.5 9.2l2.2 2.2 4.8-4.8" fill="none" stroke="%2302563d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/%3E%3C/svg%3E') center/18px no-repeat !important}
+.workplace-way .tab_content .content .desc .buttons a{padding:13px 20px !important;gap:10px !important;border-radius:8px !important;background:#02563d !important;font:600 15px/1 "Public Sans",sans-serif !important;color:#fff !important;transition:background .2s}
+.workplace-way .tab_content .content .desc .buttons a svg{width:18px;height:18px;transition:transform .2s}
+.workplace-way .tab_content .content .desc .buttons a:hover{background:#0b4a2e !important}
+.workplace-way .tab_content .content .desc .buttons a:hover svg{transform:translateX(3px)}
+.workplace-way .image img{max-width:min(46vw,640px) !important}
+/* Quick FAQ: a footer strip across the panel */
+.workplace-way .tab_content .faq-link{margin:0 0 0 -56px !important;padding:18px 56px;border-top:1px solid #e3e9e5;background:#f7faf8}
+.workplace-way .tab_content .faq-link h4{display:flex;align-items:center;gap:12px;margin:0;font:600 12px/1 "Public Sans",sans-serif !important;letter-spacing:.07em;text-transform:uppercase;color:#1E6955 !important}
+.workplace-way .tab_content .faq-link h4 .faq-link-a{margin:0 !important;border:0 !important;font:500 15.5px/1.4 "Public Sans",sans-serif !important;letter-spacing:0;text-transform:none;color:#26302b !important;background:linear-gradient(#9fcdb2,#9fcdb2) 0 100%/100% 1px no-repeat;transition:color .2s,background-size .2s}
+.workplace-way .tab_content .faq-link h4 .faq-link-a:hover{color:#02563d !important;background-image:linear-gradient(#02563d,#02563d)}
+}
+/* "5+" reveals the remaining modules on hover / keyboard focus */
+.workplace-way .wp-more{position:relative;display:flex}
+.workplace-way .wp-more-pop{display:none}
+@media (min-width:992px){
+.workplace-way .wp-more-pop{display:block;position:absolute;top:calc(100% + 12px);right:0;z-index:120;width:220px;padding:14px 8px 8px;background:#fff;border:1px solid #e3e9e5;border-radius:14px;box-shadow:0 24px 48px -20px rgba(6,59,43,.35),0 2px 6px rgba(6,59,43,.06);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .18s,transform .18s,visibility 0s .18s}
+.workplace-way .wp-more-pop::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
+.workplace-way .wp-more-pop::after{content:"";position:absolute;top:-7px;right:36px;width:12px;height:12px;background:#fff;border-left:1px solid #e3e9e5;border-top:1px solid #e3e9e5;transform:rotate(45deg)}
+.workplace-way .wp-more:hover .wp-more-pop,.workplace-way .wp-more:focus-within .wp-more-pop{opacity:1;visibility:visible;transform:none;transition:opacity .18s,transform .18s,visibility 0s}
+.workplace-way .wp-more:hover .plus-more,.workplace-way .wp-more:focus-within .plus-more{background:#f1f7f3 !important;border-color:#02563d !important}
+.workplace-way .wp-more-title{margin:0 10px 8px;font:600 11.5px/1 "Public Sans",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#7a857f}
+.workplace-way .wp-more-pop ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr;gap:2px}
+.workplace-way .wp-more-pop li{margin:0 !important;padding:0 !important;font-size:inherit !important}
+.workplace-way .wp-more-pop li::before{display:none !important}
+.workplace-way .wp-more-pop li a{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;font:500 14.5px/1.2 "Public Sans",sans-serif;color:#26302b;text-decoration:none;transition:background .15s,color .15s}
+.workplace-way .wp-more-pop li a::before{content:"";flex:none;width:6px;height:6px;border-radius:2px;background:#9fcdb2;transition:background .15s}
+.workplace-way .wp-more-pop li a:hover,.workplace-way .wp-more-pop li a:focus-visible{background:#f1f7f3;color:#02563d;outline:0}
+.workplace-way .wp-more-pop li a:hover::before,.workplace-way .wp-more-pop li a:focus-visible::before{background:#02563d}
+.workplace-way .wp-more-all{display:flex;align-items:center;justify-content:space-between;margin:8px 0 0;padding:11px 10px 4px;border-top:1px solid #eef2ef;font:600 14px/1 "Public Sans",sans-serif;color:#02563d !important;text-decoration:none}
+.workplace-way .wp-more-all svg{transition:transform .2s}
+.workplace-way .wp-more-all:hover svg{transform:translateX(3px)}
+}
+@media (prefers-reduced-motion:reduce){.workplace-way *{transition:none !important}}
+</style>
 <section class="workplace-way">
 <div class="container container_cus">
-<h2 class="workplace-way-h2">
-                    Your workplace. Your way. </h2>
-<p class="head-desc sans-font">
-                    Your dependable guide to achieving freedom from manual HR work and building that perfect workplace you have always aspired to build.</p>
+<h2 class="workplace-way-h2">Everything HR, in one place.</h2>
+<p class="head-desc sans-font">Hiring, attendance, payroll, performance and exits, connected so nothing falls through the gaps.</p>
 <div class="main-details">
 <strong> 1 Platform, 127 HR processes.</strong> <b>As Comprehensive as it gets.</b></div>
 <div class="position-relative">
@@ -5263,11 +5338,24 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 </div>
 </li>
 </ul>
+<div class="wp-more">
 <a class="plus-more-a" href="https://hrone.cloud/hr-software/" rel="noopener noreferrer">
 <div class="plus-more">
 <span>5+</span>
 </div>
 </a>
+<div class="wp-more-pop" id="wp-more-pop">
+<p class="wp-more-title">More modules</p>
+<ul>
+<li><a href="https://hrone.cloud/hr-software/core-hr/">Core HR</a></li>
+<li><a href="https://hrone.cloud/hr-software/expense-and-reimbursement/">Expense</a></li>
+<li><a href="https://hrone.cloud/hr-software/employee-engagement/">Engagement</a></li>
+<li><a href="https://hrone.cloud/hr-software/asset-management/">Asset</a></li>
+<li><a href="https://hrone.cloud/hr-software/helpdesk/">Helpdesk</a></li>
+</ul>
+<a class="wp-more-all" href="https://hrone.cloud/hr-software/">View all HR software <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9.5M8.75 4.25 12.5 8l-3.75 3.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</div>
+</div>
 </div>
 <div class="tab_container">
 <h3 class="tab_drawer_heading d_active" rel="tab0"><span>
@@ -5285,16 +5373,12 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 <li>Workforce Insights</li>
 </ul>
 <div class="buttons">
-<a aria-label="Tab links" class="green-btn" href="https://hrone.cloud/hr-software/workforce-management/">Know More                                            <svg fill="none" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M12 16L16 12L12 8" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M8 12H16" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
+<a aria-label="Tab links" class="green-btn" href="https://hrone.cloud/hr-software/workforce-management/">Know More <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9.5M8.75 4.25 12.5 8l-3.75 3.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 </div>
 </div>
 <div class="image w-100 relative">
-<img alt="" height="398" loading="lazy" src="assets/workforce-home.png" width="668"/>
+<img alt="" height="398" loading="lazy" src="assets/workforce-home-crop.png" width="668"/>
 </div>
 </div>
 <div class="faq-link">
@@ -5317,16 +5401,12 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 <li>Payroll Outsourcing</li>
 </ul>
 <div class="buttons">
-<a aria-label="Tab links" class="green-btn" href="https://hrone.cloud/hr-software/payroll">Know More                                            <svg fill="none" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M12 16L16 12L12 8" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M8 12H16" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
+<a aria-label="Tab links" class="green-btn" href="https://hrone.cloud/hr-software/payroll">Know More <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9.5M8.75 4.25 12.5 8l-3.75 3.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 </div>
 </div>
 <div class="image w-100 relative">
-<img alt="Payroll Feature" height="398" loading="lazy" src="assets/payrollpayroll.png" width="668"/>
+<img alt="Payroll Feature" height="398" loading="lazy" src="assets/payrollpayroll-crop.png" width="668"/>
 </div>
 </div>
 <div class="faq-link">
@@ -5349,16 +5429,12 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 <li>Bulk Approvals</li>
 </ul>
 <div class="buttons">
-<a aria-label="Tab links" class="green-btn" href="https://hrone.cloud/hr-software/attendance">Know More                                            <svg fill="none" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M12 16L16 12L12 8" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M8 12H16" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
+<a aria-label="Tab links" class="green-btn" href="https://hrone.cloud/hr-software/attendance">Know More <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9.5M8.75 4.25 12.5 8l-3.75 3.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 </div>
 </div>
 <div class="image w-100 relative">
-<img alt="Attendance Management Feature" height="398" loading="lazy" src="assets/Attendance-1-1.png" width="668"/>
+<img alt="Attendance Management Feature" height="398" loading="lazy" src="assets/Attendance-1-1-crop.png" width="668"/>
 </div>
 </div>
 <div class="faq-link">
@@ -5381,16 +5457,12 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 <li>9 Box Matrix for Succession Planning</li>
 </ul>
 <div class="buttons">
-<a aria-label="Tab links" class="green-btn" href="https://hrone.cloud/hr-software/performance">Know More                                            <svg fill="none" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M12 16L16 12L12 8" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M8 12H16" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
+<a aria-label="Tab links" class="green-btn" href="https://hrone.cloud/hr-software/performance">Know More <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9.5M8.75 4.25 12.5 8l-3.75 3.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 </div>
 </div>
 <div class="image w-100 relative">
-<img alt="performance Management Feature" height="398" loading="lazy" src="assets/performance-2.png" width="668"/>
+<img alt="performance Management Feature" height="398" loading="lazy" src="assets/performance-2-crop.png" width="668"/>
 </div>
 </div>
 <div class="faq-link">
@@ -5413,16 +5485,12 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 <li>Recruiter Assignment with Ease</li>
 </ul>
 <div class="buttons">
-<a aria-label="Tab links" class="green-btn" href="https://hrone.cloud/hr-software/recruitment">Know More                                            <svg fill="none" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M12 16L16 12L12 8" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M8 12H16" stroke="#F9FFFE" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
+<a aria-label="Tab links" class="green-btn" href="https://hrone.cloud/hr-software/recruitment">Know More <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9.5M8.75 4.25 12.5 8l-3.75 3.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 </div>
 </div>
 <div class="image w-100 relative">
-<img alt="Recruitment Management Feature" height="398" loading="lazy" src="assets/recrurmetn-2.png" width="668"/>
+<img alt="Recruitment Management Feature" height="398" loading="lazy" src="assets/recrurmetn-2-crop.png" width="668"/>
 </div>
 </div>
 <div class="faq-link">
@@ -5436,6 +5504,26 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 </a>
 </div>
 </div></section>
+<script>
+(function(){
+  var list=document.querySelector('.workplace-way ul.tabs'); if(!list) return;
+  var tabs=[].slice.call(list.querySelectorAll('li'));
+  list.setAttribute('role','tablist'); list.setAttribute('aria-label','HROne modules');
+  function sync(){tabs.forEach(function(t){var on=t.classList.contains('active');t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;});}
+  tabs.forEach(function(t,i){
+    t.setAttribute('role','tab'); t.setAttribute('aria-controls',t.getAttribute('rel'));
+    t.addEventListener('click',function(){setTimeout(sync,0);});
+    t.addEventListener('keydown',function(e){
+      var k=e.key,n=null;
+      if(k==='Enter'||k===' '){e.preventDefault();t.click();return;}
+      if(k==='ArrowRight')n=tabs[(i+1)%tabs.length]; else if(k==='ArrowLeft')n=tabs[(i-1+tabs.length)%tabs.length];
+      if(n){e.preventDefault();n.click();n.focus();}
+    });
+  });
+  var more=document.querySelector('.workplace-way .plus-more-a'); if(more){more.setAttribute('aria-label','5+ more HR modules');more.setAttribute('aria-describedby','wp-more-pop');}
+  sync(); new MutationObserver(sync).observe(list,{subtree:true,attributes:true,attributeFilter:['class']});
+})();
+</script>
 <!-- One AI — three agents. Replaces the live "oneai-home" block. The three product
      pieces follow slide 13 of the sales deck (analytics query → chart, the employee
      phone, the policy chat), restyled in the hero mock's language: white surfaces,
@@ -7449,6 +7537,31 @@ section.latest-blog-section{background:radial-gradient(1100px 480px at 12% -12%,
 </div>
 </div>
 </div>
+<style>
+/* footer: same deep green field as Latest Blogs, so the page closes on one dark band */
+section.footer-section,.copyright-section{background:#063b2b !important}
+section.footer-section{background:radial-gradient(1100px 480px at 88% -10%,rgba(255,255,255,.06),transparent 62%),#063b2b !important}
+.footer-section .footer-logo-div{border-bottom:1px solid rgba(255,255,255,.12) !important}
+.footer-section .footer-logo-div .newsletter-head .stay-up{color:rgba(229,240,232,.7) !important}
+.footer-section .footer-logo-div .newsletter-head .stay-up strong{color:#fff}
+.footer-section .footer-logo-div .newsletter-head .newsletter-main{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.2) !important}
+.footer-section .newsletter-main input[name=email],.footer-section .newsletter-main input[type=email]{color:#fff !important}
+.footer-section .newsletter-main input::placeholder{color:rgba(229,240,232,.5) !important}
+.footer-section .footer-logo-div .cookies-text{color:rgba(229,240,232,.5) !important}
+.footer-section .footer-logo-div .cookies-text a{color:#a6dcbd !important;text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(166,220,189,.4)}
+.footer-section .footer-main .footer-links .about-hrone .menu-title,.footer-section .footer-main .footer-links .about-hrone .menu-title.active{color:#fff !important}
+.footer-section .footer-main .footer-links .about-hrone .submenu,.footer-section .footer-main .footer-links .about-hrone .submenu li a{color:rgba(229,240,232,.62) !important;transition:color .2s}
+.footer-section .footer-main .footer-links .about-hrone .submenu li a:hover{color:#fff !important}
+.footer-section .footer-main .schedule-demo-main .schedule-demo-p{color:#fff !important}
+.footer-image .pay-now .white-btn{background:transparent !important;border:1px solid rgba(255,255,255,.28) !important;border-radius:8px !important;color:#fff !important;transition:background .2s,color .2s,border-color .2s}
+.footer-image .pay-now .white-btn:hover{background:#fff !important;border-color:#fff !important;color:#063b2b !important}
+.footer-section .footer-main .footer-image .sponsor-img{mix-blend-mode:normal !important;border-radius:10px}
+.footer-section .join-a-team img{border-radius:0;max-width:min(20.625vw,297px) !important}
+.copyright-section{border-top:1px solid rgba(255,255,255,.1)}
+.copyright-section .copyright-text,.copyright-section .copyright-text a,.copyright-section .copyright-text span{color:rgba(229,240,232,.55) !important}
+.copyright-section .copyright-text a:hover{color:#fff !important}
+
+</style>
 <section class="footer-section">
 <div class="container container_cus hr">
 <div class="footer-logo-div">
@@ -7522,7 +7635,7 @@ section.latest-blog-section{background:radial-gradient(1100px 480px at 12% -12%,
 </div>
 <div class="join-a-team">
 <a href="https://joy.hrone.cloud/career-portal?appId=U7bjIdFSmZoubZM5AUQ2BhG1jyjDBzePTV0JUmlbP614gGhYt9hZ2xfAfhkraI2X4YKwFpunOL0a_tH02ZVxeZ5gQBs_Q80MzHE5GGAW3Q2m1CGdLUbvtjZDDP6Bg1_C&amp;dc=joy&amp;rqt=UVozgs-AUV1ILPLBxDlf7A&amp;cc=K8fAAC6n2xQvjcQO9J0lRw" rel="nofollow" target="_blank">
-<img alt="join-team" class="img-fluid" height="237px" src="assets/Gif-blackbug.gif" width="297px"/>
+<img alt="Join our team" class="img-fluid" height="237px" loading="lazy" src="assets/join-team.webp" width="297px"/>
 </a>
 </div>
 </div>
