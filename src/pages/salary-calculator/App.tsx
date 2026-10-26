@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { NavBar, TopStripe } from "./Chrome";
 import hrIcon from "@/imports/HRICON.svg";
 import authorPhoto from "@/imports/author-placeholder.png";
+import BackToTop from "./BackToTop";
 import Calculator from "./Calculator";
 import TrustPanel from "./TrustPanel";
 import Credibility from "./Credibility";
@@ -303,7 +304,7 @@ export default function SalaryCalculatorPage() {
               with the calculator; the team-payroll prompt is a quiet link, not a second card */}
           <div className="mt-7 flex flex-col gap-5 sm:mt-9 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-[780px]">
-              <h1 className="font-display text-[clamp(34px,3.8vw,48px)] font-semibold leading-[1] tracking-[-0.035em]">In-Hand Salary Calculator</h1>
+              <h1 id="page-title" tabIndex={-1} className="font-display text-[clamp(34px,3.8vw,48px)] outline-none font-semibold leading-[1] tracking-[-0.035em]">In-Hand Salary Calculator</h1>
               <p className="mt-3 text-[17px] leading-[1.55] text-[var(--muted)]">
                 Calculate your in-hand salary from CTC after PF, professional tax and income tax for FY 2026-27.
               </p>
@@ -653,8 +654,12 @@ export default function SalaryCalculatorPage() {
       </main>
 
       <div className="print:hidden">
-        <HomeFooter />
+        <div id="site-footer">
+          <HomeFooter />
+        </div>
       </div>
+
+      <BackToTop focusId="page-title" footerId="site-footer" />
     </div>
   );
 }
