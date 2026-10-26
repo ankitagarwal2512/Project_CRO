@@ -7003,92 +7003,125 @@ Transformation Journey</h2>
 </div>
 </section>
 
+<style>
+/* glossary — SEO links kept intact; restyled as an A–Z index in the page theme (desktop only) */
+@media (min-width:768px){
+section.glossary-sec{background:#fff !important;padding:88px 0 96px !important}
+.glossary-sec .glossary-container{display:block !important;animation:none !important;opacity:1 !important;transform:none !important}
+.glossary-sec .glossary-left,.glossary-sec .glossary-right{animation:none !important;opacity:1 !important;transform:none !important;padding:0 !important;flex:none !important}
+.glossary-sec .glossary-left{width:auto !important;display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:36px}
+.glossary-sec .glossary-left h2{font-size:min(3.0556vw,44px) !important;line-height:1.1 !important;font-weight:700 !important;letter-spacing:-.02em;color:#141a17 !important;margin:0 !important}
+.glossary-sec .glossary-left p{width:auto !important;max-width:520px;margin:14px 0 0 !important;font:400 17px/1.55 "Public Sans",sans-serif !important;color:#5b6660 !important}
+.glossary-sec .glossary-left .explore-btn{flex:none;display:inline-flex !important;align-items:center;gap:8px;margin:0 !important;padding:11px 18px !important;background:#fff !important;border:1px solid #cfe2d4 !important;border-radius:8px !important;color:#02563d !important;font:600 15px/1 "Public Sans",sans-serif !important;box-shadow:none !important;transition:background .2s,color .2s,border-color .2s}
+.glossary-sec .glossary-left .explore-btn span{font:inherit !important;color:inherit !important}
+.glossary-sec .glossary-left .explore-btn img{width:13px !important;height:auto !important;transition:transform .2s,filter .2s}
+.glossary-sec .glossary-left .explore-btn:hover{transform:none !important;background:#02563d !important;border-color:#02563d !important;color:#fff !important}
+.glossary-sec .glossary-left .explore-btn:hover img{filter:brightness(0) invert(1);transform:translateX(3px)}
+.glossary-sec .glossary-right{width:auto !important;margin:0 !important}
+.glossary-sec .glossary-grid{margin:0 !important}
+.glossary-sec .glossary-grid ul{display:grid !important;grid-template-columns:repeat(3,1fr) !important;grid-template-rows:repeat(4,auto) !important;grid-auto-flow:column !important;column-gap:56px !important;margin:0 !important;padding:0 !important;list-style:none}
+.glossary-sec .glossary-grid li{display:block !important;transform:none !important;margin:0 !important;padding:0 !important;border-top:1px solid #e3e9e5}
+.glossary-sec .glossary-grid li:nth-child(4n){border-bottom:1px solid #e3e9e5}
+.glossary-sec .glossary-grid li a{display:grid !important;grid-template-columns:28px minmax(0,1fr) 14px;align-items:center;gap:14px !important;min-height:0;margin:0 !important;padding:13px 0 !important;text-decoration:none;transition:none}
+.glossary-sec .glossary-grid li a::after{content:"";width:14px;height:14px;background:#02563d;-webkit-mask:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"%3E%3Cpath d="M4 10L10 4M5 4h5v5" fill="none" stroke="%23000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/%3E%3C/svg%3E') center/contain no-repeat;mask:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"%3E%3Cpath d="M4 10L10 4M5 4h5v5" fill="none" stroke="%23000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/%3E%3C/svg%3E') center/contain no-repeat;opacity:0;transform:translate(-4px,4px);transition:opacity .2s,transform .2s}
+.glossary-sec .glossary-grid .card{display:grid !important;place-items:center;width:28px !important;height:28px !important;margin:0 !important;padding:0 !important;border-radius:7px !important;background:#f1f7f3 !important;border:1px solid #cfe2d4;box-shadow:none !important;color:#02563d !important;font:600 13px/1 "Public Sans",sans-serif !important;transition:background .2s,color .2s,border-color .2s}
+.glossary-sec .glossary-grid span{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:500 15px/1.4 "Public Sans",sans-serif !important;color:#26302b !important;transition:color .2s}
+.glossary-sec .glossary-grid li a:hover span,.glossary-sec .glossary-grid li a:focus-visible span{color:#02563d !important}
+.glossary-sec .glossary-grid li a:hover .card,.glossary-sec .glossary-grid li a:focus-visible .card{background:#02563d !important;border-color:#02563d;color:#fff !important}
+.glossary-sec .glossary-grid li a:hover::after,.glossary-sec .glossary-grid li a:focus-visible::after{opacity:1;transform:none}
+.glossary-sec .glossary-grid li a:focus-visible{outline:2px solid #9fcdb2;outline-offset:2px;border-radius:4px}
+.glossary-sec .glossary-bottom-btn{display:none !important}
+}
+@media (prefers-reduced-motion:reduce){.glossary-sec *{transition:none !important}}
+</style>
 <section class="glossary-sec">
 <div class="glossary-container container_cus">
 <div class="glossary-left">
+<div>
 <h2>Glossary</h2>
 <p>Alphabetical HR terms for quick lookups.</p>
-<a class="explore-btn window" href="https://hrone.cloud/hr-glossary/"><span>Explore More</span> <img alt="arrow-icon" height="26px" src="assets/arrow_right_green.svg" width="15px"/></a>
+</div>
+<a class="explore-btn window" href="https://hrone.cloud/hr-glossary/"><span>Explore More</span> <img alt="" height="26px" src="assets/arrow_right_green.svg" width="15px"/></a>
 </div>
 <div class="glossary-right">
 <div class="glossary-grid">
 <ul>
 <li>
-<a href="https://hrone.cloud/hr-glossary/kra/">
-<div class="card W">W</div>
-<span>What Is KRA? Meaning, Full Form &amp; Examples in HR</span>
-</a>
-</li>
-<li>
-<a href="https://hrone.cloud/hr-glossary/competency/">
-<div class="card C">C</div>
-<span>Competency – Importance and meaning</span>
-</a>
-</li>
-<li>
-<a href="https://hrone.cloud/hr-glossary/job-title/">
-<div class="card J">J</div>
-<span>Job Title</span>
-</a>
-</li>
-<li>
-<a href="https://hrone.cloud/hr-glossary/variable-pay/">
-<div class="card V">V</div>
-<span>Variable Pay</span>
-</a>
-</li>
-<li>
-<a href="https://hrone.cloud/hr-glossary/lwf/">
-<div class="card W">W</div>
-<span>What Is Labour Welfare Fund? Meaning, Rates &amp; Rules</span>
-</a>
-</li>
-<li>
-<a href="https://hrone.cloud/hr-glossary/notice-period/">
-<div class="card N">N</div>
-<span>Notice Period – Importance and meaning</span>
-</a>
-</li>
-<li>
-<a href="https://hrone.cloud/hr-glossary/employee-clearance/">
-<div class="card E">E</div>
-<span>Employee Clearance Procedure: Steps &amp; Exit Checklist</span>
-</a>
-</li>
-<li>
-<a href="https://hrone.cloud/hr-glossary/job-description-vs-job-specification/">
-<div class="card J">J</div>
-<span>Job Description Vs Job Specification – Importance and meaning</span>
-</a>
-</li>
-<li>
-<a href="https://hrone.cloud/hr-glossary/form-26qb/">
-<div class="card F">F</div>
-<span>Form 26QB – Importance and Meaning</span>
-</a>
-</li>
-<li>
-<a href="https://hrone.cloud/hr-glossary/full-and-final-settlement/">
-<div class="card F">F</div>
-<span>Full And Final Settlement – Importance and meaning</span>
-</a>
-</li>
-<li>
-<a href="https://hrone.cloud/hr-glossary/basic-salary/">
-<div class="card B">B</div>
+<a href="https://hrone.cloud/hr-glossary/basic-salary/" title="Basic Salary">
+<div class="card B" aria-hidden="true">B</div>
 <span>Basic Salary</span>
 </a>
 </li>
 <li>
-<a href="https://hrone.cloud/hr-glossary/kpi/">
-<div class="card W">W</div>
+<a href="https://hrone.cloud/hr-glossary/competency/" title="Competency – Importance and meaning">
+<div class="card C" aria-hidden="true">C</div>
+<span>Competency – Importance and meaning</span>
+</a>
+</li>
+<li>
+<a href="https://hrone.cloud/hr-glossary/employee-clearance/" title="Employee Clearance Procedure: Steps &amp; Exit Checklist">
+<div class="card E" aria-hidden="true">E</div>
+<span>Employee Clearance Procedure: Steps &amp; Exit Checklist</span>
+</a>
+</li>
+<li>
+<a href="https://hrone.cloud/hr-glossary/form-26qb/" title="Form 26QB – Importance and Meaning">
+<div class="card F" aria-hidden="true">F</div>
+<span>Form 26QB – Importance and Meaning</span>
+</a>
+</li>
+<li>
+<a href="https://hrone.cloud/hr-glossary/full-and-final-settlement/" title="Full And Final Settlement – Importance and meaning">
+<div class="card F" aria-hidden="true">F</div>
+<span>Full And Final Settlement – Importance and meaning</span>
+</a>
+</li>
+<li>
+<a href="https://hrone.cloud/hr-glossary/job-description-vs-job-specification/" title="Job Description Vs Job Specification – Importance and meaning">
+<div class="card J" aria-hidden="true">J</div>
+<span>Job Description Vs Job Specification – Importance and meaning</span>
+</a>
+</li>
+<li>
+<a href="https://hrone.cloud/hr-glossary/job-title/" title="Job Title">
+<div class="card J" aria-hidden="true">J</div>
+<span>Job Title</span>
+</a>
+</li>
+<li>
+<a href="https://hrone.cloud/hr-glossary/kpi/" title="What Is KPI in HR? Meaning, Examples &amp; Best Practices">
+<div class="card K" aria-hidden="true">K</div>
 <span>What Is KPI in HR? Meaning, Examples &amp; Best Practices</span>
+</a>
+</li>
+<li>
+<a href="https://hrone.cloud/hr-glossary/kra/" title="What Is KRA? Meaning, Full Form &amp; Examples in HR">
+<div class="card K" aria-hidden="true">K</div>
+<span>What Is KRA? Meaning, Full Form &amp; Examples in HR</span>
+</a>
+</li>
+<li>
+<a href="https://hrone.cloud/hr-glossary/lwf/" title="What Is Labour Welfare Fund? Meaning, Rates &amp; Rules">
+<div class="card L" aria-hidden="true">L</div>
+<span>What Is Labour Welfare Fund? Meaning, Rates &amp; Rules</span>
+</a>
+</li>
+<li>
+<a href="https://hrone.cloud/hr-glossary/notice-period/" title="Notice Period – Importance and meaning">
+<div class="card N" aria-hidden="true">N</div>
+<span>Notice Period – Importance and meaning</span>
+</a>
+</li>
+<li>
+<a href="https://hrone.cloud/hr-glossary/variable-pay/" title="Variable Pay">
+<div class="card V" aria-hidden="true">V</div>
+<span>Variable Pay</span>
 </a>
 </li>
 </ul>
 </div>
 <div class="glossary-bottom-btn">
-<a class="explore-btn" href="https://hrone.cloud/hr-glossary/"><span>Explore More</span><img alt="arrow-icon" height="26px" src="assets/arrow_right_green.svg" width="15px"/></a>
+<a class="explore-btn" href="https://hrone.cloud/hr-glossary/"><span>Explore More</span><img alt="" height="26px" src="assets/arrow_right_green.svg" width="15px"/></a>
 </div>
 </div>
 </div>
