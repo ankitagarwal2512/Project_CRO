@@ -1,0 +1,84 @@
+/* The "Recognition" proof band from the payroll outsourcing landing page
+   (HROne Landing Page V2 / payroll-outsourcing-lp.html, #awards.vt2), copied as-is and scoped
+   under .oap-awards. Badges are local copies in public/one-ai/badges/. */
+.oap-awards{--mint:#6EE7A8}
+.oap-awards .wrap{max-width:1200px;margin:0 auto}
+.oap-awards *{box-sizing:border-box}
+.oap-awards h2,.oap-awards p,.oap-awards ul{margin:0}
+.oap-awards #awards.vt2{position: relative; overflow: hidden; padding: 80px 28px 64px; color: #fff; background: radial-gradient(ellipse 60% 90% at 100% 0%, rgba(110, 231, 168, .12) 0%, transparent 60%), radial-gradient(ellipse 50% 80% at 0% 100%, rgba(110, 231, 168, .06) 0%, transparent 60%), linear-gradient(135deg, #042415 0%, #073A22 55%, #0A4A2C 100%);}
+.oap-awards .vt2-top{display: grid; grid-template-columns: minmax(0, 380px) 1fr; gap: 64px; align-items: end;}
+.oap-awards .vt2-label{font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--mint); margin-bottom: 14px;}
+.oap-awards .vt2-title{font-size: clamp(1.7rem, 2.6vw, 2.3rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.12; color: #fff; text-wrap: balance;}
+.oap-awards .vt2-title em{font-style: normal; color: var(--mint);}
+.oap-awards .vt2-stats{display: grid; grid-template-columns: repeat(3, 1fr);}
+.oap-awards .vt2-stat{padding: 0 28px; border-left: 1px solid rgba(255, 255, 255, .12);}
+.oap-awards .vt2-num{font-size: clamp(2.8rem, 4.6vw, 3.9rem); font-weight: 800; letter-spacing: -.055em; line-height: 1; color: #fff; font-variant-numeric: tabular-nums;}
+.oap-awards .vt2-num small{font-size: .36em; font-weight: 600; letter-spacing: 0; color: rgba(255, 255, 255, .5); margin-left: 3px;}
+.oap-awards .vt2-src{display: flex; align-items: flex-start; gap: 8px; margin-top: 14px; font-size: 13px; line-height: 1.45; color: rgba(255, 255, 255, .7);}
+.oap-awards .vt2-src svg{width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px;}
+.oap-awards .vt2-src b{color: #fff; font-weight: 600;}
+.oap-awards .vt2-note{display: inline-block; margin-top: 12px; font-size: 11.5px; font-weight: 600; color: var(--mint); letter-spacing: .01em;}
+.oap-awards .vt2-foot{margin-top: 52px; padding-top: 28px; border-top: 1px solid rgba(255, 255, 255, .12); display: flex; align-items: center; justify-content: space-between; gap: 40px;}
+.oap-awards .vt2-badges{display: flex; align-items: center; gap: 14px; flex-shrink: 0;}
+.oap-awards .vt2-badges img{height: 78px; width: auto; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .25)); transition: transform .25s ease;}
+.oap-awards .vt2-badges img:hover{transform: translateY(-3px);}
+.oap-awards .vt2-ones{display: flex; align-items: center; gap: 20px; min-width: 0;}
+.oap-awards .vt2-ones-k{font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255, 255, 255, .5); white-space: nowrap;}
+.oap-awards .vt2-ones ul{list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, auto); gap: 10px 28px;}
+.oap-awards .vt2-ones li{font-size: 13.5px; color: rgba(255, 255, 255, .85); white-space: nowrap;}
+.oap-awards .vt2-ones li b{color: var(--mint); font-weight: 800; margin-right: 6px;}
+@media (max-width: 1100px){.oap-awards .vt2-top{grid-template-columns: 1fr; gap: 40px;}
+.oap-awards .vt2-stat:first-child{border-left: 0; padding-left: 0;}
+.oap-awards .vt2-foot{flex-direction: column; align-items: flex-start; gap: 24px;}}
+@media (max-width: 640px){.oap-awards #awards.vt2{padding: 56px 16px 48px;}
+.oap-awards .vt2-stats{grid-template-columns: 1fr;}
+.oap-awards .vt2-stat{border-left: 0; padding: 18px 0; border-top: 1px solid rgba(255, 255, 255, .12); display: grid; grid-template-columns: 112px 1fr; align-items: center; column-gap: 16px;}
+.oap-awards .vt2-stat:first-child{border-top: 0; padding-top: 0;}
+.oap-awards .vt2-num{font-size: 2.5rem; grid-row: span 2;}
+.oap-awards .vt2-src{margin-top: 0; font-size: 12.5px;}
+.oap-awards .vt2-note{margin-top: 4px;}
+.oap-awards .vt2-foot{margin-top: 28px;}
+.oap-awards .vt2-badges{width: 100%; justify-content: space-between; gap: 6px;}
+.oap-awards .vt2-badges img{height: auto; width: calc(20% - 5px);}
+.oap-awards .vt2-ones{flex-direction: column; align-items: flex-start; gap: 12px;}
+.oap-awards .vt2-ones ul{grid-template-columns: 1fr; gap: 8px;}
+.oap-awards .vt2-ones li{white-space: normal;}}
+.oap-awards .vt2-top{grid-template-columns: minmax(0, 440px) auto; justify-content: space-between; align-items: center;}
+.oap-awards .vt2-top .vt2-badges img{height: 96px;}
+.oap-awards .vt2-foot{display: grid; grid-template-columns: 3fr minmax(0, 1.05fr); align-items: start; gap: 0; margin-top: 48px; padding-top: 40px;}
+.oap-awards .vt2-stat:first-child{border-left: 0; padding-left: 0;}
+.oap-awards .vt2-num{font-size: clamp(2.4rem, 3.8vw, 3.3rem);}
+.oap-awards .vt2-ones{flex-direction: column; align-items: flex-start; gap: 14px; padding-left: 28px; border-left: 1px solid rgba(255, 255, 255, .12); align-self: stretch;}
+.oap-awards .vt2-ones ul{grid-template-columns: 1fr; gap: 9px;}
+@media (max-width: 1100px){.oap-awards .vt2-top{grid-template-columns: 1fr; gap: 28px;}
+.oap-awards .vt2-foot{grid-template-columns: 1fr; gap: 32px;}
+.oap-awards .vt2-ones{padding-left: 0; border-left: 0; padding-top: 28px; border-top: 1px solid rgba(255, 255, 255, .12);}}
+@media (max-width: 640px){.oap-awards .vt2-top .vt2-badges img{height: auto;}
+.oap-awards .vt2-foot{margin-top: 32px; padding-top: 24px;}}
+.oap-awards .vt2-top .vt2-badges{gap: 18px;}
+.oap-awards .vt2-top .vt2-badges img{height: 136px;}
+@media (max-width: 1240px){.oap-awards .vt2-top .vt2-badges img{height: 118px;}}
+@media (max-width: 640px){.oap-awards .vt2-top .vt2-badges{gap: 6px;}
+.oap-awards .vt2-top .vt2-badges img{height: auto;}}
+.oap-awards .vt2-title em{display: block;}
+.oap-awards .vt2-src{font-size: 14.5px !important; line-height: 1.5 !important; color: rgba(255, 255, 255, .82) !important; margin-top: 16px !important; gap: 9px !important;}
+.oap-awards .vt2-src svg{width: 20px !important; height: 20px !important; margin-top: 1px;}
+.oap-awards .vt2-src b{font-weight: 700;}
+.oap-awards .vt2-note{margin-top: 14px !important; font-size: 12.5px !important; font-weight: 600 !important; color: var(--mint) !important; background: rgba(110, 231, 168, .1); border: 1px solid rgba(110, 231, 168, .22); padding: 4px 10px; border-radius: 100px;}
+.oap-awards .vt2-ones-k{font-size: 12px !important; color: rgba(255, 255, 255, .6) !important;}
+.oap-awards .vt2-ones li{font-size: 14.5px !important; color: rgba(255, 255, 255, .9) !important;}
+.oap-awards .vt2-ones ul{gap: 12px !important;}
+.oap-awards .vt2-stat{padding-right: 28px;}
+.oap-awards .vt2-top .vt2-badges{gap: 20px;}
+.oap-awards .vt2-top .vt2-badges img{height: 156px;}
+@media (max-width: 1240px){.oap-awards .vt2-top .vt2-badges img{height: 132px;}}
+@media (max-width: 640px){.oap-awards .vt2-top .vt2-badges{gap: 6px;}
+.oap-awards .vt2-top .vt2-badges img{height: auto;}}
+.oap-awards .vt2-top{grid-template-columns: minmax(0, 440px) minmax(0, 1fr) !important;}
+.oap-awards .vt2-top .vt2-badges{min-width: 0; width: 100%; justify-content: flex-end; flex-shrink: 1;}
+.oap-awards .vt2-top .vt2-badges img{height: auto !important; width: calc((100% - 80px) / 5); max-width: 123px; min-width: 0;}
+@media (max-width: 1100px){.oap-awards .vt2-top{grid-template-columns: 1fr !important;}
+.oap-awards .vt2-top .vt2-badges{justify-content: flex-start;}}
+@media (max-width: 640px){.oap-awards .vt2-top .vt2-badges img{width: calc((100% - 24px) / 5);}}
+@media (min-width: 1101px){.oap-awards .vt2-top{grid-template-columns: minmax(0, 400px) minmax(0, 1fr) !important; gap: 48px !important;}
+.oap-awards .vt2-top .vt2-badges img{max-width: 135px;}}

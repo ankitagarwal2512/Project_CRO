@@ -7,6 +7,8 @@ import agentsHtml from "./agents.html?raw";
 import "./legacy.css";
 import legacyHtml from "./legacy.html?raw";
 import legacyFaqSchema from "./legacy-faq-schema.json";
+import "./awards.css";
+import awardsHtml from "./awards.html?raw";
 
 /* One AI product page, served at /one-ai. Replaces the live hrone.cloud/one-ai page.
 
@@ -486,37 +488,34 @@ function Hero() {
       <div className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col px-6 pb-8 pt-8">
         <nav aria-label="Breadcrumb" className="text-[13px] text-white/55">
           <ol className="flex flex-wrap items-center gap-1.5">
-            <li><a href="#" className="hover:text-white">Home</a></li>
-            <li aria-hidden>›</li>
-            <li><a href="#" className="hover:text-white">HR AI Agents</a></li>
+            <li><a href="https://hrone.cloud/" className="hover:text-white">Home</a></li>
             <li aria-hidden>›</li>
             <li aria-current="page" className="text-white/85">One AI</li>
           </ol>
         </nav>
 
         <div className="flex flex-1 flex-col items-center justify-center py-8 text-center sm:py-12">
-          {/* trust row: one glass pill. The One AI tag names the product, the line carries the proof. */}
-          <div
-            className="stg-anim group mb-8 inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-white/[.07] py-1 pl-1 pr-3 sm:gap-3 sm:py-[5px] sm:pl-[5px] sm:pr-4 shadow-[inset_0_1px_0_rgba(255,255,255,.12),0_10px_30px_-12px_rgba(0,0,0,.5)] backdrop-blur-md"
-            style={{ ["--d" as string]: "0.05s" }}
-          >
-            <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-[rgba(110,231,168,.35)] bg-[#032c20] py-[5px] pl-2 pr-2.5 text-[12px] font-semibold text-white sm:text-[12.5px]">
-              <Spark size={14} width={1.4} />
-              One AI
-            </span>
-            <span className="whitespace-nowrap text-[12px] text-white/80 sm:text-[13.5px]">
-              Trusted by <b className="font-semibold text-white">2,500+</b> companies
-            </span>
-          </div>
-
           <h1 id="page-title" tabIndex={-1} className="whitespace-nowrap font-['Doto',_'Public_Sans',monospace] text-[clamp(40px,10.5vw,92px)] lg:text-[clamp(40px,7vw,92px)] font-black leading-[1.08] tracking-[-0.04em] text-white outline-none max-[720px]:tracking-[-0.06em]" style={{ fontVariationSettings: '"ROND" 100', wordSpacing: "-0.28em" }}>
+            {/* one glass pill: the One AI tag, then the search keyword. It sits inside the h1, so
+                Google reads "One AI: AI HR Software by HROne. The AI that gets HR done" */}
+            <span className="stg-line mb-8 block text-[13px] leading-none" style={{ ["--d" as string]: "0.05s", fontVariationSettings: "normal", wordSpacing: "normal" }}>
+              <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-white/[.07] py-1 pl-1 pr-3 font-['Public_Sans',system-ui,sans-serif] tracking-normal shadow-[inset_0_1px_0_rgba(255,255,255,.12),0_10px_30px_-12px_rgba(0,0,0,.5)] backdrop-blur-md sm:gap-3 sm:py-[5px] sm:pl-[5px] sm:pr-4">
+                <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-[rgba(110,231,168,.35)] bg-[#032c20] py-[5px] pl-2 pr-2.5 text-[12px] font-semibold text-white sm:text-[12.5px]">
+                  <Spark size={14} width={1.4} />
+                  One AI<span className="sr-only">:</span>
+                </span>
+                <span className="whitespace-nowrap text-[12px] font-medium text-white/85 sm:text-[13.5px]">
+                  AI HR Software by HROne<span className="sr-only">.</span>
+                </span>
+              </span>
+            </span>
             <span className="stg-line" style={{ ["--d" as string]: "0.12s" }}>The AI that</span>
             {/* no full stop: in the dot-matrix face it renders as a five-dot cross and reads as "+" */}
             <span className="stg-line" style={{ ["--d" as string]: "0.3s" }}>gets HR done</span>
           </h1>
 
-          <p className="stg-anim mt-6 max-w-[min(560px,92%)] text-[clamp(16px,1.45vw,19px)] leading-[1.6] text-white/85" style={{ ["--d" as string]: "0.28s" }}>
-            <b className="font-semibold text-white">It doesn&apos;t tell you how. It does it.</b> Three agents, one brain, on web, mobile, WhatsApp and Teams.
+          <p className="stg-anim mt-6 max-w-[min(620px,92%)] text-[clamp(16px,1.45vw,19px)] leading-[1.6] text-white/85" style={{ ["--d" as string]: "0.28s" }}>
+            <b className="font-semibold text-white">Tired of tools that only tell you what to do?</b> One AI&apos;s HR agents apply for leave, answer policy questions and build reports by text or voice, on web, mobile, WhatsApp and Teams.
           </p>
 
           <a href="#" className="stg-cta group mt-9 inline-flex items-center gap-2 rounded-full bg-[#e9614a] px-7 py-[13px] text-[15px] font-semibold text-white shadow-[0_0_0_1px_rgba(255,255,255,.12),0_12px_32px_-10px_rgba(233,97,74,.7)] transition-[transform,background-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-[#d9553e] hover:shadow-[0_0_0_1px_rgba(255,255,255,.2),0_16px_40px_-10px_rgba(233,97,74,.9)]" style={{ ["--d" as string]: "0.4s" }}>
@@ -555,8 +554,6 @@ function Agents() {
   return <div id="agents" ref={ref} className="oap-agents scroll-mt-28" dangerouslySetInnerHTML={{ __html: agentsHtml }} />;
 }
 
-/* AI Interviewer lives on its own site; the feature card links there */
-const AII_URL = "https://aiinterviewer.hrone.cloud";
 
 /* ───────────────────────── One AI in every module ───────────────────────── */
 
@@ -811,8 +808,22 @@ function GoalPhone() {
 }
 
 function KioskTablet() {
-  /* static, like the other cards: shown on the "marked in" state */
-  const ok = true;
+  /* scanning → attendance marked, looping on the deck's timing (2.4s scan, 4.8s cycle) */
+  const [ok, setOk] = useState(false);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return setOk(true);
+    let t: number;
+    const loop = () => {
+      setOk(false);
+      t = window.setTimeout(() => setOk(true), 2400);
+    };
+    loop();
+    const id = window.setInterval(loop, 4800);
+    return () => {
+      window.clearInterval(id);
+      window.clearTimeout(t);
+    };
+  }, []);
   const corner = `absolute h-5 w-5 border-[2.5px] transition-colors duration-300 ${ok ? "border-[#5fd39a]" : "border-white"}`;
   return (
     <div className="flex flex-col items-center">
@@ -826,6 +837,7 @@ function KioskTablet() {
             <i className={`${corner} right-0 top-0 rounded-tr-[9px] border-b-0 border-l-0`} />
             <i className={`${corner} bottom-0 left-0 rounded-bl-[9px] border-r-0 border-t-0`} />
             <i className={`${corner} bottom-0 right-0 rounded-br-[9px] border-l-0 border-t-0`} />
+            <span className={`oap-kscan absolute inset-x-1.5 h-[2px] rounded-full bg-[#5fd39a] shadow-[0_0_10px_3px_rgba(95,211,154,.5)] transition-opacity duration-300 ${ok ? "opacity-0" : ""}`} />
           </div>
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent" />
           <p className="absolute inset-x-0 bottom-2.5 whitespace-nowrap text-center text-[11.5px] font-semibold text-white">
@@ -849,6 +861,37 @@ function KioskTablet() {
   );
 }
 
+function InterviewVideo() {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          if (!v.src) v.src = "/one-ai/interview-demo.mp4";
+          v.play().catch(() => {});
+        } else v.pause();
+      },
+      { rootMargin: "200px" },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <video
+      ref={ref}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-hidden
+      onPlaying={(e) => (e.currentTarget.style.opacity = "1")}
+      className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500"
+    />
+  );
+}
+
 function InterviewWindow() {
   return (
     <div className="w-[228px] overflow-hidden rounded-[12px] border border-[#ecdcd7] bg-white shadow-[0_18px_40px_-20px_rgba(120,40,20,.3)]">
@@ -858,8 +901,9 @@ function InterviewWindow() {
         <i className="block h-2 w-2 rounded-full bg-[#61c554]" />
       </div>
       <div className="relative mx-1.5 mb-1.5 h-[176px] overflow-hidden rounded-[6px] bg-[linear-gradient(165deg,#1E3528_0%,#0D1A14_100%)]">
-        {/* the card is static, so a 36 KB still of the interview replaces the 1.6 MB video */}
+        {/* the still shows first; the 1.6 MB demo video only loads and plays once it scrolls near */}
         <img src="/one-ai/interview-still.jpg" alt="" loading="lazy" decoding="async" className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
+        <InterviewVideo />
         <div className="absolute right-1.5 top-1.5 w-[100px] rounded-[8px] bg-white p-1.5 shadow-[0_8px_20px_-8px_rgba(0,0,0,.35)]">
           <div className="mb-1.5 flex items-center gap-1">
             <img loading="lazy" decoding="async" src="/one-ai/logo-icon.svg" alt="" className="h-[11px] w-[11px] rounded-[2px]" />
@@ -896,47 +940,10 @@ type Crew = {
   phone?: boolean;
   scale?: number;
   viz: ReactNode;
-  /* hero cards only: left-text / right-visual */
-  wide?: boolean;
-  icon?: ReactNode;
-  round?: boolean;
-  attrs?: string[];
-  action?: ReactNode;
 };
 
-/* three rows (2 / 3 / 3) on a six-column grid; panels alternate; the phones sit on a diagonal */
+/* two rows of three; panels alternate like a checkerboard; the phones sit on a diagonal */
 const CREW: Crew[] = [
-  {
-    name: "Facial Kiosk",
-    line: "Your HR assistant. Always on.",
-    dark: true,
-    wide: true,
-    round: true,
-    scale: 0.78,
-    icon: <img loading="lazy" decoding="async" src="/one-ai/kiosk-icon.png" alt="" className="h-[26px] w-auto" />,
-    attrs: ["No proxy attendance", "Facial, multilingual", "Instant support", "Always available"],
-    action: (
-      <a href="#" className="group inline-flex items-center gap-1.5 text-[14px] font-bold text-[#0B5C35]">
-        See it in a demo <Arrow size={14} />
-      </a>
-    ),
-    viz: <KioskTablet />,
-  },
-  {
-    name: "AI Interviewer",
-    line: "First rounds run themselves.",
-    dark: false,
-    wide: true,
-    scale: 1,
-    icon: <img loading="lazy" decoding="async" src="/one-ai/ai-interviewer-icon.svg" alt="" className="h-[20px] w-[20px]" />,
-    attrs: ["AI-led interviews", "Voice analysis", "Bias free", "Score & insights"],
-    action: (
-      <a href={`${AII_URL}/signup`} className="group inline-flex items-center gap-1.5 text-[14px] font-bold text-[#0B5C35]">
-        Try it free · from ₹99 <Arrow size={14} />
-      </a>
-    ),
-    viz: <InterviewWindow />,
-  },
   { name: "Expense Bills Parser", line: "Snap a receipt and One AI fills in the claim for you.", dark: false, phone: true, viz: <ExpensePhone /> },
   { name: "Resume Parser", line: "Upload resumes in bulk and get candidate profiles in seconds.", dark: true, scale: 0.92, viz: <ResumeViz /> },
   { name: "Relevancy Score", line: "Every applicant ranked against the job, so you start with the best fit.", dark: false, scale: 0.92, viz: <RelevancyViz /> },
@@ -960,39 +967,8 @@ function Panel({ c, className }: { c: Crew; className: string }) {
 }
 
 function CrewCard({ c }: { c: Crew }) {
-  if (c.wide) {
-    /* hero card: the story on the left, the product on its own panel on the right */
-    return (
-      <article className={`grid gap-4 !p-6 lg:col-span-3 sm:grid-cols-[1fr_auto] ${CARD_SHELL}`}>
-        <div className="flex flex-col">
-          <div className="flex items-center gap-3">
-            <span className={`grid h-11 w-11 shrink-0 place-items-center bg-[#0B5C35] ${c.round ? "rounded-full" : "rounded-[12px]"}`}>{c.icon}</span>
-            <h3 className="text-[22px] font-extrabold leading-[1.1] tracking-[-0.035em] text-[#073F25]">{c.name}</h3>
-          </div>
-          <p className="mt-3 text-[14px] leading-[1.45] text-[#3D4046]">{c.line}</p>
-          <ul className="mt-3.5 flex flex-wrap gap-1.5">
-            {c.attrs?.map((a) => (
-              <li key={a} className="inline-flex items-center gap-1.5 rounded-full bg-white py-1 pl-1 pr-2.5 text-[11.5px] font-semibold text-[#3D4046] ring-1 ring-[#E1EEE7]">
-                <i className="block h-[15px] w-[15px] rounded-full bg-[#6EE7A8] p-[3.5px] text-[#073F25]">
-                  <TickSvg />
-                </i>
-                {a}
-              </li>
-            ))}
-          </ul>
-          <div className="mt-auto pt-5">{c.action}</div>
-        </div>
-        {/* the product sits straight on the card, no panel behind it */}
-        <div className="hidden h-[228px] w-[230px] items-center justify-end self-center sm:flex">
-          <PanelDark.Provider value={false}>
-            <div className="origin-right" style={{ transform: `scale(${c.scale ?? 0.8})` }}>{c.viz}</div>
-          </PanelDark.Provider>
-        </div>
-      </article>
-    );
-  }
   return (
-    <article className={`flex flex-col lg:col-span-2 ${CARD_SHELL}`}>
+    <article className={`flex flex-col ${CARD_SHELL}`}>
       <Panel c={c} className="h-[200px]" />
       <div className="px-4 pb-5 pt-4">
         <h3 className="mb-1.5 text-[19px] font-extrabold leading-[1.15] tracking-[-0.03em] text-[#073F25]">{c.name}</h3>
@@ -1015,25 +991,147 @@ function EveryModule() {
         <Head
           kicker="Efficiency in every module"
           title="Hours of manual work, gone"
-          sub="Nothing new to learn. Just the slow, manual parts of every module turned into minutes, on the One AI engine underneath."
+          sub="The slow, manual parts of every module, turned into minutes. Pay only for what you use."
         />
 
-        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+        <div className="mx-auto mt-10 grid max-w-[1080px] gap-4 md:grid-cols-2 lg:grid-cols-3">
           {CREW.map((c) => (
             <CrewCard key={c.name} c={c} />
           ))}
         </div>
 
-        {/* deck slide 14's closing bar */}
-        <div className="mt-4 flex flex-col items-center justify-center gap-2 rounded-[20px] bg-[#073F25] px-6 py-4 text-center text-white sm:flex-row sm:gap-3">
-          <Spark size={20} width={1.3} />
-          <p className="text-[16.5px] font-medium">
-            One AI engine underneath it all: intelligent, secure, and built for scale. <span className="text-[#6EE7A8]">Pay only for what you use.</span>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────────────── Facial Kiosk and AI Interviewer, one section each ─────────────────────────
+   Content: deck slides "HROne Add-On · Facial Kiosk" and the AI Interviewer deck (bottleneck,
+   evidence, report, outcome). Split layout: the story and a CTA on one side, the product on
+   the other, on the module cards' mint ground. */
+
+type Point = { title: string; line: string };
+
+function Points({ items }: { items: Point[] }) {
+  return (
+    <ul className="mt-7 space-y-4">
+      {items.map((p) => (
+        <li key={p.title} className="flex gap-3.5">
+          <i className="mt-[3px] block h-[22px] w-[22px] shrink-0 rounded-full bg-[#0B5C35] p-[5.5px] text-[#6EE7A8]">
+            <TickSvg />
+          </i>
+          <div>
+            <h3 className="text-[17px] font-bold leading-[1.3] text-[#0e1a14]">{p.title}</h3>
+            <p className="mt-1 text-[15.5px] leading-[1.5] text-[#5f6b65]">{p.line}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Feature({
+  id, eyebrow, icon, title, sub, points, ctas, visual, flip = false, tint = "bg-white",
+}: {
+  id: string; eyebrow: string; icon: ReactNode; title: ReactNode; sub: ReactNode; points: Point[];
+  ctas: ReactNode; visual: ReactNode; flip?: boolean; tint?: string;
+}) {
+  return (
+    <section id={id} aria-labelledby={`${id}-title`} className={`scroll-mt-28 px-6 py-[88px] ${tint}`}>
+      <div className="mx-auto grid max-w-[1120px] items-stretch gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
+        <div className={`flex flex-col justify-center py-2 ${flip ? "lg:order-2" : ""}`}>
+          <p className="inline-flex items-center gap-2.5 text-[15px] font-bold text-[#0B5C35]">
+            <span className="grid h-8 w-8 place-items-center rounded-[10px] bg-[#0B5C35]">{icon}</span>
+            {eyebrow}
           </p>
+          <h2 id={`${id}-title`} className="mt-4 text-balance text-[clamp(30px,3.0556vw,44px)] font-bold leading-[1.1] tracking-[-0.02em] text-[#0e1a14]">
+            {title}
+          </h2>
+          <p className="mt-3.5 max-w-[500px] text-[18px] leading-[1.5] text-[#5f6b65]">{sub}</p>
+          <Points items={points} />
+          <div className="mt-8 flex flex-wrap items-center gap-3">{ctas}</div>
+        </div>
+        <div className={`relative flex min-h-[380px] items-center justify-center overflow-hidden rounded-[24px] border border-[#E1EEE7] bg-[#EEF7F1] px-6 py-12 sm:min-h-[480px] lg:h-full ${flip ? "lg:order-1" : ""}`}>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_70%_70%_at_50%_50%,black_10%,transparent_100%)]"
+            style={{ backgroundImage: "radial-gradient(rgba(11,92,53,.14) 1px, transparent 1px)", backgroundSize: "22px 22px" }}
+          />
+          <div className="relative">{visual}</div>
         </div>
       </div>
     </section>
   );
+}
+
+function Kiosk() {
+  return (
+    <Feature
+      id="facial-kiosk"
+      eyebrow="Facial Kiosk"
+      icon={<img loading="lazy" decoding="async" src="/one-ai/kiosk-icon.png" alt="" className="h-[19px] w-auto" />}
+      title={<>Look up. You&apos;re checked in.</>}
+      sub="Face attendance at the entrance that lands in HROne the moment it happens."
+      points={[
+        { title: "Touchless, in seconds", line: "No cards, no fingerprints, no queue at shift change." },
+        { title: "Real faces only", line: "It detects a live face, so a photo won't pass. Buddy punching and proxy attendance stop." },
+        { title: "Live in HROne", line: "Every punch reaches attendance in real time, mapped to the right employee. No device exports." },
+      ]}
+      ctas={<Cta>Book a demo</Cta>}
+      visual={
+        <div className="origin-center scale-[1.2] sm:scale-[1.5]">
+          <KioskTablet />
+        </div>
+      }
+    />
+  );
+}
+
+function Interviewer() {
+  return (
+    <Feature
+      id="ai-interviewer"
+      eyebrow="AI Interviewer"
+      icon={<img loading="lazy" decoding="async" src="/one-ai/ai-interviewer-icon.svg" alt="" className="h-[16px] w-[16px]" />}
+      title="First rounds run themselves"
+      sub="Every candidate interviewed in parallel, by voice, any time of day. Your recruiters only meet the best."
+      points={[
+        { title: "200 screened before your day begins", line: "AI-led interviews in bulk, no scheduling or inbox chasing." },
+        { title: "A scored report for every interview", line: "Each response scored against your rubric, with the reasoning behind it." },
+        { title: "Nothing taken on trust", line: "Full transcript, recording and proctoring sit under every score." },
+      ]}
+      ctas={
+        <>
+          <Cta href="https://interview.hrone.cloud/">Try it free</Cta>
+          <span className="text-[15px] text-[#5f6b65]">From ₹99 per interview</span>
+        </>
+      }
+      flip
+      visual={
+        <div className="relative origin-center scale-[1.2] sm:scale-[1.65]">
+          <InterviewWindow />
+          {/* the report that comes back: deck slide "The report" */}
+          <div className="absolute -bottom-7 -left-6 flex items-center gap-2.5 rounded-[12px] bg-white px-3 py-2 shadow-[0_14px_30px_-12px_rgba(7,63,37,.35)] ring-1 ring-[#E1EEE7]">
+            <b className="text-[18px] font-extrabold leading-none tracking-[-0.02em] text-[#073F25]">
+              8.4<span className="text-[10px] font-semibold text-[#737373]">/10</span>
+            </b>
+            <span className="leading-[1.25]">
+              <span className="block text-[8.5px] text-[#737373]">Recommendation</span>
+              <span className="block text-[10.5px] font-bold text-[#0B5C35]">Hire</span>
+            </span>
+          </div>
+        </div>
+      }
+    />
+  );
+}
+
+/* ───────────────────────── recognition ─────────────────────────
+   The payroll outsourcing landing page's "Recognition" band (G2 badges, G2 / Gartner scores,
+   the #1 list), copied as-is: awards.html + awards.css, scoped under .oap-awards. */
+function Awards() {
+  /* awards.html is our own static copy of the landing page's markup, not user input */
+  return <div className="oap-awards" dangerouslySetInnerHTML={{ __html: awardsHtml }} />;
 }
 
 /* ───────────────────────── comparison ───────────────────────── */
@@ -1198,7 +1296,7 @@ function Closing() {
 
 export default function OneAiPage() {
   useEffect(() => {
-    document.title = "One AI";
+    document.title = "One AI: AI HR Software That Gets HR Done | HROne";
     let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (!meta) {
       meta = document.createElement("meta");
@@ -1206,7 +1304,7 @@ export default function OneAiPage() {
       document.head.appendChild(meta);
     }
     meta.content =
-      "One AI by HROne: three HR AI agents (Analytics, Employee and Policy) that do HR tasks by text or voice on web, mobile, WhatsApp and Teams. Plus AI Interviewer at ₹99 per interview.";
+      "One AI is HROne's AI HR software: agents that apply leave, answer policy questions and build reports by text or voice, on web, mobile, WhatsApp and Teams.";
   }, []);
 
   return (
@@ -1251,6 +1349,9 @@ export default function OneAiPage() {
         <Hero />
         <Agents />
         <EveryModule />
+        <Kiosk />
+        <Interviewer />
+        <Awards />
         <Compare />
         <Different />
         <Legacy />
