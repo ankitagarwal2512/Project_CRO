@@ -180,14 +180,16 @@ const STAGE_STATS: { icon: keyof typeof DOT_ICONS; to: number; suf: string; dec:
 ];
 
 function useDoto() {
-  /* load the display face once, only on this page */
+  /* main.tsx already requests this font for /one-ai before the page code arrives; this is
+     the fallback for any other route that renders the page. Same id, so it never loads twice.
+     Only the one instance used (round dots, weight 900), not the whole variable font. */
   useEffect(() => {
-    const id = "doto-font";
+    const id = "route-font";
     if (document.getElementById(id)) return;
     const l = document.createElement("link");
     l.id = id;
     l.rel = "stylesheet";
-    l.href = "https://fonts.googleapis.com/css2?family=Doto:ROND,wght@0..100,100..900&display=swap";
+    l.href = "https://fonts.googleapis.com/css2?family=Doto:ROND,wght@100,900&display=swap";
     document.head.appendChild(l);
   }, []);
 }
@@ -332,7 +334,7 @@ function DuneStage() {
       coral: [233, 120, 92] as RGB, // warm band at the horizon, the reference's sunset in our coral
       core: [3, 24, 16] as RGB, // the mound's dark heart
       rim: [46, 112, 82] as RGB, // the mound's lit shoulder
-      face: [78, 162, 122] as RGB, // the front dune's lit face
+      face: [112, 196, 154] as RGB, // the front dune's lit face
       floor: [1, 16, 11] as RGB, // the ground under the stats
     };
     const ssm = (e0: number, e1: number, x: number) => {
@@ -492,8 +494,7 @@ function Hero() {
         </nav>
 
         <div className="flex flex-1 flex-col items-center justify-center py-8 text-center sm:py-12">
-          {/* trust row: one glass pill. The One AI tag names the product, three real faces
-              stack tight (rings cut them out of the pill), the line carries the proof. */}
+          {/* trust row: one glass pill. The One AI tag names the product, the line carries the proof. */}
           <div
             className="stg-anim group mb-8 inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-white/[.07] py-1 pl-1 pr-3 sm:gap-3 sm:py-[5px] sm:pl-[5px] sm:pr-4 shadow-[inset_0_1px_0_rgba(255,255,255,.12),0_10px_30px_-12px_rgba(0,0,0,.5)] backdrop-blur-md"
             style={{ ["--d" as string]: "0.05s" }}
@@ -501,24 +502,6 @@ function Hero() {
             <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-[rgba(110,231,168,.35)] bg-[#032c20] py-[5px] pl-2 pr-2.5 text-[12px] font-semibold text-white sm:text-[12.5px]">
               <Spark size={14} width={1.4} />
               One AI
-            </span>
-            <span className="flex shrink-0 -space-x-2 group-hover:-space-x-1">
-              {/* the three photos are framed differently; each gets its own crop so every face
-                  fills the circle at the same size, eyes at the same height */}
-              {[
-                { src: AVA_HR, pos: "50% 50%", zoom: 1.05, y: "0%" },
-                { src: "/one-ai/face-cam-1.jpg", pos: "50% 30%", zoom: 1.32, y: "4%" },
-                { src: AVA_EMP, pos: "50% 50%", zoom: 1.12, y: "5%" },
-              ].map((a, i) => (
-                <span key={a.src} className="relative h-7 w-7 overflow-hidden rounded-full ring-2 ring-[#0d4230] transition-[margin] duration-300" style={{ zIndex: 3 - i }}>
-                  <img
-                    src={a.src}
-                    alt=""
-                    className="h-full w-full object-cover"
-                    style={{ objectPosition: a.pos, transform: `translateY(${a.y}) scale(${a.zoom})` }}
-                  />
-                </span>
-              ))}
             </span>
             <span className="whitespace-nowrap text-[12px] text-white/80 sm:text-[13.5px]">
               Trusted by <b className="font-semibold text-white">2,500+</b> companies
@@ -668,7 +651,7 @@ function ResumeViz() {
     <Stack>
       <div className="p-4">
         <div className="flex items-center gap-2.5 border-b border-[#E4E6E9] pb-3">
-          <img src={AVA_EMP} alt="" className="h-[34px] w-[34px] rounded-full bg-[#E6F4ED] object-cover" />
+          <img loading="lazy" decoding="async" src={AVA_EMP} alt="" className="h-[34px] w-[34px] rounded-full bg-[#E6F4ED] object-cover" />
           <span className="min-w-0 flex-1 leading-[1.3]">
             <b className="block text-[13.5px] text-[#0F1117]">Meera R.</b>
             <small className="text-[10.5px] text-[#72767E]">resume.pdf</small>
@@ -700,12 +683,15 @@ function RelevancyViz() {
         </div>
         <div className="mt-3 space-y-2">
           {[
-            [AVA_EMP, "Meera R.", 92, true],
-            [AVA_HR, "Anant A.", 84, false],
-            [AVA_EMP, "Ritu N.", 61, false],
-          ].map(([src, n, v, top]) => (
+            /* three different people; Meera matches the Resume Parser card */
+            [AVA_EMP, "Meera R.", 92, true, 1],
+            ["/one-ai/people/man-brown.jpg", "Anant A.", 84, false, 1.35],
+            ["/one-ai/people/man-circle.png", "Rohit N.", 61, false, 1.14],
+          ].map(([src, n, v, top, zoom]) => (
             <div key={n as string} className={`flex items-center gap-2.5 rounded-[9px] px-2.5 py-2 ${top ? "bg-[#6EE7A8]" : "bg-[#F4F7F5]"}`}>
-              <img src={src as string} alt="" className="h-6 w-6 rounded-full object-cover" />
+              <span className="h-6 w-6 shrink-0 overflow-hidden rounded-full">
+                <img loading="lazy" decoding="async" src={src as string} alt="" className="h-full w-full object-cover" style={{ objectPosition: "50% 25%", transform: `scale(${zoom})` }} />
+              </span>
               <span className={`flex-1 text-[11.5px] font-semibold ${top ? "text-[#073F25]" : "text-[#3D4046]"}`}>{n}</span>
               <b className={`text-[12px] tabular-nums ${top ? "text-[#073F25]" : "text-[#0B5C35]"}`}>{v}%</b>
             </div>
@@ -826,7 +812,7 @@ function KioskTablet() {
       <div className="relative h-[250px] w-[178px] overflow-hidden rounded-[14px] border border-[#cfe2d6] bg-white shadow-[0_6px_16px_rgba(0,0,0,.08)]">
         <span className="absolute left-1/2 top-[10px] h-[7px] w-[7px] -translate-x-1/2 rounded-full bg-[#1d2b25] shadow-[0_0_0_3px_#eef3f0]" />
         <div className="absolute inset-x-2 bottom-2 top-[26px] overflow-hidden rounded-[6px] bg-[#cfe3ea]">
-          <img src="/one-ai/face-cam-1.jpg" alt="" className="h-full w-full object-cover" style={{ objectPosition: "center 30%" }} />
+          <img loading="lazy" decoding="async" src="/one-ai/face-cam-1.jpg" alt="" className="h-full w-full object-cover" style={{ objectPosition: "center 30%" }} />
           <div className="absolute left-1/2 top-[40%] h-[108px] w-[92px] -translate-x-1/2 -translate-y-1/2 overflow-hidden">
             <i className={`${corner} left-0 top-0 rounded-tl-[9px] border-b-0 border-r-0`} />
             <i className={`${corner} right-0 top-0 rounded-tr-[9px] border-b-0 border-l-0`} />
@@ -864,10 +850,11 @@ function InterviewWindow() {
         <i className="block h-2 w-2 rounded-full bg-[#61c554]" />
       </div>
       <div className="relative mx-1.5 mb-1.5 h-[176px] overflow-hidden rounded-[6px] bg-[linear-gradient(165deg,#1E3528_0%,#0D1A14_100%)]">
-        <video muted playsInline preload="auto" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover" src="/one-ai/interview-demo.mp4#t=1.5" />
+        {/* the card is static, so a 36 KB still of the interview replaces the 1.6 MB video */}
+        <img src="/one-ai/interview-still.jpg" alt="" loading="lazy" decoding="async" className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
         <div className="absolute right-1.5 top-1.5 w-[100px] rounded-[8px] bg-white p-1.5 shadow-[0_8px_20px_-8px_rgba(0,0,0,.35)]">
           <div className="mb-1.5 flex items-center gap-1">
-            <img src="/one-ai/logo-icon.svg" alt="" className="h-[11px] w-[11px] rounded-[2px]" />
+            <img loading="lazy" decoding="async" src="/one-ai/logo-icon.svg" alt="" className="h-[11px] w-[11px] rounded-[2px]" />
             <span className="text-[8.5px] font-semibold text-[#171717]">AI Interviewer</span>
           </div>
           <p className="rounded-[5px] bg-[#f1f1f1] px-1.5 py-1 text-[8px] leading-[1.35] text-[#404040]">Can you walk me through a time you handled a difficult customer?</p>
@@ -918,7 +905,7 @@ const CREW: Crew[] = [
     wide: true,
     round: true,
     scale: 0.78,
-    icon: <img src="/one-ai/kiosk-icon.png" alt="" className="h-[26px] w-auto" />,
+    icon: <img loading="lazy" decoding="async" src="/one-ai/kiosk-icon.png" alt="" className="h-[26px] w-auto" />,
     attrs: ["No proxy attendance", "Facial, multilingual", "Instant support", "Always available"],
     action: (
       <a href="#" className="group inline-flex items-center gap-1.5 text-[14px] font-bold text-[#0B5C35]">
@@ -933,7 +920,7 @@ const CREW: Crew[] = [
     dark: false,
     wide: true,
     scale: 1,
-    icon: <img src="/one-ai/ai-interviewer-icon.svg" alt="" className="h-[20px] w-[20px]" />,
+    icon: <img loading="lazy" decoding="async" src="/one-ai/ai-interviewer-icon.svg" alt="" className="h-[20px] w-[20px]" />,
     attrs: ["AI-led interviews", "Voice analysis", "Bias free", "Score & insights"],
     action: (
       <a href={`${AII_URL}/signup`} className="group inline-flex items-center gap-1.5 text-[14px] font-bold text-[#0B5C35]">

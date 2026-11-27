@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
-import AppOriginal from './AppOriginal'
-import V1 from './variants/v1/App'
-import V2 from './variants/v2/App'
-import V3 from './variants/v3/App'
-import V4 from './variants/v4/App'
-import V5 from './variants/v5/App'
-import V6 from './variants/v6/App'
-import V7 from './variants/v7/App'
-import SalaryCalculator from './pages/salary-calculator/App'
-import OneAi from './pages/one-ai/AppStage'
 import './index.css'
+
+/* Every route is its own chunk: a visitor to one page downloads only that page's code,
+   not all seven homepage variants and every inner page. */
+const App = lazy(() => import('./App'))
+const AppOriginal = lazy(() => import('./AppOriginal'))
+const V1 = lazy(() => import('./variants/v1/App'))
+const V2 = lazy(() => import('./variants/v2/App'))
+const V3 = lazy(() => import('./variants/v3/App'))
+const V4 = lazy(() => import('./variants/v4/App'))
+const V5 = lazy(() => import('./variants/v5/App'))
+const V6 = lazy(() => import('./variants/v6/App'))
+const V7 = lazy(() => import('./variants/v7/App'))
+const SalaryCalculator = lazy(() => import('./pages/salary-calculator/App'))
+const OneAi = lazy(() => import('./pages/one-ai/AppStage'))
 
 /* Each entry under src/variants/ is a FULL, independent copy of the page — its own
    App, Chrome, ProductShowcase and Trust — so edits to one variation cannot leak into
@@ -92,9 +95,26 @@ const route = (window.location.pathname.replace(/^\/|\/$/g, '') ||
    page "/" used to serve is still built and still reachable at "/current". */
 const Page = variants[route] ?? V1
 
+/* Pages that use an extra web font ask for it now, in parallel with their code chunk,
+   rather than after the page has rendered. */
+const ROUTE_FONTS: Record<string, string> = {
+  /* Doto, the One AI headline's dot-matrix face: only the one instance the page uses */
+  'one-ai': 'https://fonts.googleapis.com/css2?family=Doto:ROND,wght@100,900&display=swap',
+}
+const routeFont = ROUTE_FONTS[route]
+if (routeFont && !document.getElementById('route-font')) {
+  const l = document.createElement('link')
+  l.id = 'route-font'
+  l.rel = 'stylesheet'
+  l.href = routeFont
+  document.head.appendChild(l)
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Page />
+    <Suspense fallback={null}>
+      <Page />
+    </Suspense>
   </React.StrictMode>,
 )
 

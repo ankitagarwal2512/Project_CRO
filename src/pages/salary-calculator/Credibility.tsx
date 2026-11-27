@@ -57,9 +57,11 @@ export default function Credibility() {
         <Rating mark={<G2Mark />} score="4.9" source="G2 · 2,100+ reviews" />
       </div>
       <div className="-mx-1 flex items-center gap-4 overflow-x-auto px-1">
-        <img src={gartnerBadge} alt="Gartner Peer Insights Customers' Choice 2025" className="h-[64px] w-auto shrink-0" />
+        <img src={gartnerBadge} alt="Gartner Peer Insights Customers' Choice 2025" loading="lazy" decoding="async" className="h-[64px] w-auto shrink-0" />
         <span aria-hidden className="h-10 w-px shrink-0 bg-[var(--border)]" />
         <img
+          loading="lazy"
+          decoding="async"
           src={g2Badges}
           alt="G2 Best Software 2026: Top 5 India, Top 20 APAC, Top 50 HR Products, Top 100 Highest Satisfaction Products, Top 100 Fastest Growing"
           className="h-[64px] w-auto shrink-0"
