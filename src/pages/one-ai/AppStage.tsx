@@ -1198,7 +1198,7 @@ function Closing() {
 
 export default function OneAiPage() {
   useEffect(() => {
-    document.title = "One AI: HR AI Agents That Get HR Done | HROne";
+    document.title = "One AI";
     let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (!meta) {
       meta = document.createElement("meta");
