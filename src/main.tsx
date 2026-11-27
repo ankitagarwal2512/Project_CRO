@@ -10,6 +10,7 @@ import V5 from './variants/v5/App'
 import V6 from './variants/v6/App'
 import V7 from './variants/v7/App'
 import SalaryCalculator from './pages/salary-calculator/App'
+import OneAi from './pages/one-ai/AppStage'
 import './index.css'
 
 /* Each entry under src/variants/ is a FULL, independent copy of the page — its own
@@ -46,6 +47,7 @@ import './index.css'
    "/v6"        or "/#v6"        – variation 6 (started as a copy of v5)
    "/v7"        or "/#v7"        – variation 7 (started as a copy of v6)
    "/salary-calculator"         – the redesigned salary calculator inner page
+   "/one-ai"                    – HROne AI agents product page (replaces the live One AI page)
    "/original"  or "/#original"  – the earlier proportions, kept for comparison
 
    The paths only resolve on a host that falls back to index.html for unknown
@@ -79,6 +81,8 @@ const variants: Record<string, React.ComponentType> = {
   v7: V7,
   /* inner page redesign — hrone.cloud/tools/salary-calculator */
   'salary-calculator': SalaryCalculator,
+  /* HROne AI product page, no separate One AI identity: docs/one-ai-page-content.md */
+  'one-ai': OneAi,
 }
 
 const route = (window.location.pathname.replace(/^\/|\/$/g, '') ||

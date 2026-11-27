@@ -13,6 +13,7 @@
     { "source": "/option-d", "destination": "/index.html" },
     { "source": "/v6", "destination": "/index.html" },
     { "source": "/v7", "destination": "/index.html" },
-    { "source": "/salary-calculator", "destination": "/index.html" }
+    { "source": "/salary-calculator", "destination": "/index.html" },
+    { "source": "/one-ai", "destination": "/index.html" }
   ]
 }

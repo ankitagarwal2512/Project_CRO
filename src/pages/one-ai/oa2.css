@@ -1,0 +1,222 @@
+/* Copied verbatim from Option D's One AI section (public/legacy/hrone-home/index.html, .oa2).
+   Keep in step with it: this page's agent cards must look exactly like the homepage's. */
+.oa2{
+  --ink:#16201a;--t1:#171717;--t2:#404040;--t3:#737373;--t4:#8a8a8a;
+  --line:#e5e5e5;--line2:#eeeeee;--canvas:#f7f7f4;--chrome:#f4ecdb;
+  --brand:#02563d;--soft:#e5f0e8;--soft2:#f1f7f3;--deep:#0b4a2e;--mint:#cfe2d4;
+  background:#f0f5f2;padding:88px 24px 80px;font-family:"Public Sans",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.oa2 *{box-sizing:border-box;margin:0;padding:0}
+.oa2-wrap{max-width:1200px;margin:0 auto}
+.oa2-head{text-align:center}
+.oa2-kicker{font-size:clamp(20px,1.95vw,28px);font-weight:400;line-height:1.2;letter-spacing:-.01em;color:var(--ink)}
+.oa2-title{margin-top:4px;font-size:min(3.0556vw,5.5vh);font-weight:700;line-height:1.1;letter-spacing:-.02em;color:#0e1a14}
+
+.oa2-grid{margin-top:48px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.oa2-card{position:relative;display:flex;flex-direction:column;overflow:hidden;background:#fff;border:1px solid #dfe8e2;border-radius:14px;padding:30px 30px 0;box-shadow:0 1px 2px rgba(11,74,46,.04)}
+.oa2-card h3{font-size:27px;font-weight:700;line-height:1.15;letter-spacing:-.015em;color:#10231b}
+.oa2-card p.oa2-desc{margin-top:8px;font-size:18px;font-weight:400;line-height:1.4;color:#5f6b65;max-width:330px}
+.oa2-visual{position:relative;margin-top:26px;height:300px}
+
+/* shared app surfaces — same as the hero mock */
+.oa2-win{position:absolute;inset:0 0 28px 0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 18px 40px -28px rgba(11,74,46,.28)}
+.oa2-chrome{height:26px;flex-shrink:0;background:var(--chrome);display:flex;align-items:center;gap:6px;padding:0 12px}
+.oa2-chrome i{width:9px;height:9px;border-radius:50%;display:block}
+.oa2-chrome i:nth-child(1){background:#ec6a5f}.oa2-chrome i:nth-child(2){background:#f5bf4f}.oa2-chrome i:nth-child(3){background:#61c554}
+.oa2-body{flex:1;min-height:0;background:var(--canvas);padding:12px;display:flex;flex-direction:column;gap:10px}
+.oa2-field{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--t2)}
+.oa2-field span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oa2-panel{flex:1;min-height:0;background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.oa2-panel-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.oa2-panel-h b{font-size:11.5px;font-weight:700;color:var(--t1)}
+.oa2-panel-h em{font-style:normal;font-size:10.5px;font-weight:700;color:var(--brand);white-space:nowrap}
+.oa2-bars{flex:1;display:flex;align-items:flex-end;justify-content:space-around;gap:10px;padding:12px 4px 0;border-bottom:1px solid var(--line)}
+.oa2-bars i{display:block;flex:1;max-width:30px;border-radius:3px 3px 0 0;background:#9fcdb2;transform-origin:bottom center}
+.oa2-bars i.hi{background:var(--brand)}
+.oa2-axis{display:flex;justify-content:space-around;gap:10px;padding:6px 4px 0}
+.oa2-axis span{flex:1;max-width:30px;text-align:center;font-size:8.5px;color:var(--t4);white-space:nowrap;display:flex;justify-content:center}
+
+/* employee — phone in the hero's light bezel, cropped by the card's bottom edge */
+.oa2-phone{position:absolute;left:50%;top:0;width:262px;height:330px;margin-left:-131px;border-radius:36px;padding:7px;border:1px solid #cfe2d4;background:linear-gradient(150deg,#f1f7f3,#dfece4 55%,#ebf3ee);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 14px 32px -20px rgba(11,74,46,.22),0 3px 8px -6px rgba(11,74,46,.12)}
+.oa2-screen{position:relative;height:100%;border-radius:29px;background:#fff;overflow:hidden;box-shadow:0 0 0 1px rgba(20,40,25,.12)}
+.oa2-notch{position:absolute;left:50%;top:7px;width:40px;height:16px;margin-left:-20px;border-radius:99px;background:rgba(22,32,26,.7)}
+.oa2-status{height:30px;display:flex;align-items:center;justify-content:space-between;padding:4px 18px 0;color:rgba(22,32,26,.7)}
+.oa2-status b{font-size:10px;font-weight:600}
+.oa2-help{padding:10px 16px 12px;display:flex;align-items:center;justify-content:space-between}
+.oa2-help b{font-size:16px;font-weight:700;color:var(--t1);letter-spacing:-.01em}
+.oa2-tasks{padding:0 14px;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.oa2-task{background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 9px;display:flex;align-items:center;gap:7px}
+.oa2-task span{font-size:10.5px;font-weight:500;color:var(--t2)}
+.oa2-more{margin:7px 14px 0;border:1px dashed var(--line);border-radius:8px;padding:5px 10px;text-align:center;font-size:10px;font-weight:500;color:var(--t3)}
+
+/* proof strip — the hero's "verified" footer: soft green, deep green text */
+.oa2-strip{position:absolute;left:0;right:0;bottom:22px;height:44px;border-radius:10px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--soft);border:1px solid var(--mint);color:var(--deep)}
+.oa2-strip svg{flex-shrink:0}
+.oa2-strip p{font-size:14.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oa2-strip strong{font-weight:700}
+.oa2-phone + .oa2-strip{left:14px;right:14px;box-shadow:0 10px 24px -14px rgba(11,74,46,.35)}
+
+/* policy — light chat, hero bubble colours */
+.oa2-chat{position:absolute;left:0;right:0;top:0;height:182px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 18px 40px -28px rgba(11,74,46,.28)}
+.oa2-chat-h{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--line2);font-size:12px;font-weight:700;color:var(--t1)}
+.oa2-chat-b{flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:9px;background:#fff}
+.oa2-me{align-self:flex-end;max-width:78%;background:#eceff0;color:var(--ink);border-radius:10px 10px 3px 10px;padding:7px 10px;font-size:11px;line-height:1.35}
+.oa2-ai{display:flex;align-items:flex-start;gap:8px}
+.oa2-ai-dot{flex-shrink:0;width:20px;height:20px;border-radius:50%;background:var(--brand);display:grid;place-items:center}
+.oa2-ai-b{flex:1;min-width:0;background:var(--soft);color:var(--ink);border-radius:10px 10px 10px 3px;padding:8px 10px;font-size:11px;line-height:1.4}
+.oa2-src{margin-top:6px;display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--mint);border-radius:7px;padding:5px 8px;font-size:10px;font-weight:600;color:var(--brand)}
+.oa2-src span{flex:1}
+
+/* more from One AI + CTA */
+.oa2-foot{margin:52px auto 0;max-width:1030px;border-top:1px solid #d3e0d8;padding-top:26px;display:flex;flex-direction:column;align-items:center;gap:22px}
+.oa2-more-row{display:flex;align-items:center;gap:26px;font-size:18px}
+.oa2-more-row > span{color:#6c6d62}
+.oa2-prod{display:flex;align-items:center;gap:12px;color:var(--brand);font-weight:500}
+.oa2-prod + .oa2-prod{border-left:1px solid #cfdcd4;padding-left:26px}
+.oa2-cta{display:inline-flex;align-items:center;gap:10px;background:#e9614a;color:#fff !important;text-decoration:none !important;font-size:17px;font-weight:600;letter-spacing:-.005em;padding:13px 26px;border-radius:6px;box-shadow:0 10px 24px -10px rgba(233,97,74,.55);transition:background .2s,box-shadow .2s}
+.oa2-cta:hover{background:#d9553e;box-shadow:0 14px 28px -10px rgba(233,97,74,.6)}
+.oa2-cta svg{transition:transform .2s}
+.oa2-cta:hover svg{transform:translateX(3px)}
+
+/* One AI app icon above the heading — the nav sparkle on a dark-green squircle, with
+   ripples that leave its edge and fade. Restrained on purpose: one slow pulse, no spin. */
+.oa2-badge{position:relative;width:72px;height:72px;margin:0 auto 34px;display:grid;place-items:center}
+.oa2-halo{position:absolute;left:50%;top:50%;width:140px;height:140px;margin:-70px 0 0 -70px;border-radius:38px;background:radial-gradient(closest-side,rgba(2,86,61,.09),rgba(2,86,61,.03) 65%,transparent)}
+/* rings are circles from the first frame and start hidden behind the tile, so they
+   appear to leave its edge rather than pop in around it */
+.oa2-ring{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:20px;border:1px solid rgba(2,86,61,.4);background:radial-gradient(closest-side,rgba(2,86,61,.02) 55%,rgba(2,86,61,.08));opacity:0;transform:scale(1);animation:oa2Ripple 4.2s cubic-bezier(.22,.61,.36,1) infinite}
+.oa2-ring:nth-child(3){animation-delay:1.4s}
+.oa2-ring:nth-child(4){animation-delay:2.8s}
+.oa2-app{position:relative;z-index:1;width:72px;height:72px;border-radius:20px;display:grid;place-items:center;
+  background:linear-gradient(160deg,#0f5b40 0%,#063f2d 55%,#032c20 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 0 0 1px rgba(2,60,42,.35),0 10px 24px -12px rgba(1,36,26,.5),0 2px 6px -2px rgba(1,36,26,.25);
+  animation:oa2Float 6s ease-in-out infinite}
+.oa2-app svg{width:34px;height:34px;animation:oa2Glint 6s ease-in-out infinite}
+@keyframes oa2Ripple{0%{transform:scale(1);opacity:0}12%{opacity:1}100%{transform:scale(2.1);opacity:0}}
+@keyframes oa2Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes oa2Glint{0%,100%{filter:drop-shadow(0 0 4px rgba(217,219,74,.18))}50%{filter:drop-shadow(0 0 9px rgba(217,219,74,.38))}}
+@media (prefers-reduced-motion:reduce){.oa2-ring,.oa2-app,.oa2-app svg{animation:none}}
+
+/* Employee Agent phone — one voice request carried through to a finished task */
+.oa2e-head{display:flex;align-items:center;gap:7px;padding:3px 14px 8px;border-bottom:1px solid var(--line2)}
+.oa2e-head b{font-size:12.5px;font-weight:700;color:var(--t1);letter-spacing:-.01em}
+.oa2e-tag{margin-left:auto;font-size:9px;font-weight:600;color:var(--deep);background:var(--soft);border-radius:99px;padding:2px 7px}
+.oa2e-av{width:22px;height:22px;border-radius:7px;flex-shrink:0;display:grid;place-items:center;background:linear-gradient(160deg,#0f5b40,#032c20);box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+.oa2e-av--sm{width:20px;height:20px;border-radius:6px;margin-top:2px}
+.oa2e-thread{padding:10px 12px 0;display:flex;flex-direction:column}
+.oa2e-voice{align-self:flex-end;display:flex;align-items:center;gap:8px;background:#eceff0;border-radius:14px 14px 4px 14px;padding:6px 10px 6px 6px}
+.oa2e-mic{width:22px;height:22px;border-radius:50%;background:var(--brand);display:grid;place-items:center;flex-shrink:0}
+.oa2e-wave{display:flex;align-items:center;gap:2px;height:18px}
+.oa2e-wave i{display:block;width:2.5px;height:calc(var(--h)*18px);border-radius:2px;background:#5f6b65;transform-origin:center}
+.oa2.is-in .oa2e-wave i{animation:oa2Speak .5s var(--b) ease-in-out 4 alternate}
+@keyframes oa2Speak{from{transform:scaleY(1)}to{transform:scaleY(.35)}}
+.oa2e-time{font-size:9.5px;font-weight:600;color:var(--t3);font-variant-numeric:tabular-nums}
+.oa2e-said{align-self:flex-end;margin-top:5px;font-size:9.5px;font-style:italic;color:var(--t4)}
+.oa2e-reply{margin-top:8px;display:flex;align-items:flex-start;gap:7px}
+.oa2e-done{flex:1;min-width:0;background:#fff;border:1px solid var(--mint);border-radius:4px 12px 12px 12px;overflow:hidden;box-shadow:0 8px 18px -14px rgba(11,74,46,.45)}
+.oa2e-done-h{display:flex;align-items:center;gap:6px;padding:7px 10px;background:var(--soft2);border-bottom:1px solid var(--mint);font-size:11px;font-weight:700;color:var(--deep)}
+.oa2e-tick{width:15px;height:15px;border-radius:50%;background:var(--brand);display:grid;place-items:center}
+.oa2.is-in .oa2e-tick{animation:oa2Pop .4s 1.65s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes oa2Pop{from{transform:scale(0)}to{transform:scale(1)}}
+.oa2e-done dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;padding:7px 10px 8px;font-size:10px;line-height:1.3}
+.oa2e-done dt{color:var(--t3)}
+.oa2e-done dd{color:var(--t1);font-weight:500;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (prefers-reduced-motion:reduce){.oa2e-wave i,.oa2e-tick{animation:none !important}}
+
+/* Employee Agent phone — the app's agent home screen */
+.oa2a{display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px 12px 0}
+.oa2a-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(160deg,#0f5b40 0%,#063f2d 55%,#032c20 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 0 0 1px rgba(2,60,42,.3),0 8px 16px -8px rgba(1,36,26,.5)}
+.oa2a-icon svg{width:21px;height:21px}
+.oa2a-title{margin-top:9px;font-size:14px;font-weight:700;letter-spacing:-.01em;color:var(--t1)}
+.oa2a-sub{margin-top:3px;max-width:180px;text-wrap:balance;font-size:9.5px;line-height:1.4;color:var(--t3)}
+.oa2a-field{margin-top:11px;width:100%;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 10px 7px 12px;box-shadow:0 4px 12px -6px rgba(11,74,46,.18)}
+.oa2a-field span{flex:1;text-align:left;font-size:10px;color:var(--t4)}
+.oa2a-chips{margin-top:10px;display:flex;flex-wrap:wrap;justify-content:center;gap:5px}
+.oa2a-chip{display:inline-flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line);border-radius:7px;padding:4px 7px;font-size:9px;font-weight:600;color:var(--t1);white-space:nowrap}
+.oa2a-chip svg{color:var(--t2);flex-shrink:0}
+
+/* Policy Agent — the app's chat view, trimmed to one exchange */
+.oa2p{position:absolute;inset:0 0 -1px 0;background:#fff;border:1px solid var(--line);border-bottom:0;border-radius:12px 12px 0 0;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 18px 40px -28px rgba(11,74,46,.28)}
+.oa2p-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line2)}
+.oa2p-bar b{font-size:12px;font-weight:700;color:var(--t1)}
+.oa2p-body{flex:1;min-height:0;padding:12px 14px 0;display:flex;flex-direction:column;gap:11px}
+.oa2p-q{display:flex;align-items:flex-start;justify-content:flex-end;gap:7px}
+.oa2p-q p{max-width:80%;background:#f3f4f6;border-radius:10px;padding:7px 10px;font-size:10px;line-height:1.4;color:var(--t1)}
+.oa2p-me{flex-shrink:0;width:20px;height:20px;border-radius:50%;overflow:hidden;background:var(--soft);box-shadow:0 0 0 1px rgba(20,40,25,.1)}
+.oa2p-me img{display:block;width:100%;height:100%;object-fit:cover}
+.oa2p-a{display:flex;align-items:flex-start;gap:8px}
+.oa2p-ai{flex-shrink:0;width:20px;height:20px;border-radius:6px;display:grid;place-items:center;background:linear-gradient(160deg,#0f5b40,#032c20);box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+.oa2p-ai svg{width:12px;height:12px}
+.oa2p-ans{flex:1;min-width:0;font-size:10px;line-height:1.45;color:var(--t1)}
+.oa2p-ans ul{margin-top:4px;list-style:none}
+.oa2p-ans li{position:relative;margin-top:3px;padding-left:10px;color:var(--t2)}
+.oa2p-ans li::before{content:"";position:absolute;left:1px;top:.6em;width:4px;height:4px;border-radius:50%;background:#c4c4c4}
+.oa2p-ans b{font-weight:700;color:var(--t1)}
+.oa2p-src{margin-top:8px;display:flex;flex-direction:column;gap:4px}
+.oa2p-src span{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:500;color:#0a8e5f;text-decoration:underline;text-underline-offset:2px}
+.oa2p-src svg{color:var(--t2)}
+.oa2p-fb{margin-top:6px;display:flex;gap:9px}
+/* Policy window: spread one exchange over the full height instead of leaving a gap */
+.oa2pol .oa2p-body{padding-top:16px;gap:16px}
+.oa2pol .oa2p-ans li{margin-top:5px}
+.oa2pol .oa2p-src{margin-top:12px;gap:7px}
+.oa2pol .oa2p-fb{margin-top:11px}
+.oa2pol .oa2p-input{margin-bottom:20px}
+.oa2p-input{margin:0 12px 16px;display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:7px 10px 7px 12px;box-shadow:0 4px 12px -6px rgba(11,74,46,.18)}
+.oa2p-input span{flex:1;font-size:10px;color:var(--t4)}
+
+/* Analytics Agent — research steps resolve, then the chart draws */
+.oa2an .oa2p-body{gap:10px}
+.oa2an-steps{position:relative;display:inline-grid;font-size:9px;font-weight:600}
+.oa2an-steps > span{grid-area:1/1;display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:3px 8px;white-space:nowrap}
+.oa2an-run{background:#f3f4f6;color:var(--t3)}
+.oa2an-ok{background:var(--soft);color:var(--deep);opacity:0}
+.oa2an-spin{width:8px;height:8px;border-radius:50%;border:1.5px solid rgba(2,86,61,.2);border-top-color:#02563d;animation:oa2Spin .7s linear infinite}
+@keyframes oa2Spin{to{transform:rotate(1turn)}}
+.oa2.is-in .oa2an-run{animation:oa2Out .25s 1.25s ease both}
+.oa2.is-in .oa2an-ok{animation:oa2InFade .25s 1.3s ease both}
+@keyframes oa2Out{to{opacity:0}}
+@keyframes oa2InFade{from{opacity:0}to{opacity:1}}
+.oa2an-chart{margin-top:7px;border:1px solid var(--line);border-radius:9px;padding:8px 9px 5px;background:#fff}
+.oa2an-h{display:flex;align-items:baseline;justify-content:space-between;gap:6px}
+.oa2an-h b{font-size:9.5px;font-weight:700;color:var(--t1)}
+.oa2an-h span{font-size:8.5px;font-weight:600;color:var(--brand);white-space:nowrap}
+.oa2an-svg{display:block;width:100%;height:auto;margin-top:5px;overflow:visible}
+.oa2an-line{stroke-dasharray:1;stroke-dashoffset:1}
+.oa2an-area,.oa2an-tip,.oa2an-chart,.oa2an-sum{opacity:0}
+.oa2an-dots circle{opacity:0}
+.oa2.is-in .oa2an-chart{animation:oa2InFade .35s 1.4s ease both}
+.oa2.is-in .oa2an-line{animation:oa2Draw 1.1s 1.5s cubic-bezier(.4,0,.2,1) both}
+.oa2.is-in .oa2an-area{animation:oa2InFade .6s 2.2s ease both}
+.oa2.is-in .oa2an-dots circle{animation:oa2InFade .25s var(--d) ease both}
+.oa2.is-in .oa2an-tip{animation:oa2Up .35s 2.5s ease both}
+.oa2.is-in .oa2an-sum{animation:oa2Up .4s 2.6s ease both}
+@keyframes oa2Draw{to{stroke-dashoffset:0}}
+.oa2an-sum{margin-top:7px;font-size:9.5px;line-height:1.4;color:var(--t2)}
+.oa2an-sum b{color:var(--t1);font-weight:700}
+@media (prefers-reduced-motion:reduce){
+  .oa2an-steps .oa2an-run{display:none}.oa2an-ok,.oa2an-area,.oa2an-tip,.oa2an-chart,.oa2an-sum,.oa2an-dots circle{opacity:1;animation:none !important}
+  .oa2an-line{stroke-dashoffset:0;animation:none !important}
+}
+
+@media (max-width:1100px){
+  .oa2-grid{grid-template-columns:minmax(0,480px);justify-content:center}
+}
+
+/* entrance — the pieces assemble once the section scrolls into view */
+@keyframes oa2Bar{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes oa2Up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes oa2Mic{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.88)}}
+.oa2 [data-a]{opacity:0}
+.oa2.is-in [data-a]{opacity:1;animation:oa2Up .45s var(--d,0s) ease both}
+.oa2 .oa2-bars i{transform:scaleY(0)}
+.oa2.is-in .oa2-bars i{animation:oa2Bar .6s var(--d,0s) ease-out both}
+.oa2.is-in .oa2-mic{animation:oa2Mic 1.6s 1.2s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){
+  .oa2 [data-a],.oa2 .oa2-bars i{opacity:1;transform:none;animation:none !important}
+}
+
+/* One AI page only: our deck descriptions run to three lines on some cards, so the grid
+   stretches the shorter ones. Let every visual fill to the card's foot, and keep the phone
+   30px taller than its box so it still runs off the bottom edge, as on the homepage. */
+.oap-agents .oa2-visual{flex:1 0 auto;min-height:300px}
+.oap-agents .oa2-phone{height:calc(100% + 30px)}
