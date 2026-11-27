@@ -646,86 +646,103 @@ const PhoneTick = () => (
   </i>
 );
 
+/* Card mocks, after Lattice's feature tiles: one clean white card, secondary text as grey
+   placeholder bars, and ONE highlighted element that says what the feature does at a glance.
+   Each card uses a different pattern so the grid never repeats itself. */
+
+const Bar = ({ w, className = "" }: { w: string; className?: string }) => (
+  <span className={`block h-[7px] rounded-full bg-[#ECEFED] ${className}`} style={{ width: w }} />
+);
+const MockCard = ({ children, className = "" }: { children: ReactNode; className?: string }) => (
+  <div className={`rounded-[18px] bg-white shadow-[0_1px_2px_rgba(7,63,37,.06),0_14px_34px_rgba(7,63,37,.12)] ${className}`}>{children}</div>
+);
+const Face = ({ src, size, zoom = 1, className = "" }: { src: string; size: number; zoom?: number; className?: string }) => (
+  <span className={`block shrink-0 overflow-hidden rounded-full ${className}`} style={{ width: size, height: size }}>
+    <img loading="lazy" decoding="async" src={src} alt="" className="h-full w-full object-cover" style={{ objectPosition: "50% 25%", transform: `scale(${zoom})` }} />
+  </span>
+);
+const FACE_B = "/one-ai/people/man-brown.jpg";
+const FACE_C = "/one-ai/people/man-circle.png";
+
+/* Resume Parser: a checklist of resumes, each turning into a profile, run by One AI */
 function ResumeViz() {
+  const rows: [boolean, string, number][] = [
+    [true, AVA_EMP, 1],
+    [true, FACE_B, 1.35],
+    [false, FACE_C, 1.14],
+  ];
   return (
-    <Stack>
-      <div className="p-4">
-        <div className="flex items-center gap-2.5 border-b border-[#E4E6E9] pb-3">
-          <img loading="lazy" decoding="async" src={AVA_EMP} alt="" className="h-[34px] w-[34px] rounded-full bg-[#E6F4ED] object-cover" />
-          <span className="min-w-0 flex-1 leading-[1.3]">
-            <b className="block text-[13.5px] text-[#0F1117]">Meera R.</b>
-            <small className="text-[10.5px] text-[#72767E]">resume.pdf</small>
+    <MockCard className="w-[270px] p-3.5">
+      {/* the agent bar leads: a switched-on toggle, like the reference's "AI Agent" row */}
+      <div className="flex items-center gap-2 rounded-full bg-[#F3F6F4] p-1 pr-3">
+        <span className="relative flex h-6 w-11 items-center rounded-full bg-[linear-gradient(90deg,#6EE7A8,#22A06B)] px-[3px]">
+          <span className="ml-auto grid h-[18px] w-[18px] place-items-center rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,.2)]">
+            <Spark size={11} width={1.6} />
           </span>
-          <Pill tone="mint">Parsed</Pill>
-        </div>
-        {[
-          ["Experience", "6 years"],
-          ["Skills", "Sales · CRM"],
-          ["Notice period", "30 days"],
-        ].map(([k, v]) => (
-          <div key={k} className="flex items-center justify-between border-b border-[#E4E6E9] py-[7px] text-[11.5px] last:border-0">
-            <span className="text-[#3D4046]">{k}</span>
-            <b className="text-[#0F1117]">{v}</b>
+        </span>
+        <span className="flex-1 text-[11.5px] font-semibold text-[#0F1117]">Parsed by One AI</span>
+        <span className="text-[10.5px] font-semibold tabular-nums text-[#0B5C35]">24/24</span>
+      </div>
+      <div className="mt-3 space-y-2 px-1">
+        {rows.map(([done, src, zoom], i) => (
+          <div key={i} className="flex items-center gap-2.5">
+            <i className={`grid h-4 w-4 shrink-0 place-items-center rounded-[5px] ${done ? "bg-[#22A06B] text-white" : "border-[1.5px] border-[#D5DCD8]"}`}>
+              {done && <span className="block h-2.5 w-2.5"><TickSvg /></span>}
+            </i>
+            <Bar w="100%" className="flex-1" />
+            <Face src={src} size={26} zoom={zoom} className="ring-2 ring-white shadow-[0_2px_6px_rgba(0,0,0,.12)]" />
           </div>
         ))}
       </div>
-    </Stack>
+    </MockCard>
   );
 }
 
+/* Relevancy Score: three applicants, the best fit lifted and lit */
 function RelevancyViz() {
   return (
-    <Stack>
-      <div className="p-4">
-        <div className="flex items-center justify-between">
-          <b className="text-[12px] text-[#0F1117]">Sales Manager</b>
-          <Pill>48 applicants</Pill>
+    <MockCard className="w-[270px] p-4">
+      <b className="block text-[13.5px] text-[#0F1117]">Best fit for Sales Manager</b>
+      <div className="mt-3 flex items-end justify-around rounded-[14px] bg-[#F5F8F6] px-3 pb-3 pt-4">
+        <div className="flex flex-col items-center gap-2">
+          <Face src={FACE_B} size={34} zoom={1.35} className="opacity-80" />
+          <Bar w="34px" />
         </div>
-        <div className="mt-3 space-y-2">
-          {[
-            /* three different people; Meera matches the Resume Parser card */
-            [AVA_EMP, "Meera R.", 92, true, 1],
-            ["/one-ai/people/man-brown.jpg", "Anant A.", 84, false, 1.35],
-            ["/one-ai/people/man-circle.png", "Rohit N.", 61, false, 1.14],
-          ].map(([src, n, v, top, zoom]) => (
-            <div key={n as string} className={`flex items-center gap-2.5 rounded-[9px] px-2.5 py-2 ${top ? "bg-[#6EE7A8]" : "bg-[#F4F7F5]"}`}>
-              <span className="h-6 w-6 shrink-0 overflow-hidden rounded-full">
-                <img loading="lazy" decoding="async" src={src as string} alt="" className="h-full w-full object-cover" style={{ objectPosition: "50% 25%", transform: `scale(${zoom})` }} />
-              </span>
-              <span className={`flex-1 text-[11.5px] font-semibold ${top ? "text-[#073F25]" : "text-[#3D4046]"}`}>{n}</span>
-              <b className={`text-[12px] tabular-nums ${top ? "text-[#073F25]" : "text-[#0B5C35]"}`}>{v}%</b>
-            </div>
-          ))}
+        <div className="flex flex-col items-center gap-2">
+          <Face src={AVA_EMP} size={56} className="ring-4 ring-[#6EE7A8]/60 shadow-[0_0_0_10px_rgba(110,231,168,.18),0_10px_24px_rgba(11,92,53,.25)]" />
+          <span className="rounded-full bg-[#0B5C35] px-2 py-[2px] text-[11px] font-bold tabular-nums text-white">92%</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <Face src={FACE_C} size={34} zoom={1.14} className="opacity-80" />
+          <Bar w="34px" />
         </div>
       </div>
-    </Stack>
+    </MockCard>
   );
 }
 
+/* JD Creation: the role goes in, a written job description comes back */
 function JdViz() {
   return (
-    <Stack>
-      <div className="p-4">
-        <div className="flex flex-wrap gap-1.5">
-          {["Sales Manager", "5–9 yrs", "Noida"].map((c) => (
-            <span key={c} className="rounded-full bg-[#F1F4F3] px-2.5 py-1 text-[10.5px] font-semibold text-[#3D4046]">{c}</span>
-          ))}
+    <MockCard className="w-[270px] p-4">
+      <div className="flex items-center gap-2 rounded-full bg-[#F3F6F4] py-1 pl-3 pr-1">
+        <span className="flex-1 truncate text-[11px] text-[#5F6B65]">Sales Manager · Noida · 5–9 yrs</span>
+        <span className="grid h-6 w-6 place-items-center rounded-full bg-[#073F25]">
+          <Spark size={12} width={1.6} />
+        </span>
+      </div>
+      <div className="mt-3 rounded-[12px] bg-[#F5F8F6] p-3">
+        <div className="flex items-center justify-between">
+          <b className="text-[12.5px] text-[#0F1117]">Job description</b>
+          <span className="rounded-[5px] bg-[#DDF3E7] px-1.5 py-[2px] text-[9px] font-bold tracking-[.06em] text-[#0B5C35]">WRITTEN</span>
         </div>
-        <div className="mt-3 rounded-[10px] bg-[#073F25] p-3 text-white">
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 text-[11px] font-bold">
-              <Spark size={12} width={1.6} /> Job description
-            </span>
-            <Pill tone="mint">Written</Pill>
-          </div>
-          <div className="mt-2.5 space-y-1.5">
-            {["100%", "88%", "70%"].map((w) => (
-              <span key={w} className="block h-[6px] rounded-full bg-white/25" style={{ width: w }} />
-            ))}
-          </div>
+        <div className="mt-2.5 space-y-1.5">
+          <Bar w="100%" className="bg-[#E3E9E5]" />
+          <Bar w="86%" className="bg-[#E3E9E5]" />
+          <Bar w="64%" className="bg-[#E3E9E5]" />
         </div>
       </div>
-    </Stack>
+    </MockCard>
   );
 }
 
@@ -750,31 +767,21 @@ function ExpensePhone() {
   );
 }
 
+/* Draft Announcement: drafts written for you, the chosen one lit and ticked */
 function AnnouncementViz() {
   return (
-    <Stack className="!w-[86%] !max-w-[310px]">
-      <div className="p-4">
-        <div className="flex items-center gap-2 border-b border-[#E4E6E9] pb-3">
-          <AiTile size={22} radius={7} />
-          <b className="flex-1 text-[12px] text-[#0F1117]">Draft with One AI</b>
-          <Pill tone="mint">Ready</Pill>
-        </div>
-
-        <b className="mt-3 block text-[13.5px] leading-[1.3] tracking-[-0.01em] text-[#0F1117]">Office closed on Friday, 2 October</b>
-        <div className="mt-2.5 space-y-1.5">
-          <span className="block h-[6px] w-full rounded-full bg-[#E6EFEA]" />
-          <span className="block h-[6px] w-[72%] rounded-full bg-[#E6EFEA]" />
-        </div>
-
-        <div className="mt-4 flex items-center justify-end gap-2">
-          <span className="text-[10.5px] font-semibold text-[#3D4046]">Edit</span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-[#0B5C35] py-1.5 pl-3 pr-2.5 text-[10.5px] font-semibold text-white">
-            Publish
-            <svg aria-hidden width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8h9.5M8.75 4.25 12.5 8l-3.75 3.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </span>
-        </div>
+    <div className="flex w-[250px] flex-col items-center gap-2.5">
+      <div className="relative w-full rounded-full bg-white px-4 py-3 text-center text-[12.5px] font-semibold text-[#0F1117] shadow-[0_0_0_3px_rgba(110,231,168,.55),0_0_24px_rgba(110,231,168,.55),0_10px_24px_rgba(7,63,37,.12)]">
+        Office closed on Friday, 2 Oct
+        <i className="absolute -right-2 -top-2 grid h-7 w-7 place-items-center rounded-full bg-[#22A06B] p-[7px] text-white shadow-[0_0_0_3px_#fff]"><TickSvg /></i>
       </div>
-    </Stack>
+      <div className="w-[92%] rounded-full bg-white/70 px-4 py-2.5 text-center text-[11.5px] text-[#72767E] shadow-[0_6px_16px_rgba(7,63,37,.06)]">
+        Long weekend: 2–4 October
+      </div>
+      <div className="flex w-[84%] justify-center rounded-full bg-white/60 px-4 py-3 shadow-[0_6px_16px_rgba(7,63,37,.05)]">
+        <Bar w="60%" />
+      </div>
+    </div>
   );
 }
 
@@ -930,10 +937,10 @@ const CREW: Crew[] = [
     viz: <InterviewWindow />,
   },
   { name: "Expense Bills Parser", line: "Snap a receipt and One AI fills in the claim for you.", dark: false, phone: true, viz: <ExpensePhone /> },
-  { name: "Resume Parser", line: "Upload resumes in bulk and get candidate profiles in seconds.", dark: true, viz: <ResumeViz /> },
-  { name: "Relevancy Score", line: "Every applicant ranked against the job, so you start with the best fit.", dark: false, viz: <RelevancyViz /> },
-  { name: "JD Creation", line: "Give it a few inputs and AI writes the full job description.", dark: true, viz: <JdViz /> },
-  { name: "Draft Announcement", line: "Company announcements written for you, ready to edit and publish.", dark: false, viz: <AnnouncementViz /> },
+  { name: "Resume Parser", line: "Upload resumes in bulk and get candidate profiles in seconds.", dark: true, scale: 0.92, viz: <ResumeViz /> },
+  { name: "Relevancy Score", line: "Every applicant ranked against the job, so you start with the best fit.", dark: false, scale: 0.92, viz: <RelevancyViz /> },
+  { name: "JD Creation", line: "Give it a few inputs and AI writes the full job description.", dark: true, scale: 0.92, viz: <JdViz /> },
+  { name: "Draft Announcement", line: "Company announcements written for you, ready to edit and publish.", dark: false, scale: 0.92, viz: <AnnouncementViz /> },
   { name: "Create Goal", line: "Ask for goals in plain words and One AI drafts them for the cycle.", dark: true, phone: true, viz: <GoalPhone /> },
 ];
 
