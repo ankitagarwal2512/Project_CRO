@@ -361,6 +361,8 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 .cmpt[aria-expanded="true"] .cmpt-cta svg{transform:rotate(180deg)}
 @media (max-width:640px){.cmpt{flex-direction:column;align-items:stretch;gap:14px;padding:18px}.cmpt-cta{justify-content:center}}
 
+/* nav: the saved page already holds one dropdown arrow and the theme script adds another */
+.level-1-menu img.vector-img-1~img.vector-img-1{display:none!important}
 /* proof strip under the plan cards, built on gestalt grouping:
    common region – both ratings share one white tile; logos sit on the mint ground
    proximity     – score, source and count sit tight against their mark
