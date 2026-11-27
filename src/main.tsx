@@ -15,6 +15,7 @@ const V6 = lazy(() => import('./variants/v6/App'))
 const V7 = lazy(() => import('./variants/v7/App'))
 const SalaryCalculator = lazy(() => import('./pages/salary-calculator/App'))
 const OneAi = lazy(() => import('./pages/one-ai/AppStage'))
+const Pricing = lazy(() => import('./pages/pricing/App'))
 
 /* Each entry under src/variants/ is a FULL, independent copy of the page — its own
    App, Chrome, ProductShowcase and Trust — so edits to one variation cannot leak into
@@ -51,6 +52,7 @@ const OneAi = lazy(() => import('./pages/one-ai/AppStage'))
    "/v7"        or "/#v7"        – variation 7 (started as a copy of v6)
    "/salary-calculator"         – the redesigned salary calculator inner page
    "/one-ai"                    – HROne AI agents product page (replaces the live One AI page)
+   "/pricing"                   – the live plans & pricing page (public/legacy/hrone-pricing)
    "/original"  or "/#original"  – the earlier proportions, kept for comparison
 
    The paths only resolve on a host that falls back to index.html for unknown
@@ -86,6 +88,8 @@ const variants: Record<string, React.ComponentType> = {
   'salary-calculator': SalaryCalculator,
   /* HROne AI product page, no separate One AI identity: docs/one-ai-page-content.md */
   'one-ai': OneAi,
+  /* hrone.cloud/plans-pricing, saved copy with trackers stripped — the base to redesign */
+  pricing: Pricing,
 }
 
 const route = (window.location.pathname.replace(/^\/|\/$/g, '') ||
