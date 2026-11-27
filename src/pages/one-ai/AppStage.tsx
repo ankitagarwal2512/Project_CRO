@@ -170,11 +170,11 @@ function DotIcon({ name, delay }: { name: keyof typeof DOT_ICONS; delay: number 
   );
 }
 
-/* Proof points from the sales deck (docs/one-ai-page-content.md): what it does (20+ tasks),
+/* Proof points from the sales deck (docs/one-ai-page-content.md): what it does (110+ tasks),
    the outcome (92%, 3×) and the scale (5 Cr+ = 3 Cr+ a month on web and InboxforHR plus
    2 Cr+ on mobile). */
 const STAGE_STATS: { icon: keyof typeof DOT_ICONS; to: number; suf: string; dec: number; label: string }[] = [
-  { icon: "mic", to: 20, suf: "+", dec: 0, label: "HR tasks done by voice or text" },
+  { icon: "mic", to: 110, suf: "+", dec: 0, label: "HR tasks done by voice or text" },
   { icon: "clock", to: 92, suf: "%", dec: 0, label: "Less screening time per role" },
   { icon: "speed", to: 3, suf: "×", dec: 0, label: "Faster hiring, 18 → 6 days" },
   { icon: "bars", to: 5, suf: " Cr+", dec: 0, label: "HR tasks a month on HROne" },
@@ -1039,7 +1039,7 @@ function EveryModule() {
 /* ───────────────────────── comparison ───────────────────────── */
 
 const COMPARE: [string, string, string][] = [
-  ["Does HR tasks, not just tells you how", "No", "Yes, 20+ tasks"],
+  ["Does HR tasks, not just tells you how", "No", "Yes, 110+ tasks"],
   ["Works by voice", "Rarely", "Yes"],
   ["Answers from your own policies", "Generic answers", "Yes, and cites the policy"],
   ["MIS answers in plain language", "Needs a report builder", "Ask, and get the chart"],
