@@ -363,6 +363,29 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 
 /* nav: the saved page already holds one dropdown arrow and the theme script adds another */
 .level-1-menu img.vector-img-1~img.vector-img-1{display:none!important}
+/* Option 3: proof matched to each plan */
+.pick{margin-top:56px;text-align:center;font-family:"Public Sans",sans-serif}
+.pick-eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#E9573F;margin:0 0 6px}
+.pick-title{font-size:28px;line-height:1.2;font-weight:700;color:#0B3B2C;margin:0 0 24px}
+.pick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;text-align:left}
+.pick-card{background:#fff;border:1px solid #E6ECE8;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:16px;transition:box-shadow .2s,border-color .2s}
+.pick-card:hover{border-color:#CFE0D6;box-shadow:0 10px 28px rgba(16,40,30,.07)}
+.pick-head{display:flex;align-items:center;justify-content:space-between;gap:12px;height:40px}
+.pick-logo{height:26px;width:auto;max-width:110px;object-fit:contain}
+.pick-logo-wow{height:30px}.pick-logo-hirect{height:38px;max-width:120px}.pick-logo-ahh{height:40px;max-width:120px}
+.pick-photo{width:40px;height:40px;flex:none;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #fff,0 0 0 3px #E2F0E8}
+.pick-chip{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00553C;background:#E2F0E8;padding:4px 10px;border-radius:999px}
+.pick-result{padding:4px 0 0}
+.pick-num{font-size:32px;line-height:1.05;font-weight:800;letter-spacing:-.02em;color:#E9573F;margin:0}
+.pick-label{font-size:13px;color:#6b7772;margin:4px 0 0}
+.pick-quote{position:relative;flex:1;margin:0;padding:0;border:0;font-size:15px;line-height:1.5;color:#1f2a26;quotes:none}
+.pick-quote:before{display:none!important}
+.pick-quote:after{display:none}
+.pick-by{display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid #EEF2EF}
+.pick-av{width:34px;height:34px;flex:none;border-radius:50%;background:#00553C;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;letter-spacing:.02em}
+.pick-by b{display:block;font-size:14px;font-weight:700;color:#1f2a26;line-height:1.25}
+.pick-by small{display:block;font-size:12.5px;color:#6b7772;line-height:1.3}
+@media (max-width:900px){.pick-grid{grid-template-columns:1fr}.pick-title{font-size:22px}}
 /* proof strip under the plan cards, built on gestalt grouping:
    common region – both ratings share one white tile; logos sit on the mint ground
    proximity     – score, source and count sit tight against their mark
@@ -381,7 +404,8 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 .proof-name{font-size:14px;font-weight:600;color:#1f2a26}
 .proof-line2{font-size:12.5px;color:#6b7772;white-space:nowrap}
 .proof-logos{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.proof-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8a958f;white-space:nowrap;padding-right:16px;border-right:1px solid #D5E3DA;line-height:28px}
+.proof-label{display:flex;flex-direction:column;gap:2px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8a958f;white-space:nowrap;padding-right:16px;border-right:1px solid #D5E3DA;line-height:1.2}
+.proof-label b{font-size:15px;font-weight:800;letter-spacing:-.01em;text-transform:none;color:#1f2a26}
 .proof-logo{height:18px;width:auto;min-width:0;flex:0 1 auto;max-width:17%;object-fit:contain;filter:grayscale(1);opacity:.55;mix-blend-mode:multiply;transition:filter .2s,opacity .2s}
 /* ordered by company size; heights give each logo the same optical area
    (trimmed to ink, sized by sqrt(area/aspect), nudged for ink weight) */
@@ -398,7 +422,7 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
   .proof-rating+.proof-rating{border-left:0;border-top:1px solid #E6ECE8}
   .proof-line2{white-space:normal}
   .proof-logos{flex-wrap:wrap;justify-content:center;gap:14px 22px}
-  .proof-label{width:100%;text-align:center;border-right:0;padding-right:0;line-height:1}
+  .proof-label{width:100%;align-items:center;text-align:center;border-right:0;padding-right:0}
 }
 </style>
 </head>
@@ -3211,14 +3235,7 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
                     <p>Our Startup-Friendly <strong>AI Powered HRMS</strong> Built To Scale With You.</p>
                 </div>
             </div> -->
-            <div class="proof-strip" aria-label="Ratings and customers">
-  <div class="proof-ratings">
-    <div class="proof-rating"><img src="assets/g2-mark.svg" alt="" class="proof-mark" width="32" height="32"><div class="proof-text"><div class="proof-line1"><span class="proof-score">4.9</span><span class="proof-of">/5</span><span class="proof-name">G2</span></div><div class="proof-line2">2,000+ reviews · Best Software Awards 2026</div></div></div>
-    <div class="proof-rating"><img src="assets/gartner-mark.svg" alt="" class="proof-mark" width="32" height="32"><div class="proof-text"><div class="proof-line1"><span class="proof-score">4.8</span><span class="proof-of">/5</span><span class="proof-name">Gartner Peer Insights</span></div><div class="proof-line2">698+ ratings · Customers' Choice 2025</div></div></div>
-  </div>
-  <div class="proof-logos"><span class="proof-label">Trusted by</span><img src="assets/logo-panasonic.png" alt="Panasonic" loading="lazy" class="proof-logo proof-logo-panasonic"><img src="assets/logo-haier.png" alt="Haier" loading="lazy" class="proof-logo proof-logo-haier"><img src="assets/logo-suzuki.png" alt="Suzuki" loading="lazy" class="proof-logo proof-logo-suzuki"><img src="assets/logo-timex.png" alt="Timex" loading="lazy" class="proof-logo proof-logo-timex"><img src="assets/logo-lux.png" alt="Lux Cozi" loading="lazy" class="proof-logo proof-logo-lux"></div>
-</div>
-<div class="plans-anchor cmpt-anchor">
+            <div class="plans-anchor cmpt-anchor">
   <button type="button" class="cmpt compare-inline-btn" aria-expanded="false" aria-controls="compare-plans">
     <span class="cmpt-copy">
       <span class="cmpt-title">What's in each plan?</span>
@@ -3248,6 +3265,34 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
     </div>
   </div>
 </div>
+<section class="pick" aria-labelledby="pick-title">
+  <p class="pick-eyebrow">Companies like yours</p>
+  <h3 class="pick-title" id="pick-title">See who picks each plan</h3>
+  <div class="pick-grid"><article class="pick-card">
+      <div class="pick-head"><span class="pick-chip">Basic</span><img class="pick-logo pick-logo-hirect" src="assets/cust-hirect.png" alt="Hirect" loading="lazy"></div>
+      <div class="pick-result"><p class="pick-num">12% → 24%</p><p class="pick-label">sales efficiency</p></div>
+      <blockquote class="pick-quote">“HROne helped us pivot from seed startup to enterprise.”</blockquote>
+      <div class="pick-by"><img class="pick-photo" src="assets/cust-abhishek.png" alt="" loading="lazy" width="40" height="40"><span><b>Abhishek Popli</b><small>Co-Founder, Hirect</small></span></div>
+    </article><article class="pick-card">
+      <div class="pick-head"><span class="pick-chip">Professional</span><img class="pick-logo pick-logo-wow" src="assets/cust-wow.png" alt="Wow Skin Science" loading="lazy"></div>
+      <div class="pick-result"><p class="pick-num">&lt; 2 days</p><p class="pick-label">to process payroll</p></div>
+      <blockquote class="pick-quote">“HROne makes payroll error-free and timely.”</blockquote>
+      <div class="pick-by"><img class="pick-photo" src="assets/cust-smriti.png" alt="" loading="lazy" width="40" height="40"><span><b>Smriti Khanna</b><small>VP HR, Wow Skin Science</small></span></div>
+    </article><article class="pick-card">
+      <div class="pick-head"><span class="pick-chip">Enterprise</span><img class="pick-logo pick-logo-ahh" src="assets/cust-ahh.png" alt="Asia Healthcare Holdings" loading="lazy"></div>
+      <div class="pick-result"><p class="pick-num">100+ reports</p><p class="pick-label">in a single click</p></div>
+      <blockquote class="pick-quote">“HROne is highly adaptable, incredibly fast!”</blockquote>
+      <div class="pick-by"><img class="pick-photo" src="assets/cust-rupali.png" alt="" loading="lazy" width="40" height="40"><span><b>Rupali C. Rane</b><small>Head HR, Asia Healthcare Holdings</small></span></div>
+    </article></div>
+</section>
+<div class="proof-strip" aria-label="Ratings and customers">
+  <div class="proof-ratings">
+    <div class="proof-rating"><img src="assets/g2-mark.svg" alt="" class="proof-mark" width="32" height="32"><div class="proof-text"><div class="proof-line1"><span class="proof-score">4.9</span><span class="proof-of">/5</span><span class="proof-name">G2</span></div><div class="proof-line2">2,000+ reviews · Best Software Awards 2026</div></div></div>
+    <div class="proof-rating"><img src="assets/gartner-mark.svg" alt="" class="proof-mark" width="32" height="32"><div class="proof-text"><div class="proof-line1"><span class="proof-score">4.8</span><span class="proof-of">/5</span><span class="proof-name">Gartner Peer Insights</span></div><div class="proof-line2">698+ ratings · Customers' Choice 2025</div></div></div>
+  </div>
+  <div class="proof-logos"><span class="proof-label">Trusted by<b>2,500+ brands</b></span><img src="assets/logo-panasonic.png" alt="Panasonic" loading="lazy" class="proof-logo proof-logo-panasonic"><img src="assets/logo-haier.png" alt="Haier" loading="lazy" class="proof-logo proof-logo-haier"><img src="assets/logo-suzuki.png" alt="Suzuki" loading="lazy" class="proof-logo proof-logo-suzuki"><img src="assets/logo-timex.png" alt="Timex" loading="lazy" class="proof-logo proof-logo-timex"><img src="assets/logo-lux.png" alt="Lux Cozi" loading="lazy" class="proof-logo proof-logo-lux"></div>
+</div>
+
 
         </div>
     </div>
