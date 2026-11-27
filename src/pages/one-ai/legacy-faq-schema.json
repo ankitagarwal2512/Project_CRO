@@ -1,0 +1,95 @@
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "url": "https://hrone.cloud/one-ai/",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Which is the best AI-powered HR software in India?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>HROne's One AI Suite is the only deeply embedded AI in Indian HRMS — covering AI hiring, AI policy-search, AI insights for HR analytics, AI-led leave/regularisation, and conversational HR via InboxForHR. It supports 110+ HR actions through natural-language commands.</p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What is an AI HR agent and does HROne offer one?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>An AI HR agent is software that handles HR tasks via natural-language chat — leave requests, payslip queries, policy lookups, attendance regularisation. HROne offers this through InboxForHR, an AI assistant supporting 110+ HR actions across web, mobile and WhatsApp.</p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How does AI improve payroll accuracy in HR software?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>AI improves payroll accuracy by automatically detecting anomalies (mismatched attendance, missing inputs, double-deductions), flagging compliance gaps before run, and suggesting corrections. HROne's One AI runs pre-payroll audits that reduce post-run rework by up to 80%.</p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can ChatGPT or AI replace HR teams?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>No — AI augments HR teams rather than replaces them. AI handles repetitive queries (leave balance, policy lookups, payslip generation) and pattern-finding (attrition prediction, sentiment), freeing HR for strategic work. HROne's One AI is designed as an HR co-pilot, not a replacement.</p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What is generative AI in HR and how is it used?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Generative AI in HR creates content and decisions on demand — JDs, policy responses, performance summaries, interview questions, attrition narratives. HROne's One AI uses generative AI for policy-aware chat responses, JD generation in recruitment, and on-the-fly HR analytics.</p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Which HRMS uses agentic AI in India?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>HROne is the leading Indian HRMS with agentic AI through its One AI Suite — autonomous AI workflows that execute multi-step HR actions (e.g., approve leave + sync payroll + notify manager) on natural-language commands without manual orchestration.</p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How does AI improve employee retention in 2026?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>AI improves retention by predicting attrition risk from leave patterns, performance dips and engagement drops, then triggering interventions early. HROne's One AI surfaces at-risk employees with explanation and recommended actions — moving HR from reactive to predictive.</p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What is the One AI Suite by HROne?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>One AI Suite is HROne's AI layer powering the entire HRMS — AI-led hiring (JD generation, candidate matching), AI insights (attrition prediction, performance analytics), AI policy chat, AI anomaly detection in payroll/attendance, and AI agents through InboxForHR.</p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What are HR KPIs every HR leader should track?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Every HR leader should track: (1) Time-to-hire, (2) Cost-per-hire, (3) Attrition rate, (4) Absenteeism, (5) eNPS, (6) Training completion, (7) Performance-rating distribution, (8) Compliance score, (9) HR cost as % of revenue, (10) HR-to-employee ratio. HROne's analytics dashboard tracks all 10 in real time.</p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How is AI changing HR management for large enterprises?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>AI is emerging as a smart companion in HR, greatly reducing the HR's adminstrative manual work, improving decision-making, and enabling faster execution. That's why, HROne’s One AI Suite allows teams to complete tasks through simple, chat-based-commands in seconds.</p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "HROne One AI — how does the employee AI agent work?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>HROne’s has its own One AI agent that's a voice-enabled assistant to executes HR tasks instantly. Tasks like applying leave or checking payslips are easily doable with simple voice prompts.</p>"
+   }
+  }
+ ]
+}

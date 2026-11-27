@@ -2,10 +2,11 @@ import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState
 import { NavBar, TopStripe } from "../salary-calculator/Chrome";
 import HomeFooter from "../salary-calculator/HomeFooter";
 import BackToTop from "../salary-calculator/BackToTop";
-import Credibility from "../salary-calculator/Credibility";
-import TrustPanel from "../salary-calculator/TrustPanel";
 import "./oa2.css";
 import agentsHtml from "./agents.html?raw";
+import "./legacy.css";
+import legacyHtml from "./legacy.html?raw";
+import legacyFaqSchema from "./legacy-faq-schema.json";
 
 /* One AI product page, served at /one-ai. Replaces the live hrone.cloud/one-ai page.
 
@@ -1046,6 +1047,99 @@ const COMPARE: [string, string, string][] = [
   ["Available", "Office hours", "Always on: web, mobile, WhatsApp, Teams"],
 ];
 
+/* ───────────────────────── the old page's sections, kept as they were ─────────────────────────
+   the 30-second video with client logos, Customer Happiness and
+   the FAQs: same content and design as the old hrone.cloud/one-ai (legacy.html + legacy.css,
+   scoped under .oap-legacy). The old jQuery behaviour is redone here: video play/pause and the
+   FAQ accordion. The FAQ structured data comes across unchanged for search. */
+function Legacy() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const video = root.querySelector<HTMLVideoElement>("#myVideoai");
+    const play = root.querySelector<HTMLElement>("#playBtn");
+    const pause = root.querySelector<HTMLElement>("#pauseBtn");
+    const showPlaying = (on: boolean) => {
+      if (play) play.style.display = on ? "none" : "";
+      if (pause) pause.style.display = on ? "block" : "none";
+    };
+    const onPlay = () => { video?.play(); showPlaying(true); };
+    const onPause = () => { video?.pause(); showPlaying(false); };
+    const onEnded = () => showPlaying(false);
+    play?.addEventListener("click", onPlay);
+    pause?.addEventListener("click", onPause);
+    video?.addEventListener("ended", onEnded);
+
+    const onFaq = (e: Event) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(".faq-accordion");
+      if (!btn || !root.contains(btn)) return;
+      const panel = btn.nextElementSibling as HTMLElement | null;
+      const open = !btn.classList.contains("open");
+      btn.classList.toggle("open", open);
+      panel?.classList.toggle("open", open);
+      if (panel) panel.style.display = open ? "block" : "none";
+    };
+    root.addEventListener("click", onFaq);
+    return () => {
+      play?.removeEventListener("click", onPlay);
+      pause?.removeEventListener("click", onPause);
+      video?.removeEventListener("ended", onEnded);
+      root.removeEventListener("click", onFaq);
+    };
+  }, []);
+  return (
+    <>
+      {/* legacy.html is our own static copy of the old page's markup, not user input */}
+      <div id="faqs" ref={ref} className="oap-legacy scroll-mt-28" dangerouslySetInnerHTML={{ __html: legacyHtml }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(legacyFaqSchema) }} />
+    </>
+  );
+}
+
+/* ───────────────────────── why One AI feels different ─────────────────────────
+   The old page's three points, same words, in this page's design: one headline and three
+   open columns split by hairlines, each led by a green icon tile. */
+const DIFFERENT: { title: string; line: string; icon: string }[] = [
+  {
+    title: "It acts. It executes. It gets stuff done.",
+    line: "Forget nudges and suggestions. This AI just takes over.",
+    icon: "M13 2L4.5 13.5H11L10 22l8.5-11.5H12L13 2z", // bolt: it acts
+  },
+  {
+    title: "It works across the HR spectrum.",
+    line: "From hiring and onboarding to payroll and engagement.",
+    icon: "M3 12h4l3-7 4 14 3-7h4", // a pulse across the whole cycle
+  },
+  {
+    title: "It feels effortless, across the employee cycle.",
+    line: "One message. One command. One second. Done.",
+    icon: "M4 5h16a1 1 0 011 1v10a1 1 0 01-1 1H9l-5 4V6a1 1 0 011-1zM8 10h8M8 13h5", // one message
+  },
+];
+
+function Different() {
+  return (
+    <section className="bg-white px-6 pb-[88px] pt-6">
+      <div className="mx-auto max-w-[1200px]">
+        <Head kicker="Not another chatbot" title="Why One AI feels different" />
+        {/* no boxes: three columns split by hairlines, one icon colour */}
+        <div className="mx-auto mt-14 grid max-w-[1080px] divide-y divide-[#E4ECE7] md:grid-cols-3 md:divide-x md:divide-y-0">
+          {DIFFERENT.map((d) => (
+            <div key={d.title} className="py-8 max-md:first:pt-0 max-md:last:pb-0 md:px-10 md:py-2 md:first:pl-0 md:last:pr-0">
+              <span className="grid h-12 w-12 place-items-center rounded-[14px] bg-[#E6F4ED] text-[#0B5C35]">
+                <svg aria-hidden width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d={d.icon} /></svg>
+              </span>
+              <h3 className="mt-6 text-[21px] font-bold leading-[1.25] tracking-[-0.02em] text-[#0e1a14]">{d.title}</h3>
+              <p className="mt-2.5 text-[16px] leading-[1.5] text-[#5f6b65]">{d.line}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Compare() {
   return (
     <section className="bg-white px-6 py-[88px]">
@@ -1085,135 +1179,6 @@ function Compare() {
 
 /* ───────────────────────── video ───────────────────────── */
 
-function Video() {
-  return (
-    <section id="video" className={`${MINT} scroll-mt-28 px-6 py-[88px]`}>
-      <div className="mx-auto max-w-[1200px]">
-        <Head kicker="See it work" title="One AI handles HR tasks in 30 seconds" />
-        <AppWindow title="Watch: One AI in action" className="mx-auto mt-12 max-w-[980px]">
-          <div className="relative grid aspect-video place-items-center bg-[#f7f7f4]">
-            <div aria-hidden className="absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_50%,rgba(2,86,61,.08),transparent_70%)]" />
-            <button type="button" className="group relative flex flex-col items-center gap-4">
-              <span className="grid h-[72px] w-[72px] place-items-center rounded-[20px] bg-[linear-gradient(160deg,#0f5b40_0%,#063f2d_55%,#032c20_100%)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,.16),0_10px_24px_-12px_rgba(1,36,26,.5)] transition-transform group-hover:scale-105">
-                <svg aria-hidden width="24" height="24" viewBox="0 0 20 20"><path d="M6 4l10 6-10 6z" fill="currentColor" /></svg>
-              </span>
-              <span className="text-[14px] text-[#737373]">[Video: 30-second walkthrough, re-cut without the One AI logo]</span>
-            </button>
-          </div>
-        </AppWindow>
-      </div>
-    </section>
-  );
-}
-
-/* ───────────────────────── proof ───────────────────────── */
-
-function Proof() {
-  return (
-    <section className="bg-white px-6 py-[88px]">
-      <div className="mx-auto max-w-[1200px]">
-        <Head kicker="From factory floors to boardrooms, from metros to tier-3 towns" title="India runs HR on HROne" />
-
-        <div className={`${CARD} mt-12 grid grid-cols-2 divide-[#dfe8e2] sm:grid-cols-4 sm:divide-x`}>
-          {[
-            ["2,500+", "customers"],
-            ["11 Lakh+", "users"],
-            ["25+", "industries"],
-            ["150+", "cities"],
-          ].map(([v, l]) => (
-            <div key={l} className="px-6 py-6 text-center">
-              <div className="text-[36px] font-bold leading-none tracking-[-0.02em] text-[#02563d]">{v}</div>
-              <div className="mt-2 text-[15px] text-[#5f6b65]">{l}</div>
-            </div>
-          ))}
-        </div>
-        <p className="mt-3 text-center text-[13.5px] text-[#737373]">
-          3 Cr+ tasks a month on web &amp; InboxforHR · 2 Cr+ tasks a month on mobile · 10 Lakh+ app downloads
-        </p>
-
-        <div className={`${CARD} mt-5 grid overflow-hidden lg:grid-cols-[1.25fr_1fr]`}>
-          <figure className="flex flex-col justify-between p-8 sm:p-12">
-            <blockquote className="text-balance text-[clamp(20px,2.1vw,25px)] font-medium leading-[1.4] tracking-[-0.01em] text-[#10231b]">
-              We were running 40 sales-hiring screens a week. AI Interviewer picked up all of them. Our recruiters now only meet the top 12, and our time-to-hire dropped from{" "}
-              <span className="font-bold text-[#02563d]">18 days to 6.</span>
-            </blockquote>
-            <figcaption className="mt-8 leading-tight">
-              <div className="text-[15px] font-bold text-[#10231b]">Pushpa Unyauni</div>
-              <div className="mt-1 text-[13.5px] text-[#5f6b65]">Senior Manager – Human Resources, Uneecops</div>
-            </figcaption>
-          </figure>
-          <TrustPanel />
-        </div>
-
-        <div className={`${CARD} mt-5 overflow-hidden`}>
-          <div className="flex flex-col gap-2 px-6 pt-7 sm:px-8 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="text-[15px] font-semibold text-[#02563d]">Best Software 2026</p>
-              <h3 className="mt-1 text-[clamp(22px,2.2vw,27px)] font-bold leading-[1.15] tracking-[-0.015em] text-[#10231b]">Voted #1. Not by analysts, by the HR teams who use it every day.</h3>
-            </div>
-            <p className="text-[14px] text-[#5f6b65]">96% of customers recommend HROne</p>
-          </div>
-          <div className="mt-6">
-            <Credibility />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ───────────────────────── FAQ ───────────────────────── */
-
-const FAQS: [string, string][] = [
-  ["What is One AI?", "HROne's built-in AI, with three agents: the Analytics Agent (MIS answers and charts), the Employee Agent (does 20+ HR tasks by text or voice), and the Policy Agent (answers from your HR policies). It also powers AI features in every HROne module."],
-  ["What can the Employee Agent actually do?", "Apply leave, mark attendance, regularize attendance, apply On Duty or Short Leave, raise helpdesk tickets and more. It completes the task instead of explaining the steps."],
-  ["Does One AI work with voice?", "Yes. One AI is India's first voice-powered AI agent for HR. Employees can speak a request and the agent does it."],
-  ["Does the Policy Agent use our own policies?", "Yes. It answers from the policy documents you upload, and shows which policy each answer came from."],
-  ["What is AI Interviewer and how much does it cost?", "It runs structured first-round interviews with many candidates at once and returns scored, proctored, transcribed reports. It costs ₹99 per 15-minute interview, with volume discounts, and you start with 5 free credits."],
-  ["How is AI Interviewer kept fair and cheat-proof?", "Every candidate is scored on the same rubric, and every score cites the transcript. Proctoring logs periodic screenshots, tab switches and identity checks."],
-  ["How is One AI priced?", "You pay only for what you use."],
-  ["Where can employees use One AI?", "Wherever they already work: the HROne web app, the mobile app, WhatsApp and Microsoft Teams. The agents themselves work in every one of them."],
-  ["Do employees need training?", "No. If they can type or speak a question, they can use One AI."],
-  ["Can ChatGPT replace an HR AI agent?", "ChatGPT can explain how to apply leave. One AI applies it, inside your HRMS, using your policies and your data."],
-];
-
-function Faqs() {
-  const [open, setOpen] = useState(0);
-  return (
-    <section id="faqs" className={`${MINT} px-6 py-[88px]`}>
-      <div className="mx-auto max-w-[900px]">
-        <Head kicker="Questions HR teams ask us" title="Frequently asked questions" />
-        <div className={`${CARD} mt-12 divide-y divide-[#eeeeee]`}>
-          {FAQS.map(([q, a], i) => {
-            const isOpen = open === i;
-            return (
-              <div key={q}>
-                <h3>
-                  <button
-                    type="button"
-                    aria-expanded={isOpen}
-                    onClick={() => setOpen(isOpen ? -1 : i)}
-                    className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left text-[17px] font-bold text-[#10231b]"
-                  >
-                    {q}
-                    <svg aria-hidden width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#404040" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className={`shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}>
-                      <path d="m6 9 6 6 6-6" />
-                    </svg>
-                  </button>
-                </h3>
-                <div className={`grid transition-[grid-template-rows] duration-300 ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-                  <div className="overflow-hidden">
-                    <p className="px-6 pb-5 pr-14 text-[16px] leading-[1.6] text-[#5f6b65]">{a}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ───────────────────────── closing CTA ───────────────────────── */
 
@@ -1287,9 +1252,8 @@ export default function OneAiPage() {
         <Agents />
         <EveryModule />
         <Compare />
-        <Video />
-        <Proof />
-        <Faqs />
+        <Different />
+        <Legacy />
         <Closing />
       </main>
 
